@@ -15,4 +15,7 @@ class GameWindow : public BaseWindow {
 
  private:
   Camera camera_;
+  // Keyboard input time delta
+  float delta_time_ = 0.0f;
+  float last_time_ = 0.0f;
 };

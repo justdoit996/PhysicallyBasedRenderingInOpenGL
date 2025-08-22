@@ -11,10 +11,6 @@ unsigned int VAO;
 unsigned int VBO;
 unsigned int EBO;
 
-// Keyboard input time delta
-float g_delta_time = 0.0f;
-float g_last_time = 0.0f;
-
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -142,25 +138,29 @@ void GameWindow::Unload() {
 }
 
 void GameWindow::ProcessKeyboardInput() {
+  // User input listener
+  float current_time = glfwGetTime();
+  delta_time_ = current_time - last_time_;
+  last_time_ = current_time;
   if (glfwGetKey(this->windowHandle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(this->windowHandle, true);
   }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_W) == GLFW_PRESS) {
-    camera_.ProcessKeyboard(FORWARD, g_delta_time);
+    camera_.ProcessKeyboard(FORWARD, delta_time_);
   }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_S) == GLFW_PRESS) {
-    camera_.ProcessKeyboard(BACKWARD, g_delta_time);
+    camera_.ProcessKeyboard(BACKWARD, delta_time_);
   }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_A) == GLFW_PRESS) {
-    camera_.ProcessKeyboard(LEFT, g_delta_time);
+    camera_.ProcessKeyboard(LEFT, delta_time_);
   }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_D) == GLFW_PRESS) {
-    camera_.ProcessKeyboard(RIGHT, g_delta_time);
+    camera_.ProcessKeyboard(RIGHT, delta_time_);
   }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_SPACE) == GLFW_PRESS) {
-    camera_.ProcessKeyboard(UP, g_delta_time);
+    camera_.ProcessKeyboard(UP, delta_time_);
   }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    camera_.ProcessKeyboard(DOWN, g_delta_time);
+    camera_.ProcessKeyboard(DOWN, delta_time_);
   }
 }
