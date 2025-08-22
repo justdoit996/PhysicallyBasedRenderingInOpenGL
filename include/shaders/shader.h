@@ -1,29 +1,50 @@
 #ifndef SHADERS_SHADER_H
 #define SHADERS_SHADER_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
+#include <glm/glm.hpp>
 #include <iostream>
 #include <string>
-#include "glad.h"
 #include "glfw3.h"
 
 class Shader {
  public:
-  unsigned int programID;
-  std::string vertexFile;
-  std::string fragmentFile;
-
-  long fragmentModTimeOnLoad;
-
   Shader();
+  void Use();
   void Unload();
   void ReloadFromFile();
   static Shader LoadShader(std::string fileVertexShader,
                            std::string fileFragmentShader);
-  void set_bool(const std::string& name, bool value) const;
+
+  // Utility uniform functions
+  void SetBool(const std::string& name, bool value) const;
+  void SetInt(const std::string& name, int value) const;
+  void SetFloat(const std::string& name, float value) const;
+  void SetMat4(const std::string& name, const glm::mat4& mat) const;
+  void SetVec2(const std::string& name, const glm::vec2& value) const;
+  void SetVec2(const std::string& name, float x, float y) const;
+  void SetVec3(const std::string& name, const glm::vec3& value) const;
+  void SetVec3(const std::string& name, float x, float y, float z) const;
+  void SetVec4(const std::string& name, const glm::vec4& value) const;
+  void SetVec4(const std::string& name,
+               float x,
+               float y,
+               float z,
+               float w) const;
+  void SetMat2(const std::string& name, const glm::mat2& mat) const;
+  void SetMat3(const std::string& name, const glm::mat3& mat) const;
 
  private:
   static bool CompileShader(unsigned int shaderId, char (&infoLog)[512]);
   static bool LinkProgram(unsigned int programID, char (&infoLog)[512]);
+
+  unsigned int program_id_;
+  std::string vertex_file_;
+  std::string fragment_file_;
+
+  long fragment_mod_time_on_load_;
 };
 
 #endif

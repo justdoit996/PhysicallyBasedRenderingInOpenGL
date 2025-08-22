@@ -92,7 +92,7 @@ void GameWindow::Render() {
   // Make sure we're using the correct shader program.
   // Must be done per-frame, since the shader program id might change when
   // hot-reloading
-  glUseProgram(shader.programID);
+  shader.Use();
 
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
