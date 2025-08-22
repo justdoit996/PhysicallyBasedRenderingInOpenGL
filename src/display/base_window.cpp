@@ -40,6 +40,7 @@ int BaseWindow::Run() {
 
   // Main game loop
   while (!glfwWindowShouldClose(windowHandle)) {
+    ProcessKeyboardInput();
     Update();
     Render();
   }
@@ -50,3 +51,5 @@ int BaseWindow::Run() {
   glfwTerminate();
   return 0;
 }
+
+void BaseWindow::ProcessKeyboardInput() {}

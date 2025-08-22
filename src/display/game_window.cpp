@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "camera.h"
 #include "shaders/shader.h"
+#include "utils/constants.h"
 
 // Template stuff
 Shader shader;
@@ -11,8 +11,9 @@ unsigned int VAO;
 unsigned int VBO;
 unsigned int EBO;
 
-// Camera
-Camera g_camera(/*starting position*/ glm::vec3(0, 0, 3.0));
+// Keyboard input time delta
+float g_delta_time = 0.0f;
+float g_last_time = 0.0f;
 
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -26,6 +27,8 @@ void GameWindow::Initialize() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+  camera_ = Camera(/*starting position*/ glm::vec3(0, 0, 3.0));
 }
 
 // 2. Run after the window has been created, as well as the OpenGL context
@@ -99,6 +102,15 @@ void GameWindow::Render() {
   // Must be done per-frame, since the shader program id might change when
   // hot-reloading
   shader.Use();
+  glm::mat4 model = glm::mat4(1.0f);
+  glm::mat4 view = camera_.GetViewMatrix();
+  glm::mat4 projection =
+      glm::perspective(glm::radians(camera_.zoom()),
+                       (float)constants::ASPECT_RATIO, 0.1f, 100.0f);
+  shader.SetMat4("model", model);
+  shader.SetMat4("view", view);
+  shader.SetMat4("projection", projection);
+  shader.SetVec3("cameraPos", camera_.position());
 
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
@@ -127,4 +139,28 @@ void GameWindow::Unload() {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
+}
+
+void GameWindow::ProcessKeyboardInput() {
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(this->windowHandle, true);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_W) == GLFW_PRESS) {
+    camera_.ProcessKeyboard(FORWARD, g_delta_time);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_S) == GLFW_PRESS) {
+    camera_.ProcessKeyboard(BACKWARD, g_delta_time);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_A) == GLFW_PRESS) {
+    camera_.ProcessKeyboard(LEFT, g_delta_time);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_D) == GLFW_PRESS) {
+    camera_.ProcessKeyboard(RIGHT, g_delta_time);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    camera_.ProcessKeyboard(UP, g_delta_time);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+    camera_.ProcessKeyboard(DOWN, g_delta_time);
+  }
 }

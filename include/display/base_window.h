@@ -27,6 +27,7 @@ class BaseWindow {
   virtual void Update() = 0;
   virtual void Render() = 0;
   virtual void Unload() = 0;
+  virtual void ProcessKeyboardInput();
 };
 
 #endif
