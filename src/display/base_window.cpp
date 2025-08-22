@@ -1,4 +1,4 @@
-#include "display/base_window.hpp"
+#include "display/base_window.h"
 #include <iostream>
 
 BaseWindow::BaseWindow() {}

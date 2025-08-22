@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SHADERS_SHADER_H
+#define SHADERS_SHADER_H
 
 #include <iostream>
 #include <string>
@@ -24,3 +25,5 @@ class Shader {
   static bool CompileShader(unsigned int shaderId, char (&infoLog)[512]);
   static bool LinkProgram(unsigned int programID, char (&infoLog)[512]);
 };
+
+#endif

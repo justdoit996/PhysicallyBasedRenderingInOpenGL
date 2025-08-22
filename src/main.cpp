@@ -1,4 +1,4 @@
-#include "display/game_window.hpp"
+#include "display/game_window.h"
 
 int main() {
   // Create the game window with the specified size and title

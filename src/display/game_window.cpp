@@ -1,6 +1,6 @@
-#include "display/game_window.hpp"
+#include "display/game_window.h"
 #include <iostream>
-#include "shaders/shader.hpp"
+#include "shaders/shader.h"
 
 // Template stuff
 Shader shader;
