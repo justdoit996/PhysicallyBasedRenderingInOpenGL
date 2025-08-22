@@ -177,9 +177,23 @@ void GameWindow::ProcessKeyboardInput() {
   if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
     camera_.ProcessKeyboard(DOWN, delta_time_);
   }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_P) == GLFW_PRESS &&
+      !pause_key_pressed_) {
+    pause_key_pressed_ = true;
+    mouse_camera_enabled_ = !mouse_camera_enabled_;
+    glfwSetInputMode(
+        this->windowHandle, GLFW_CURSOR,
+        mouse_camera_enabled_ ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+  }
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_P) == GLFW_RELEASE) {
+    pause_key_pressed_ = false;
+  }
 }
 
 void GameWindow::MouseCallback(GLFWwindow* window, double x, double y) {
+  if (!mouse_camera_enabled_) {
+    return;
+  }
   if (first_mouse_) {
     last_x_ = x;
     last_y_ = y;
