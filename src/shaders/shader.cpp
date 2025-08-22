@@ -1,4 +1,5 @@
 #include "shaders/shader.h"
+
 #include "utils/utility.h"
 
 Shader::Shader() {}

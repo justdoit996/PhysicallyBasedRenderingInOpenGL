@@ -1,3 +1,6 @@
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include "display/game_window.h"
 
 int main() {

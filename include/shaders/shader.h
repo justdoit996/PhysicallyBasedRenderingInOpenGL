@@ -1,12 +1,11 @@
 #ifndef SHADERS_SHADER_H
 #define SHADERS_SHADER_H
 
-#define GLAD_GL_IMPLEMENTATION
-#include "glad.h"
-
-#include <glm/glm.hpp>
 #include <iostream>
 #include <string>
+
+#include <glm/glm.hpp>
+#include "glad.h"
 #include "glfw3.h"
 
 class Shader {

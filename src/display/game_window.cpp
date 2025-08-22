@@ -1,5 +1,8 @@
 #include "display/game_window.h"
+
 #include <iostream>
+
+#include "camera.h"
 #include "shaders/shader.h"
 
 // Template stuff
@@ -7,6 +10,9 @@ Shader shader;
 unsigned int VAO;
 unsigned int VBO;
 unsigned int EBO;
+
+// Camera
+Camera g_camera(/*starting position*/ glm::vec3(0, 0, 3.0));
 
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
