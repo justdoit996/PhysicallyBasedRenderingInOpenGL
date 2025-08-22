@@ -1,9 +1,9 @@
 #include "display/game_window.h"
 
+#include <functional>
 #include <iostream>
 
 #include "shaders/shader.h"
-#include "utils/constants.h"
 
 // Template stuff
 Shader shader;
@@ -23,14 +23,25 @@ void GameWindow::Initialize() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+}
 
-  camera_ = Camera(/*starting position*/ glm::vec3(0, 0, 3.0));
+void GameWindow::SetUpMouseCallback() {
+  // Set mouse
+  glfwSetWindowUserPointer(this->windowHandle, this);
+  auto func = [](GLFWwindow* w, double x, double y) {
+    static_cast<GameWindow*>(glfwGetWindowUserPointer(w))
+        ->MouseCallback(w, x, y);
+  };
+  glfwSetCursorPosCallback(this->windowHandle, func);
+  // tell GLFW to capture our mouse
+  glfwSetInputMode(this->windowHandle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 // 2. Run after the window has been created, as well as the OpenGL context
 void GameWindow::LoadContent() {
   // Set callback
   glfwSetFramebufferSizeCallback(this->windowHandle, FramebufferSizeCallback);
+  SetUpMouseCallback();
 
   // Initialize imgui
   IMGUI_CHECKVERSION();
@@ -42,6 +53,12 @@ void GameWindow::LoadContent() {
   ImGui_ImplOpenGL3_Init("#version 330");
   std::cout << "INFO::IMGUI::SUCCESSFULLY_INITIALIZED" << std::endl;
 
+  // Instance the camera
+  camera_ = Camera(
+      /*starting position*/ glm::vec3(0, 0, 3.0));
+  camera_perspective_projection_ =
+      glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
+                       constants::NEAR, constants::FAR);
   // Load the template shader
   shader = Shader::LoadShader("resources/shaders/testing.vs",
                               "resources/shaders/testing.fs");
@@ -100,12 +117,9 @@ void GameWindow::Render() {
   shader.Use();
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera_.GetViewMatrix();
-  glm::mat4 projection =
-      glm::perspective(glm::radians(camera_.zoom()),
-                       (float)constants::ASPECT_RATIO, 0.1f, 100.0f);
   shader.SetMat4("model", model);
   shader.SetMat4("view", view);
-  shader.SetMat4("projection", projection);
+  shader.SetMat4("projection", camera_perspective_projection_);
   shader.SetVec3("cameraPos", camera_.position());
 
   // Create new imgui frames
@@ -163,4 +177,18 @@ void GameWindow::ProcessKeyboardInput() {
   if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
     camera_.ProcessKeyboard(DOWN, delta_time_);
   }
+}
+
+void GameWindow::MouseCallback(GLFWwindow* window, double x, double y) {
+  if (first_mouse_) {
+    last_x_ = x;
+    last_y_ = y;
+    first_mouse_ = false;
+  }
+
+  float x_offset = x - last_x_;
+  float y_offset = last_y_ - y;
+  last_x_ = x;
+  last_y_ = y;
+  camera_.ProcessMouseMovement(x_offset, y_offset);
 }

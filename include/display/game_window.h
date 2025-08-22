@@ -1,6 +1,8 @@
 #include "display/base_window.h"
 
+#include <glm/glm.hpp>
 #include "camera.h"
+#include "utils/constants.h"
 
 class GameWindow : public BaseWindow {
  public:
@@ -11,11 +13,18 @@ class GameWindow : public BaseWindow {
   void Update();
   void Render();
   void Unload();
-  void ProcessKeyboardInput() override;
 
  private:
+  void ProcessKeyboardInput() override;
+  void SetUpMouseCallback();
+  void MouseCallback(GLFWwindow* window, double x, double y);
+
   Camera camera_;
+  glm::mat4 camera_perspective_projection_;
   // Keyboard input time delta
   float delta_time_ = 0.0f;
   float last_time_ = 0.0f;
+  bool first_mouse_ = true;
+  float last_x_ = constants::WIDTH / 2.f;
+  float last_y_ = constants::HEIGHT / 2.f;
 };
