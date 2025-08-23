@@ -10,6 +10,8 @@ out vec4 FragColor;
   
 // textures
 uniform sampler2D albedoMap;
+uniform sampler2D metallicMap;
+uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 
 uniform vec3 cameraPos;
