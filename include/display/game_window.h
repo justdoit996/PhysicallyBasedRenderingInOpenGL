@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "camera.h"
+#include "shaders/shader.h"
 #include "utils/constants.h"
 
 class GameWindow : public BaseWindow {
@@ -19,8 +20,12 @@ class GameWindow : public BaseWindow {
   void SetUpMouseCallback();
   void MouseCallback(GLFWwindow* window, double x, double y);
 
+  // Camera
   Camera camera_;
   glm::mat4 camera_perspective_projection_;
+
+  Shader sphere_shader_;
+  unsigned int sphere_VAO_ = 0;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;

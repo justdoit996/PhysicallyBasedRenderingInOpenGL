@@ -3,14 +3,6 @@
 #include <functional>
 #include <iostream>
 
-#include "shaders/shader.h"
-
-// Template stuff
-Shader shader;
-unsigned int VAO;
-unsigned int VBO;
-unsigned int EBO;
-
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -59,9 +51,9 @@ void GameWindow::LoadContent() {
   camera_perspective_projection_ =
       glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
                        constants::NEAR, constants::FAR);
-  // Load the template shader
-  shader = Shader::LoadShader("resources/shaders/testing.vs",
-                              "resources/shaders/testing.fs");
+  // Load the template sphere_shader_
+  sphere_shader_ = Shader::LoadShader("resources/shaders/testing.vs",
+                                      "resources/shaders/testing.fs");
 
   // Vertices needed for a square
   float vertices[] = {
@@ -78,8 +70,9 @@ void GameWindow::LoadContent() {
   };
 
   // Create Vertex Array object
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);  // And bind it
+  unsigned int VBO, EBO;
+  glGenVertexArrays(1, &sphere_VAO_);
+  glBindVertexArray(sphere_VAO_);  // And bind it
 
   // Create Vertex Buffer object
   glGenBuffers(1, &VBO);
@@ -90,37 +83,29 @@ void GameWindow::LoadContent() {
 
   // layout = 0 should contain these positions
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);  // Enable that shit
-
-  // Create index buffer
-  glGenBuffers(1, &EBO);
-  // And bind it (also included in VAO)
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  // Fill with indices!
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-               GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
 }
 
 void GameWindow::Update() {
   // Performs hot-reload of shader. Only reloads whenever it has been modified -
   // so not every frame.
-  shader.ReloadFromFile();
+  sphere_shader_.ReloadFromFile();
 }
 
 void GameWindow::Render() {
   // Bind the VAO
-  glBindVertexArray(VAO);
+  glBindVertexArray(sphere_VAO_);
 
   // Make sure we're using the correct shader program.
   // Must be done per-frame, since the shader program id might change when
   // hot-reloading
-  shader.Use();
+  sphere_shader_.Use();
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera_.GetViewMatrix();
-  shader.SetMat4("model", model);
-  shader.SetMat4("view", view);
-  shader.SetMat4("projection", camera_perspective_projection_);
-  shader.SetVec3("cameraPos", camera_.position());
+  sphere_shader_.SetMat4("model", model);
+  sphere_shader_.SetMat4("view", view);
+  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
+  sphere_shader_.SetVec3("cameraPos", camera_.position());
 
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
@@ -130,9 +115,6 @@ void GameWindow::Render() {
   // Clear the window
   glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
-
-  // Draw the square
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
   // Draw imgui
   ImGui::ShowDemoWindow();
