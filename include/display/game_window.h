@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "camera.h"
-#include "shaders/shader.h"
+#include "shader.h"
 #include "shapes/sphere.h"
 #include "utils/constants.h"
 
