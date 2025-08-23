@@ -37,6 +37,10 @@ void GameWindow::LoadContent() {
   glfwSetFramebufferSizeCallback(this->windowHandle, FramebufferSizeCallback);
   SetUpMouseCallback();
 
+  // configure global opengl state
+  // -----------------------------
+  glEnable(GL_DEPTH_TEST);
+
   // Initialize imgui
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
@@ -50,20 +54,21 @@ void GameWindow::LoadContent() {
   // Instance the camera
   camera_ = Camera(
       /*starting position*/ glm::vec3(0, 0, 3.0));
-  camera_perspective_projection_ =
-      glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
-                       constants::NEAR, constants::FAR);
-  // Load the template sphere_shader_
   sphere_shader_ = Shader::LoadShader("resources/shaders/pbr/sphere.vs",
                                       "resources/shaders/pbr/sphere.fs");
   sphere_shader_.Use();
-  sphere_shader_.SetInt("albedoMap", 0);
+  camera_perspective_projection_ =
+      glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
+                       constants::NEAR, constants::FAR);
+  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
 
   // Load textures
   albedo_ = loadTexture("resources/assets/textures/pbr/rusted_iron/albedo.png");
-  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
 
-  sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
+  sphere_shader_.SetInt("albedoMap", 0);
+
+  // Create sphere vertices and VAO
+  sphere_ = std::make_unique<Sphere>(/*sectors*/ 128, /*stacks*/ 128);
 }
 
 void GameWindow::Update() {

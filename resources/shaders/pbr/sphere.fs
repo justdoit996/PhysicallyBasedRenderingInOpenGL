@@ -15,6 +15,5 @@ uniform vec3 cameraPos;
 
 void main()
 {
-    vec3 albedo = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
-    FragColor = vec4(albedo, 1.0);
+    FragColor = texture(albedoMap, TexCoords);
 };
