@@ -64,11 +64,13 @@ void GameWindow::LoadContent() {
 
   // Load textures
   albedo_ = loadTexture("resources/assets/textures/pbr/rusted_iron/albedo.png");
+  ao_ = loadTexture("resources/assets/textures/pbr/rusted_iron/ao.png");
 
   sphere_shader_.SetInt("albedoMap", 0);
+  sphere_shader_.SetInt("aoMap", 0);
 
   // Create sphere vertices and VAO
-  sphere_ = std::make_unique<Sphere>(/*sectors*/ 128, /*stacks*/ 128);
+  sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
 }
 
 void GameWindow::Update() {
@@ -94,6 +96,8 @@ void GameWindow::Render() {
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, albedo_);
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, ao_);
 
   sphere_->BindAndDraw();
 

@@ -18,13 +18,13 @@ void Sphere::Init() {
   glGenBuffers(1, &EBO);
 
   std::vector<glm::vec3> vertex_positions;
-  std::vector<glm::vec3> triangle_normals;
+  std::vector<glm::vec3> normals;
   std::vector<glm::vec2> uv_coordinates;
   std::vector<unsigned int> indices;
   const float PI = std::acos(-1);
 
-  for (int x = 0; x < sectors_; x++) {
-    for (int y = 0; y < stacks_; y++) {
+  for (int x = 0; x <= sectors_; x++) {
+    for (int y = 0; y <= stacks_; y++) {
       // uv_coordinates mapping
       float u = 1.0 * x / sectors_;
       float v = 1.0 * y / stacks_;
@@ -34,7 +34,7 @@ void Sphere::Init() {
       float zPos = std::sin(u * 2.0f * PI) * std::sin(v * PI);
 
       vertex_positions.emplace_back(glm::vec3(xPos, yPos, zPos));
-      triangle_normals.emplace_back(glm::vec3(xPos, yPos, zPos));
+      normals.emplace_back(glm::vec3(xPos, yPos, zPos));
       uv_coordinates.emplace_back(glm::vec2(u, v));
     }
   }
@@ -64,10 +64,10 @@ void Sphere::Init() {
     data.push_back(vertex_positions[i].x);
     data.push_back(vertex_positions[i].y);
     data.push_back(vertex_positions[i].z);
-    if (triangle_normals.size() > 0) {
-      data.push_back(triangle_normals[i].x);
-      data.push_back(triangle_normals[i].y);
-      data.push_back(triangle_normals[i].z);
+    if (normals.size() > 0) {
+      data.push_back(normals[i].x);
+      data.push_back(normals[i].y);
+      data.push_back(normals[i].z);
     }
     if (uv_coordinates.size() > 0) {
       data.push_back(uv_coordinates[i].x);

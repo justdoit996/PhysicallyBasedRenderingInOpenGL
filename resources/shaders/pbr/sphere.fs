@@ -10,6 +10,7 @@ out vec4 FragColor;
   
 // textures
 uniform sampler2D albedoMap;
+uniform sampler2D aoMap;
 
 uniform vec3 cameraPos;
 
