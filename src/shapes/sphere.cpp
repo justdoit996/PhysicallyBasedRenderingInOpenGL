@@ -40,10 +40,9 @@ void Sphere::Init() {
   }
 
   // generate CCW index list of sphere triangles
-  bool oddRow = false;
   for (unsigned int y = 0; y < stacks_; ++y) {
-    if (!oddRow)  // even rows: y == 0, y == 2; and so on
-    {
+    if (y % 2 == 0) {
+      // Even numbered stacks (rows)
       for (unsigned int x = 0; x <= sectors_; ++x) {
         indices.push_back(y * (sectors_ + 1) + x);
         indices.push_back((y + 1) * (sectors_ + 1) + x);
@@ -54,7 +53,6 @@ void Sphere::Init() {
         indices.push_back(y * (sectors_ + 1) + x);
       }
     }
-    oddRow = !oddRow;
   }
   index_count_ = indices.size();
 
