@@ -11,12 +11,6 @@ Sphere::Sphere(int sectors, int stacks) : sectors_(sectors), stacks_(stacks) {
 }
 
 void Sphere::Init() {
-  glGenVertexArrays(1, &VAO_);
-
-  unsigned int VBO, EBO;
-  glGenBuffers(1, &VBO);
-  glGenBuffers(1, &EBO);
-
   std::vector<glm::vec3> vertex_positions;
   std::vector<glm::vec3> normals;
   std::vector<glm::vec2> uv_coordinates;
@@ -39,30 +33,16 @@ void Sphere::Init() {
     }
   }
 
-  // generate CCW index list of sphere triangles
-  // k1--k1+1
-  // |  / |
-  // | /  |
-  // k2--k2+1
-  int k1, k2;
-  for (int i = 0; i < stacks_; ++i) {
-    k1 = i * (sectors_ + 1);  // beginning of current stack
-    k2 = k1 + sectors_ + 1;   // beginning of next stack
-
-    for (int j = 0; j < sectors_; ++j, ++k1, ++k2) {
-      // 2 triangles per sector excluding first and last stacks
-      // k1 => k2 => k1+1
-      if (i != 0) {
-        indices.push_back(k1);
-        indices.push_back(k2);
-        indices.push_back(k1 + 1);
+  for (unsigned int y = 0; y < stacks_; ++y) {
+    if (y % 2 == 0) {
+      for (unsigned int x = 0; x <= sectors_; ++x) {
+        indices.push_back(y * (sectors_ + 1) + x);
+        indices.push_back((y + 1) * (sectors_ + 1) + x);
       }
-
-      // k1+1 => k2 => k2+1
-      if (i != (stacks_ - 1)) {
-        indices.push_back(k1 + 1);
-        indices.push_back(k2);
-        indices.push_back(k2 + 1);
+    } else {
+      for (int x = sectors_; x >= 0; --x) {
+        indices.push_back((y + 1) * (sectors_ + 1) + x);
+        indices.push_back(y * (sectors_ + 1) + x);
       }
     }
   }
@@ -71,19 +51,25 @@ void Sphere::Init() {
   // Put vertex, normals, and texture mappings into a single array
   std::vector<float> data;
   for (unsigned int i = 0; i < vertex_positions.size(); ++i) {
+    // vertex positions
     data.push_back(vertex_positions[i].x);
     data.push_back(vertex_positions[i].y);
     data.push_back(vertex_positions[i].z);
-    if (normals.size() > 0) {
-      data.push_back(normals[i].x);
-      data.push_back(normals[i].y);
-      data.push_back(normals[i].z);
-    }
-    if (uv_coordinates.size() > 0) {
-      data.push_back(uv_coordinates[i].x);
-      data.push_back(uv_coordinates[i].y);
-    }
+
+    // normals
+    data.push_back(normals[i].x);
+    data.push_back(normals[i].y);
+    data.push_back(normals[i].z);
+
+    // texture map
+    data.push_back(uv_coordinates[i].x);
+    data.push_back(uv_coordinates[i].y);
   }
+
+  glGenVertexArrays(1, &VAO_);
+  unsigned int VBO, EBO;
+  glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
 
   glBindVertexArray(VAO_);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -102,6 +88,8 @@ void Sphere::Init() {
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
                         (void*)(6 * sizeof(float)));
   glBindVertexArray(0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void Sphere::BindAndDraw() {
