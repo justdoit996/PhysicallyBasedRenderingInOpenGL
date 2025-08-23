@@ -10,12 +10,13 @@ out vec2 TexCoords;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 normalMatrix;
 
 void main()
 {
     WorldPos = vec3(model * vec4(aPos, 1.0));
     TexCoords = aTexCoords;
-    Normal = aNormal;
+    Normal = vec3((transpose(inverse(model)) * vec4(aNormal, 1.0)));
 
     gl_Position =  projection * view * vec4(WorldPos, 1.0);
 }
