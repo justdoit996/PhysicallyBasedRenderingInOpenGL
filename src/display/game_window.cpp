@@ -164,6 +164,7 @@ void GameWindow::ProcessKeyboardInput() {
 
 void GameWindow::MouseCallback(GLFWwindow* window, double x, double y) {
   if (!mouse_camera_enabled_) {
+    first_mouse_ = true;
     return;
   }
   if (first_mouse_) {
