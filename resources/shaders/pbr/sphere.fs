@@ -22,7 +22,8 @@ struct PointLight {
     vec3 Position;
     vec3 Color;
 };
-uniform PointLight pointLights[4];
+#define NR_POINT_LIGHTS 1
+uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 const float PI = 3.14159265359;
 
@@ -52,7 +53,7 @@ void main() {
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
-    for(int i = 0; i < 4; ++i)  {
+    for(int i = 0; i < NR_POINT_LIGHTS; ++i)  {
         // calculate per-light radiance
         vec3 L = normalize(pointLights[i].Position - WorldPos);
         vec3 H = normalize(V + L);

@@ -16,9 +16,9 @@ void main()
 {
     WorldPos = vec3(model * vec4(aPos, 1.0));
     TexCoords = aTexCoords;
-    Normal = aNormal;
+    //Normal = aNormal;
     // Use if sphere is moving/translating
-    // Normal = vec3((transpose(inverse(model)) * vec4(aNormal, 1.0)));
+    Normal = vec3((transpose(inverse(model)) * vec4(aNormal, 1.0)));
 
     gl_Position =  projection * view * vec4(WorldPos, 1.0);
 }
