@@ -23,10 +23,13 @@ uniform vec3 lightColors[4];
 
 const float PI = 3.14159265359;
 
+// change of basis of normals map
 vec3 GetNormalFromMap();
-float DistributionGGX(vec3 N, vec3 H, float roughness);
+// Normal dist func for microfacets on the surface
+float TrowbridgeReitzGGX(vec3 N, vec3 H, float roughness);
 float GeometrySchlickGGX(float NdotV, float roughness);
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness);
+// https://en.wikipedia.org/wiki/Schlick%27s_approximation
 vec3 FresnelSchlick(float cosTheta, vec3 F0);
 
 void main()
@@ -39,15 +42,15 @@ void main()
     vec3 N = GetNormalFromMap();
     vec3 V = normalize(cameraPos - WorldPos);
 
-    // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
-    // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
+    // F0 is the reflection coefficient at normal incidence.
+    // Use linear interpolation between 0.04 and the albedo (color) using
+    // the metallic texture map. More metallic, more albedo.
     vec3 F0 = vec3(0.04); 
     F0 = mix(F0, albedo, metallic);
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
-    for(int i = 0; i < 4; ++i) 
-    {
+    for(int i = 0; i < 4; ++i)  {
         // calculate per-light radiance
         vec3 L = normalize(lightPositions[i] - WorldPos);
         vec3 H = normalize(V + L);
@@ -56,7 +59,7 @@ void main()
         vec3 radiance = lightColors[i] * attenuation;
 
         // Cook-Torrance BRDF
-        float NDF = DistributionGGX(N, H, roughness);   
+        float NDF = TrowbridgeReitzGGX(N, H, roughness);   
         float G   = GeometrySmith(N, V, L, roughness);      
         vec3 F    = FresnelSchlick(max(dot(H, V), 0.0), F0);
            
@@ -99,7 +102,6 @@ void main()
     FragColor = vec4(color, 1.0);
 }
 
-// change of basis of normals map
 vec3 GetNormalFromMap() {
     vec3 tangentNormal = (texture(normalMap, TexCoords).xyz  - .5f) * 2.0;
 
@@ -116,7 +118,7 @@ vec3 GetNormalFromMap() {
     return normalize(TBN * tangentNormal);
 }
 
-float DistributionGGX(vec3 N, vec3 H, float roughness) {
+float TrowbridgeReitzGGX(vec3 N, vec3 H, float roughness) {
     float a = roughness*roughness;
     float a2 = a*a;
     float NdotH = max(dot(N, H), 0.0);

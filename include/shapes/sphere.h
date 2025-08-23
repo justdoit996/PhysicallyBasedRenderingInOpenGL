@@ -6,7 +6,7 @@
 class Sphere {
  public:
   Sphere(int sectors, int stacks);
-  void BindAndDraw();
+  void Draw();
 
  private:
   void Init();

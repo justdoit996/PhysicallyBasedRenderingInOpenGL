@@ -94,9 +94,6 @@ void GameWindow::Render() {
   glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // Make sure we're using the correct shader program.
-  // Must be done per-frame, since the shader program id might change when
-  // hot-reloading
   sphere_shader_.Use();
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera_.GetViewMatrix();
@@ -115,7 +112,7 @@ void GameWindow::Render() {
   glActiveTexture(GL_TEXTURE4);
   glBindTexture(GL_TEXTURE_2D, ao_map_);
 
-  sphere_->BindAndDraw();
+  sphere_->Draw();
 
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
