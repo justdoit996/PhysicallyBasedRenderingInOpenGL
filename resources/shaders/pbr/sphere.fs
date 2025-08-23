@@ -18,8 +18,11 @@ uniform sampler2D aoMap;
 uniform vec3 cameraPos;
 
 // lights
-uniform vec3 lightPositions[4];
-uniform vec3 lightColors[4];
+struct PointLight {
+    vec3 Position;
+    vec3 Color;
+};
+uniform PointLight pointLights[4];
 
 const float PI = 3.14159265359;
 
@@ -32,8 +35,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness);
 // https://en.wikipedia.org/wiki/Schlick%27s_approximation
 vec3 FresnelSchlick(float cosTheta, vec3 F0);
 
-void main()
-{		
+void main() {		
     vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
     float metallic  = texture(metallicMap, TexCoords).r;
     float roughness = texture(roughnessMap, TexCoords).r;
@@ -52,11 +54,11 @@ void main()
     vec3 Lo = vec3(0.0);
     for(int i = 0; i < 4; ++i)  {
         // calculate per-light radiance
-        vec3 L = normalize(lightPositions[i] - WorldPos);
+        vec3 L = normalize(pointLights[i].Position - WorldPos);
         vec3 H = normalize(V + L);
-        float distance = length(lightPositions[i] - WorldPos);
+        float distance = length(pointLights[i].Position - WorldPos);
         float attenuation = 1.0 / (distance * distance);
-        vec3 radiance = lightColors[i] * attenuation;
+        vec3 radiance = pointLights[i].Color * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = TrowbridgeReitzGGX(N, H, roughness);   
