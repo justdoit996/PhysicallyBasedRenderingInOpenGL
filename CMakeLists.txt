@@ -17,6 +17,15 @@ include_directories(include)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_executable(pbropengl ${SOURCES})
 
+### Compiler warnings
+add_compile_options(-Wall) # Variable improperly initialized
+add_compile_options(-Werror) # Variable improperly initialized
+add_compile_options(-Wmaybe-uninitialized) # Variable improperly initialized
+add_compile_options(-Wunused-variable) # Variable is defined but unused
+
+set(CMAKE_CXX_STANDARD 17) # Sets C++17 as the default standard
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # Ensures the standard is strictly enforced
+
 target_link_libraries(pbropengl PRIVATE ${OPENGL_gl_LIBRARY})
 target_link_libraries(pbropengl PRIVATE glfw3)
 target_link_libraries(pbropengl PRIVATE glm::glm-header-only)

@@ -3,6 +3,8 @@
 #include <functional>
 #include <iostream>
 
+#include "shapes/sphere.h"
+
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -55,35 +57,8 @@ void GameWindow::LoadContent() {
   sphere_shader_ = Shader::LoadShader("resources/shaders/testing.vs",
                                       "resources/shaders/testing.fs");
 
-  // Vertices needed for a square
-  float vertices[] = {
-      0.5f,  0.5f,  0.0f,  // top right
-      0.5f,  -0.5f, 0.0f,  // bottom right
-      -0.5f, -0.5f, 0.0f,  // bottom left
-      -0.5f, 0.5f,  0.0f   // top left
-  };
-
-  // Indices for rendering the above square
-  unsigned int indices[] = {
-      0, 1, 3,  // first triangle
-      1, 2, 3   // second triangle
-  };
-
-  // Create Vertex Array object
-  unsigned int VBO, EBO;
-  glGenVertexArrays(1, &sphere_VAO_);
-  glBindVertexArray(sphere_VAO_);  // And bind it
-
-  // Create Vertex Buffer object
-  glGenBuffers(1, &VBO);
-  // And bind it (this also includes it into the VAO)
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  // Fill the VBO with vertex data, simply positions
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-  // layout = 0 should contain these positions
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
+  // Bind vertices here
+  Sphere sphere(/*sectors*/ 64, /*stacks*/ 64);
 }
 
 void GameWindow::Update() {
