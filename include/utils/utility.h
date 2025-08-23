@@ -8,11 +8,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-using namespace std;
 
 bool ReadFile(std::string file,
               std::string& fileContents,
               bool addLineTerminator = false);
 long GetFileModTime(std::string file);
+
+unsigned int loadTexture(const std::string& path);
 
 #endif

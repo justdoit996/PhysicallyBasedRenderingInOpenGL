@@ -3,6 +3,8 @@
 #include <functional>
 #include <iostream>
 
+#include "utils/utility.h"
+
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -52,11 +54,16 @@ void GameWindow::LoadContent() {
       glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
                        constants::NEAR, constants::FAR);
   // Load the template sphere_shader_
-  sphere_shader_ = Shader::LoadShader("resources/shaders/testing.vs",
-                                      "resources/shaders/testing.fs");
+  sphere_shader_ = Shader::LoadShader("resources/shaders/pbr/sphere.vs",
+                                      "resources/shaders/pbr/sphere.fs");
+  sphere_shader_.Use();
+  sphere_shader_.SetInt("albedoMap", 0);
 
-  // Bind vertices here
-  auto sphere = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
+  // Load textures
+  albedo_ = loadTexture("resources/assets/textures/pbr/rusted_iron/albedo.png");
+  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
+
+  sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
 }
 
 void GameWindow::Update() {
@@ -66,8 +73,9 @@ void GameWindow::Update() {
 }
 
 void GameWindow::Render() {
-  // Bind the VAO
-  sphere_->BindAndDraw();
+  // Clear the window
+  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Make sure we're using the correct shader program.
   // Must be done per-frame, since the shader program id might change when
@@ -77,17 +85,17 @@ void GameWindow::Render() {
   glm::mat4 view = camera_.GetViewMatrix();
   sphere_shader_.SetMat4("model", model);
   sphere_shader_.SetMat4("view", view);
-  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
   sphere_shader_.SetVec3("cameraPos", camera_.position());
+
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, albedo_);
+
+  sphere_->BindAndDraw();
 
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
-
-  // Clear the window
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
 
   // Draw imgui
   ImGui::ShowDemoWindow();

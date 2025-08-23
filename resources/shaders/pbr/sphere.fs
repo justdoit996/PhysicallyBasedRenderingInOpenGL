@@ -1,15 +1,20 @@
 #version 330 core
 
 // in
-in vec3 FragPos;
+in vec2 TexCoords;
+in vec3 WorldPos;
+in vec3 Normal;
 
 // out
 out vec4 FragColor;
   
-// uniforms
+// textures
+uniform sampler2D albedoMap;
+
 uniform vec3 cameraPos;
 
 void main()
 {
-    FragColor = vec4((sin(FragPos.x * 15.0) / 2.0) + 0.5, 0.55, 0.5, 1.0);
+    vec3 albedo = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
+    FragColor = vec4(albedo, 1.0);
 };

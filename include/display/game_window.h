@@ -29,6 +29,7 @@ class GameWindow : public BaseWindow {
 
   Shader sphere_shader_;
   std::unique_ptr<Sphere> sphere_;
+  unsigned int albedo_;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;
