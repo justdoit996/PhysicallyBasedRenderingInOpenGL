@@ -1,8 +1,11 @@
 #include "display/base_window.h"
 
 #include <glm/glm.hpp>
+#include <memory>
+
 #include "camera.h"
 #include "shaders/shader.h"
+#include "shapes/sphere.h"
 #include "utils/constants.h"
 
 class GameWindow : public BaseWindow {
@@ -25,7 +28,7 @@ class GameWindow : public BaseWindow {
   glm::mat4 camera_perspective_projection_;
 
   Shader sphere_shader_;
-  unsigned int sphere_VAO_ = 0;
+  std::unique_ptr<Sphere> sphere_;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;

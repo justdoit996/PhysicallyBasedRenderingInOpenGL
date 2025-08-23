@@ -3,8 +3,6 @@
 #include <functional>
 #include <iostream>
 
-#include "shapes/sphere.h"
-
 // Called whenever the window or framebuffer's size is changed
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
@@ -58,7 +56,7 @@ void GameWindow::LoadContent() {
                                       "resources/shaders/testing.fs");
 
   // Bind vertices here
-  Sphere sphere(/*sectors*/ 64, /*stacks*/ 64);
+  auto sphere = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
 }
 
 void GameWindow::Update() {
@@ -69,7 +67,7 @@ void GameWindow::Update() {
 
 void GameWindow::Render() {
   // Bind the VAO
-  glBindVertexArray(sphere_VAO_);
+  sphere_->BindAndDraw();
 
   // Make sure we're using the correct shader program.
   // Must be done per-frame, since the shader program id might change when
