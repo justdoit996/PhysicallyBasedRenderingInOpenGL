@@ -81,12 +81,10 @@ void GameWindow::LoadContent() {
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
-}
 
-void GameWindow::Update() {
-  // Performs hot-reload of shader. Only reloads whenever it has been modified -
-  // so not every frame.
-  sphere_shader_.ReloadFromFile();
+  // Light sources
+  point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 10.0f),
+                             /*color*/ glm::vec3(150.0f, 150.0f, 150.0f));
 }
 
 void GameWindow::Render() {
@@ -127,6 +125,12 @@ void GameWindow::Render() {
   // Swap double buffers and poll OS-events
   glfwSwapBuffers(this->windowHandle);
   glfwPollEvents();
+}
+
+void GameWindow::Update() {
+  // Performs hot-reload of shader. Only reloads whenever it has been modified -
+  // so not every frame.
+  sphere_shader_.ReloadFromFile();
 }
 
 void GameWindow::Unload() {

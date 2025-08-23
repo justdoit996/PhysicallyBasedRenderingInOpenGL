@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "camera.h"
+#include "point_light.h"
 #include "shader.h"
 #include "shapes/sphere.h"
 #include "utils/constants.h"
@@ -27,6 +28,7 @@ class GameWindow : public BaseWindow {
   Camera camera_;
   glm::mat4 camera_perspective_projection_;
 
+  // Sphere
   Shader sphere_shader_;
   std::unique_ptr<Sphere> sphere_;
   unsigned int albedo_map_;
@@ -34,6 +36,9 @@ class GameWindow : public BaseWindow {
   unsigned int metallic_map_;
   unsigned int roughness_map_;
   unsigned int ao_map_;
+
+  // Lights
+  std::vector<PointLight> point_lights_;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;
