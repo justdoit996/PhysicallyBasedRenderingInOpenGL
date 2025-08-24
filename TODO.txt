@@ -1,0 +1,20 @@
+Aug. 23
+
+- IBL (image based lighting)
+
+- Create a class SphereShader : public Shader
+  - put all pbr texture fields in it
+  - expose a public method that takes a texture directory as input and loads
+    new textures from taht dir
+- Figure out how to create a custom drop-down menu in ImGui :(
+
+
+Wishlist
+- Interactive UI
+  - selection menu for different materials
+  - slider for constant values in rendering equation
+  - selection for different skyboxes e.g. night, day skyboxes
+  - direct (point) and indirect (IBL) lighting
+  - option for changing the number of randomly generated point lights
+  - option to randomly revolve point lights?
+  - option to gamma correct?
