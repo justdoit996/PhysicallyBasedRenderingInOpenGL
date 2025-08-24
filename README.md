@@ -1,4 +1,4 @@
-# 👾 opengl-imgui-cmake-template
+# Physically Based Rendering in OpenGL
 
 A quick and easy way to get started using OpenGL 3.3 Core Profile together with [imgui](https://github.com/ocornut/imgui) in a CMake environment.
 
