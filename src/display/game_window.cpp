@@ -60,7 +60,7 @@ void GameWindow::LoadContent() {
   equirectangular_to_cube_map_shader_ = Shader("", "");
   skybox_shader_ = Shader("", "");
 
-  // Bind uniforms
+  // Bind projection uniform for camera shader (only need once)
   sphere_shader_.Use();
   camera_perspective_projection_ =
       glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
