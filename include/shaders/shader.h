@@ -34,6 +34,8 @@ class Shader {
                float w) const;
   void SetMat2(const std::string& name, const glm::mat2& mat) const;
   void SetMat3(const std::string& name, const glm::mat3& mat) const;
+  virtual void LoadTextures(const std::string& path);
+  virtual void BindAllTextures();
 
  private:
   static bool CompileShader(unsigned int shaderId, char (&infoLog)[512]);

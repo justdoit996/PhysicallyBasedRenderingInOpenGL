@@ -202,3 +202,7 @@ void Shader::SetMat3(const std::string& name, const glm::mat3& mat) const {
   glUniformMatrix3fv(glGetUniformLocation(program_id_, name.c_str()), 1,
                      GL_FALSE, &mat[0][0]);
 }
+
+void Shader::LoadTextures(const std::string& path) {}
+
+void Shader::BindAllTextures() {}

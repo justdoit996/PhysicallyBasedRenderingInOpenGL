@@ -11,8 +11,8 @@ class SphereShader : public Shader {
   SphereShader(std::string fileVertexShader, std::string fileFragmentShader);
   SphereShader& operator=(const SphereShader&) = default;
 
-  void LoadTextures(const std::string& path);
-  void BindAllTextures();
+  void LoadTextures(const std::string& path) override;
+  void BindAllTextures() override;
 
  private:
   unsigned int albedo_map_;

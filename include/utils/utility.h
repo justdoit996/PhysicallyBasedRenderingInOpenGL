@@ -15,5 +15,6 @@ bool ReadFile(std::string file,
 long GetFileModTime(std::string file);
 
 unsigned int loadTexture(const std::string& path);
+unsigned int loadHdrTexture(const std::string& path);
 
 #endif
