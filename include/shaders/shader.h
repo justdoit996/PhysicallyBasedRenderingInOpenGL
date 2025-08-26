@@ -11,11 +11,11 @@
 class Shader {
  public:
   Shader();
+  Shader(std::string fileVertexShader, std::string fileFragmentShader);
+  Shader& operator=(const Shader&) = default;
   void Use();
   void Unload();
   void ReloadFromFile();
-  static Shader LoadShader(std::string fileVertexShader,
-                           std::string fileFragmentShader);
 
   // Utility uniform functions
   void SetBool(const std::string& name, bool value) const;
@@ -38,6 +38,7 @@ class Shader {
  private:
   static bool CompileShader(unsigned int shaderId, char (&infoLog)[512]);
   static bool LinkProgram(unsigned int programID, char (&infoLog)[512]);
+  void LoadShader(std::string fileVertexShader, std::string fileFragmentShader);
 
   unsigned int program_id_;
   std::string vertex_file_;

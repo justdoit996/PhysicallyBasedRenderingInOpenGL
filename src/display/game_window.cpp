@@ -54,8 +54,14 @@ void GameWindow::LoadContent() {
   // Instance the camera
   camera_ = Camera(
       /*starting position*/ glm::vec3(0, 0, 3.0));
-  sphere_shader_ = Shader::LoadShader("resources/shaders/pbr/sphere.vs",
-                                      "resources/shaders/pbr/sphere.fs");
+
+  // Shaders
+  sphere_shader_ = SphereShader("resources/shaders/pbr/sphere.vs",
+                                "resources/shaders/pbr/sphere.fs");
+  equirectangular_to_cube_map_shader_ = Shader("", "");
+  skybox_shader_ = Shader("", "");
+
+  // Bind uniforms
   sphere_shader_.Use();
   camera_perspective_projection_ =
       glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
@@ -63,21 +69,7 @@ void GameWindow::LoadContent() {
   sphere_shader_.SetMat4("projection", camera_perspective_projection_);
 
   // Load textures
-  albedo_map_ =
-      loadTexture("resources/assets/textures/pbr/rusted_iron/albedo.png");
-  normal_map_ =
-      loadTexture("resources/assets/textures/pbr/rusted_iron/normal.png");
-  metallic_map_ =
-      loadTexture("resources/assets/textures/pbr/rusted_iron/metallic.png");
-  roughness_map_ =
-      loadTexture("resources/assets/textures/pbr/rusted_iron/roughness.png");
-  ao_map_ = loadTexture("resources/assets/textures/pbr/rusted_iron/ao.png");
-
-  sphere_shader_.SetInt("albedoMap", 0);
-  sphere_shader_.SetInt("normalMap", 1);
-  sphere_shader_.SetInt("metallicMap", 2);
-  sphere_shader_.SetInt("roughnessMap", 3);
-  sphere_shader_.SetInt("aoMap", 4);
+  sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -99,16 +91,7 @@ void GameWindow::Render() {
   sphere_shader_.SetMat4("view", view);
   sphere_shader_.SetVec3("cameraPos", camera_.position());
 
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, albedo_map_);
-  glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, normal_map_);
-  glActiveTexture(GL_TEXTURE2);
-  glBindTexture(GL_TEXTURE_2D, metallic_map_);
-  glActiveTexture(GL_TEXTURE3);
-  glBindTexture(GL_TEXTURE_2D, roughness_map_);
-  glActiveTexture(GL_TEXTURE4);
-  glBindTexture(GL_TEXTURE_2D, ao_map_);
+  sphere_shader_.BindAllTextures();
 
   sphere_->Draw();
 

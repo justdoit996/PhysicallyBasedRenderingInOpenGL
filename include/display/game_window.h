@@ -5,7 +5,8 @@
 
 #include "camera.h"
 #include "point_light.h"
-#include "shader.h"
+#include "shaders/shader.h"
+#include "shaders/sphere_shader.h"
 #include "shapes/sphere.h"
 #include "utils/constants.h"
 
@@ -28,14 +29,13 @@ class GameWindow : public BaseWindow {
   Camera camera_;
   glm::mat4 camera_perspective_projection_;
 
-  // Sphere
-  Shader sphere_shader_;
+  // Sphere vertices
   std::unique_ptr<Sphere> sphere_;
-  unsigned int albedo_map_;
-  unsigned int normal_map_;
-  unsigned int metallic_map_;
-  unsigned int roughness_map_;
-  unsigned int ao_map_;
+
+  // Shaders
+  SphereShader sphere_shader_;
+  Shader equirectangular_to_cube_map_shader_;
+  Shader skybox_shader_;
 
   // Lights
   std::vector<PointLight> point_lights_;
