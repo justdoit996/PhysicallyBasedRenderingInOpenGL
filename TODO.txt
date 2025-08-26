@@ -1,7 +1,5 @@
-Aug. 23
-
-- Create a cube class to bind and draw vertices
-- Create a skybox shader class for env_cube_map_ texture
+Aug. 25
+- Create a SkyboxShader class for env cube map texture
 - Create a framebuffer in GameWindow::LoadContent to store sky box texture
 
 
