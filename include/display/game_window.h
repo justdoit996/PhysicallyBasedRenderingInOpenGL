@@ -7,6 +7,7 @@
 #include "point_light.h"
 #include "shaders/shader.h"
 #include "shaders/sphere_shader.h"
+#include "shapes/cube.h"
 #include "shapes/sphere.h"
 #include "utils/constants.h"
 
@@ -31,6 +32,7 @@ class GameWindow : public BaseWindow {
 
   // Sphere vertices
   std::unique_ptr<Sphere> sphere_;
+  std::unique_ptr<Cube> skybox_cube_;
 
   // Shaders
   SphereShader sphere_shader_;

@@ -2,7 +2,6 @@
 
 #include <functional>
 #include <iostream>
-
 #include "utils/utility.h"
 
 // Called whenever the window or framebuffer's size is changed
@@ -75,6 +74,7 @@ void GameWindow::LoadContent() {
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
+  skybox_cube_ = std::make_unique<Cube>();
 
   // Light sources
   point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 10.0f),

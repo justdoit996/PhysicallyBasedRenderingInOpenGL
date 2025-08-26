@@ -1,10 +1,8 @@
 #include "shapes/sphere.h"
 
-#define GLAD_GL_IMPLEMENTATION
-#include "glad.h"
-
 #include <cmath>
 #include <glm/glm.hpp>
+#include "glad.h"
 
 Sphere::Sphere(int sectors, int stacks) : sectors_(sectors), stacks_(stacks) {
   Init();

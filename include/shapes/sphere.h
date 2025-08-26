@@ -1,15 +1,17 @@
 #ifndef SHAPES_SPHERE_H
 #define SHAPES_SPHERE_H
 
+#include "shapes/shape.h"
+
 #include <vector>
 
-class Sphere {
+class Sphere : public Shape {
  public:
   Sphere(int sectors, int stacks);
-  void Draw();
+  void Draw() override;
 
  private:
-  void Init();
+  void Init() override;
 
   int sectors_;
   int stacks_;

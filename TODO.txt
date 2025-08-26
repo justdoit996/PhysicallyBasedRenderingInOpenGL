@@ -1,14 +1,11 @@
 Aug. 23
 
-- IBL (image based lighting)
-
-- Create a class SphereShader : public Shader
-  - put all pbr texture fields in it
-  - expose a public method that takes a texture directory as input and loads
-    new textures from taht dir
-- Figure out how to create a custom drop-down menu in ImGui :(
+- Create a cube class to bind and draw vertices
+- Create a skybox shader class for env_cube_map_ texture
+- Create a framebuffer in GameWindow::LoadContent to store sky box texture
 
 
+############### Long term #################
 Wishlist
 - Interactive UI
   - selection menu for different materials
