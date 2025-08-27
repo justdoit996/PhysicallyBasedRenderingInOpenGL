@@ -1,6 +1,8 @@
 #define GLAD_GL_IMPLEMENTATION
 #include "glad.h"
 
+#include "glfw3.h"
+
 #include "display/game_window.h"
 #include "utils/constants.h"
 

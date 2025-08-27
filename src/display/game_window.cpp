@@ -72,6 +72,7 @@ void GameWindow::LoadContent() {
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
+  skybox_shader_.LoadTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);

@@ -10,11 +10,10 @@ class SkyboxShader : public Shader {
  public:
   SkyboxShader(std::string fileVertexShader, std::string fileFragmentShader);
   SkyboxShader() = default;
-
- private:
-  void LoadTextures(const std::string& path) override;
+  void LoadTextures(const std::string& path = "") override;
   void BindAllTextures() override;
 
+ private:
   unsigned int env_cube_map_texture_;
 };
 
