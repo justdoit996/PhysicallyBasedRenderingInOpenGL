@@ -58,7 +58,9 @@ void GameWindow::LoadContent() {
   // Shaders
   sphere_shader_ = SphereShader("resources/shaders/pbr/sphere.vs",
                                 "resources/shaders/pbr/sphere.fs");
-  equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader("", "");
+  equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader(
+      "resources/shaders/pbr/equirectangular.vs",
+      "resources/shaders/pbr/equirectangular.fs");
   skybox_shader_ = SkyboxShader("", "");
 
   // Bind projection uniform for camera shader (only need once)
@@ -94,9 +96,7 @@ void GameWindow::Render() {
   sphere_shader_.SetMat4("model", model);
   sphere_shader_.SetMat4("view", view);
   sphere_shader_.SetVec3("cameraPos", camera_.position());
-
   sphere_shader_.BindAllTextures();
-
   sphere_->Draw();
 
   // Light sources
