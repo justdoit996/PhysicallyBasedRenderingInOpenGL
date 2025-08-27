@@ -5,7 +5,9 @@
 
 #include "camera.h"
 #include "point_light.h"
+#include "shaders/equirectangular_to_cube_map_shader.h"
 #include "shaders/shader.h"
+#include "shaders/skybox_shader.h"
 #include "shaders/sphere_shader.h"
 #include "shapes/cube.h"
 #include "shapes/sphere.h"
@@ -36,8 +38,8 @@ class GameWindow : public BaseWindow {
 
   // Shaders
   SphereShader sphere_shader_;
-  Shader equirectangular_to_cube_map_shader_;
-  Shader skybox_shader_;
+  EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
+  SkyboxShader skybox_shader_;
 
   // Lights
   std::vector<PointLight> point_lights_;

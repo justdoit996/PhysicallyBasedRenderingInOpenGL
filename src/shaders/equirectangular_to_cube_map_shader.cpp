@@ -1,19 +1,20 @@
 #include "shaders/equirectangular_to_cube_map_shader.h"
 
+#include "glad.h"
 #include "utils/utility.h"
 
-equirectangular_to_cube_map_shader::equirectangular_to_cube_map_shader() {}
+EquirectangularToCubeMapShader::EquirectangularToCubeMapShader() {}
 
-equirectangular_to_cube_map_shader::equirectangular_to_cube_map_shader(
+EquirectangularToCubeMapShader::EquirectangularToCubeMapShader(
     std::string fileVertexShader,
     std::string fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
 
-void equirectangular_to_cube_map_shader::LoadTextures(const std::string& path) {
+void EquirectangularToCubeMapShader::LoadTextures(const std::string& path) {
   hdr_texture_ = loadHdrTexture(path);
 }
 
-void equirectangular_to_cube_map_shader::BindAllTextures() {
+void EquirectangularToCubeMapShader::BindAllTextures() {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, hdr_texture_);
 }

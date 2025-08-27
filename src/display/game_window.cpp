@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <iostream>
+#include "glad.h"
 #include "utils/utility.h"
 
 // Called whenever the window or framebuffer's size is changed
@@ -57,8 +58,8 @@ void GameWindow::LoadContent() {
   // Shaders
   sphere_shader_ = SphereShader("resources/shaders/pbr/sphere.vs",
                                 "resources/shaders/pbr/sphere.fs");
-  equirectangular_to_cube_map_shader_ = Shader("", "");
-  skybox_shader_ = Shader("", "");
+  equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader("", "");
+  skybox_shader_ = SkyboxShader("", "");
 
   // Bind projection uniform for camera shader (only need once)
   sphere_shader_.Use();
