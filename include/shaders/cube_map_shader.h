@@ -13,6 +13,8 @@ class CubeMapShader : public Shader {
   void LoadTextures(const std::string& path = "") override;
   void BindAllTextures() override;
 
+  unsigned int env_cube_map_texture();
+
  private:
   unsigned int env_cube_map_texture_;
 };

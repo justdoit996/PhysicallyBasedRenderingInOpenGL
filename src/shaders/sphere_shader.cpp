@@ -17,6 +17,8 @@ void SphereShader::LoadTextures(const std::string& path) {
   roughness_map_ = loadTexture(path + "/roughness.png");
   ao_map_ = loadTexture(path + "/ao.png");
 
+  // Texture uniforms
+  this->Use();
   this->SetInt("albedoMap", 0);
   this->SetInt("normalMap", 1);
   this->SetInt("metallicMap", 2);

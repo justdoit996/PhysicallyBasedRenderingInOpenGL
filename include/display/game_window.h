@@ -30,6 +30,9 @@ class GameWindow : public BaseWindow {
   void SetUpMouseCallback();
   void MouseCallback(GLFWwindow* window, double x, double y);
 
+  // Converts HDR equirectangular environment map to cubemap equivalent
+  void DrawCubeMapToFramebuffer();
+
   // Camera
   Camera camera_;
   glm::mat4 camera_perspective_projection_;

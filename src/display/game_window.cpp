@@ -40,6 +40,8 @@ void GameWindow::LoadContent() {
   // configure global opengl state
   // -----------------------------
   glEnable(GL_DEPTH_TEST);
+  // set depth function to less than AND equal for skybox depth trick.
+  glDepthFunc(GL_LEQUAL);
 
   // Initialize imgui
   IMGUI_CHECKVERSION();
@@ -61,7 +63,8 @@ void GameWindow::LoadContent() {
   equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader(
       "resources/shaders/pbr/equirectangular.vs",
       "resources/shaders/pbr/equirectangular.fs");
-  cube_map_shader_ = CubeMapShader("", "");
+  cube_map_shader_ = CubeMapShader("resources/shaders/pbr/cube_map.vs",
+                                   "resources/shaders/pbr/cube_map.fs");
 
   // Bind projection uniform for camera shader (only need once)
   sphere_shader_.Use();
@@ -69,6 +72,8 @@ void GameWindow::LoadContent() {
       glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
                        constants::NEAR, constants::FAR);
   sphere_shader_.SetMat4("projection", camera_perspective_projection_);
+  cube_map_shader_.Use();
+  cube_map_shader_.SetMat4("projection", camera_perspective_projection_);
 
   // Load textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
@@ -82,6 +87,14 @@ void GameWindow::LoadContent() {
   // Light sources
   point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 10.0f),
                              /*color*/ glm::vec3(150.0f, 150.0f, 150.0f));
+
+  DrawCubeMapToFramebuffer();
+
+  // Before rendering, configure the viewport to the original framebuffer's
+  // screen dimensions
+  int scrWidth, scrHeight;
+  glfwGetFramebufferSize(this->windowHandle, &scrWidth, &scrHeight);
+  glViewport(0, 0, scrWidth, scrHeight);
 }
 
 void GameWindow::Render() {
@@ -117,6 +130,12 @@ void GameWindow::Render() {
     sphere_->Draw();
   }
 
+  // render skybox (render as last to prevent overdraw)
+  cube_map_shader_.Use();
+  cube_map_shader_.SetMat4("view", view);
+  cube_map_shader_.BindAllTextures();
+  cube_map_cube_->Draw();
+
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -136,6 +155,8 @@ void GameWindow::Update() {
   // Performs hot-reload of shader. Only reloads whenever it has been modified -
   // so not every frame.
   sphere_shader_.ReloadFromFile();
+  cube_map_shader_.ReloadFromFile();
+  equirectangular_to_cube_map_shader_.ReloadFromFile();
 }
 
 void GameWindow::Unload() {
@@ -200,4 +221,53 @@ void GameWindow::MouseCallback(GLFWwindow* window, double x, double y) {
   last_x_ = x;
   last_y_ = y;
   camera_.ProcessMouseMovement(x_offset, y_offset);
+}
+
+void GameWindow::DrawCubeMapToFramebuffer() {
+  // Captures a vertical 90 deg FoV necessary for converting equirectangular
+  glm::mat4 capture_projection =
+      glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+  // One for each side of the cube map
+  glm::mat4 capture_views[] = {
+      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
+                  glm::vec3(0.0f, -1.0f, 0.0f)),
+      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
+                  glm::vec3(0.0f, -1.0f, 0.0f)),
+      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
+                  glm::vec3(0.0f, 0.0f, 1.0f)),
+      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
+                  glm::vec3(0.0f, 0.0f, -1.0f)),
+      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
+                  glm::vec3(0.0f, -1.0f, 0.0f)),
+      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
+                  glm::vec3(0.0f, -1.0f, 0.0f))};
+
+  unsigned int captureFBO;
+  unsigned int captureRBO;
+  glGenFramebuffers(1, &captureFBO);
+  glGenRenderbuffers(1, &captureRBO);
+
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                            GL_RENDERBUFFER, captureRBO);
+
+  equirectangular_to_cube_map_shader_.Use();
+  equirectangular_to_cube_map_shader_.SetInt("equirectangularMap", 0);
+  equirectangular_to_cube_map_shader_.SetMat4("projection", capture_projection);
+  equirectangular_to_cube_map_shader_.BindAllTextures();
+
+  glViewport(0, 0, 512, 512);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  for (unsigned int i = 0; i < 6; ++i) {
+    equirectangular_to_cube_map_shader_.SetMat4("view", capture_views[i]);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                           cube_map_shader_.env_cube_map_texture(), 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    cube_map_cube_->Draw();
+  }
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

@@ -17,9 +17,17 @@ void CubeMapShader::LoadTextures(const std::string& path) {
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  // Texture uniforms
+  this->Use();
+  this->SetInt("environmentMap", 0);
 }
 
 void CubeMapShader::BindAllTextures() {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, env_cube_map_texture_);
+}
+
+unsigned int CubeMapShader::env_cube_map_texture() {
+  return this->env_cube_map_texture_;
 }
