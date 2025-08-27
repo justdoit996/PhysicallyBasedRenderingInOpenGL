@@ -1,6 +1,5 @@
 #include "shaders/shader.h"
 
-#include "glad.h"
 #include "utils/utility.h"
 
 Shader::Shader() {}

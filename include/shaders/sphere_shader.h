@@ -1,6 +1,9 @@
 #ifndef SPHERE_SHADER_H
 #define SPHERE_SHADER_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include "shaders/shader.h"
 
 #include <string>

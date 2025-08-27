@@ -1,6 +1,9 @@
 #ifndef SHAPES_CUBE_H
 #define SHAPES_CUBE_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include "shapes/shape.h"
 
 class Cube : public Shape {

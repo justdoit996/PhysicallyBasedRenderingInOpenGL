@@ -1,6 +1,9 @@
 #ifndef EQUIRECTANGULAR_TO_CUBE_MAP_SHADER_H
 #define EQUIRECTANGULAR_TO_CUBE_MAP_SHADER_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include "shaders/shader.h"
 
 #include <string>

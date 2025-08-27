@@ -1,7 +1,6 @@
 #include "display/base_window.h"
 
 #include <iostream>
-#include "glad.h"
 
 BaseWindow::BaseWindow() {}
 

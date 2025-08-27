@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <glm/glm.hpp>
-#include "glad.h"
 
 Sphere::Sphere(int sectors, int stacks) : sectors_(sectors), stacks_(stacks) {
   Init();

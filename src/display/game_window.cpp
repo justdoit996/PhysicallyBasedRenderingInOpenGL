@@ -2,7 +2,7 @@
 
 #include <functional>
 #include <iostream>
-#include "glad.h"
+
 #include "utils/utility.h"
 
 // Called whenever the window or framebuffer's size is changed

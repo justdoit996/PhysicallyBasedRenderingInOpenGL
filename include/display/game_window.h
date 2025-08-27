@@ -1,8 +1,10 @@
 #include "display/base_window.h"
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include <glm/glm.hpp>
 #include <memory>
-
 #include "camera.h"
 #include "point_light.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"

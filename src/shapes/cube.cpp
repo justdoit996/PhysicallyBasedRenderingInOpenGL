@@ -1,7 +1,6 @@
 #include "shapes/cube.h"
 
 #include <glm/glm.hpp>
-#include "glad.h"
 #include "utils/constants.h"
 
 Cube::Cube() {

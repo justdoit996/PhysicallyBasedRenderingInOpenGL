@@ -1,6 +1,9 @@
 #ifndef SHAPES_SPHERE_H
 #define SHAPES_SPHERE_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include "shapes/shape.h"
 
 #include <vector>

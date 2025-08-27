@@ -1,6 +1,9 @@
 #ifndef SKYBOX_SHADER_H
 #define SKYBOX_SHADER_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include "shaders/shader.h"
 
 class SkyboxShader : public Shader {

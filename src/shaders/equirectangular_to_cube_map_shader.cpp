@@ -1,6 +1,5 @@
 #include "shaders/equirectangular_to_cube_map_shader.h"
 
-#include "glad.h"
 #include "utils/utility.h"
 
 EquirectangularToCubeMapShader::EquirectangularToCubeMapShader() {}

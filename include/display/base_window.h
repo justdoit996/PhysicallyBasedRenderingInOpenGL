@@ -1,6 +1,9 @@
 #ifndef DISPLAY_BASE_WINDOW_H
 #define DISPLAY_BASE_WINDOW_H
 
+#define GLAD_GL_IMPLEMENTATION
+#include "glad.h"
+
 #include <string>
 #include "glfw3.h"
 #include "imgui.h"
