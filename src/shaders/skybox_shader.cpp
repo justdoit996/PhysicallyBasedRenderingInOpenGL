@@ -1,8 +1,5 @@
 #include "shaders/skybox_shader.h"
 
-#define GLAD_GL_IMPLEMENTATION
-#include "glad.h"
-
 SkyboxShader::SkyboxShader(std::string fileVertexShader,
                            std::string fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
