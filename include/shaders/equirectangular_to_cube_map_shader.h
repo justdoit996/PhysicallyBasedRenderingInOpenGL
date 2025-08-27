@@ -6,11 +6,11 @@
 #include <string>
 
 // Parses an HDR texture map and binds it to be used later
-class EquirectangularToCubeMapShader : public Shader {
+class equirectangular_to_cube_map_shader : public Shader {
  public:
-  EquirectangularToCubeMapShader();
-  EquirectangularToCubeMapShader(std::string fileVertexShader,
-                                 std::string fileFragmentShader);
+  equirectangular_to_cube_map_shader();
+  equirectangular_to_cube_map_shader(std::string fileVertexShader,
+                                     std::string fileFragmentShader);
 
   void LoadTextures(const std::string& path) override;
   void BindAllTextures() override;
