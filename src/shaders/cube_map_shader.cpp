@@ -1,10 +1,10 @@
-#include "shaders/skybox_shader.h"
+#include "shaders/cube_map_shader.h"
 
-SkyboxShader::SkyboxShader(std::string fileVertexShader,
-                           std::string fileFragmentShader)
+CubeMapShader::CubeMapShader(std::string fileVertexShader,
+                             std::string fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
 
-void SkyboxShader::LoadTextures(const std::string& path) {
+void CubeMapShader::LoadTextures(const std::string& path) {
   glGenTextures(1, &env_cube_map_texture_);
   glBindTexture(GL_TEXTURE_CUBE_MAP, env_cube_map_texture_);
 
@@ -19,7 +19,7 @@ void SkyboxShader::LoadTextures(const std::string& path) {
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void SkyboxShader::BindAllTextures() {
+void CubeMapShader::BindAllTextures() {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, env_cube_map_texture_);
 }

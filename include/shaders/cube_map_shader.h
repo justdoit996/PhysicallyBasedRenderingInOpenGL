@@ -6,10 +6,10 @@
 
 #include "shaders/shader.h"
 
-class SkyboxShader : public Shader {
+class CubeMapShader : public Shader {
  public:
-  SkyboxShader(std::string fileVertexShader, std::string fileFragmentShader);
-  SkyboxShader() = default;
+  CubeMapShader(std::string fileVertexShader, std::string fileFragmentShader);
+  CubeMapShader() = default;
   void LoadTextures(const std::string& path = "") override;
   void BindAllTextures() override;
 

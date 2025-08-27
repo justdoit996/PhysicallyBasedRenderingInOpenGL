@@ -7,9 +7,9 @@
 #include <memory>
 #include "camera.h"
 #include "point_light.h"
+#include "shaders/cube_map_shader.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"
 #include "shaders/shader.h"
-#include "shaders/skybox_shader.h"
 #include "shaders/sphere_shader.h"
 #include "shapes/cube.h"
 #include "shapes/sphere.h"
@@ -34,14 +34,14 @@ class GameWindow : public BaseWindow {
   Camera camera_;
   glm::mat4 camera_perspective_projection_;
 
-  // Sphere vertices
+  // Shapes for generating, binding, or drawing vertices
   std::unique_ptr<Sphere> sphere_;
-  std::unique_ptr<Cube> skybox_cube_;
+  std::unique_ptr<Cube> cube_map_cube_;
 
   // Shaders
   SphereShader sphere_shader_;
   EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
-  SkyboxShader skybox_shader_;
+  CubeMapShader cube_map_shader_;
 
   // Lights
   std::vector<PointLight> point_lights_;

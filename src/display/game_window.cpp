@@ -61,7 +61,7 @@ void GameWindow::LoadContent() {
   equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader(
       "resources/shaders/pbr/equirectangular.vs",
       "resources/shaders/pbr/equirectangular.fs");
-  skybox_shader_ = SkyboxShader("", "");
+  cube_map_shader_ = CubeMapShader("", "");
 
   // Bind projection uniform for camera shader (only need once)
   sphere_shader_.Use();
@@ -74,11 +74,10 @@ void GameWindow::LoadContent() {
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
-  skybox_shader_.LoadTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
-  skybox_cube_ = std::make_unique<Cube>();
+  cube_map_cube_ = std::make_unique<Cube>();
 
   // Light sources
   point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 10.0f),

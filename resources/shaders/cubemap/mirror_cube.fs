@@ -5,7 +5,7 @@ in vec3 Normal;
 in vec3 Position;
 
 uniform vec3 cameraPos;
-uniform samplerCube skybox;
+uniform samplerCube cube_map;
 
 void main()
 {             
@@ -16,5 +16,5 @@ void main()
 
     // Refraction
      vec3 R = refract(I, normalize(Normal), 1.0 / refractive_index);
-    FragColor = vec4(texture(skybox, R).rgb, 1.0);
+    FragColor = vec4(texture(cube_map, R).rgb, 1.0);
 }
