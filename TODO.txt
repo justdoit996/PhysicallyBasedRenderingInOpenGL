@@ -1,7 +1,6 @@
 Aug. 25
-- Create a CubeMapShader class for env cube map texture
-- Create a framebuffer in GameWindow::LoadContent to store sky box texture
-- Create vs/fs shaders for skybox_shader and equi...shader
+- Narrowed bug to framebuffer
+  - try rendering a normal skybox?
 
 
 ############### Long term #################

@@ -12,8 +12,8 @@
 class EquirectangularToCubeMapShader : public Shader {
  public:
   EquirectangularToCubeMapShader();
-  EquirectangularToCubeMapShader(std::string fileVertexShader,
-                                 std::string fileFragmentShader);
+  EquirectangularToCubeMapShader(const std::string& fileVertexShader,
+                                 const std::string& fileFragmentShader);
 
   void LoadTextures(const std::string& path) override;
   void BindAllTextures() override;

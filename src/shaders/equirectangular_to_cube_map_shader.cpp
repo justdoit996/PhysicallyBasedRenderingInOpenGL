@@ -5,8 +5,8 @@
 EquirectangularToCubeMapShader::EquirectangularToCubeMapShader() {}
 
 EquirectangularToCubeMapShader::EquirectangularToCubeMapShader(
-    std::string fileVertexShader,
-    std::string fileFragmentShader)
+    const std::string& fileVertexShader,
+    const std::string& fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
 
 void EquirectangularToCubeMapShader::LoadTextures(const std::string& path) {
