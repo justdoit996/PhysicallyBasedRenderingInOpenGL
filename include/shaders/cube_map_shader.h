@@ -10,7 +10,7 @@ class CubeMapShader : public Shader {
  public:
   CubeMapShader(std::string fileVertexShader, std::string fileFragmentShader);
   CubeMapShader() = default;
-  void LoadTextures(const std::string& path = "") override;
+  void GenerateTextures() override;
   void BindAllTextures() override;
 
   unsigned int env_cube_map_texture();

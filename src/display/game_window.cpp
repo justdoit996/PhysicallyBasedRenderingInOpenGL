@@ -78,7 +78,7 @@ void GameWindow::LoadContent() {
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
-  cube_map_shader_.LoadTextures();
+  cube_map_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -134,7 +134,7 @@ void GameWindow::Render() {
     sphere_->Draw();
   }
 
-  // render skybox (render as last to prevent overdraw)
+  // render skybox (render background last to prevent overdrawing)
   cube_map_shader_.Use();
   cube_map_shader_.SetMat4("view", view);
   cube_map_shader_.BindAllTextures();

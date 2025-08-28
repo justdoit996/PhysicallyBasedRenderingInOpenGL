@@ -206,3 +206,5 @@ void Shader::SetMat3(const std::string& name, const glm::mat3& mat) const {
 void Shader::LoadTextures(const std::string& path) {}
 
 void Shader::BindAllTextures() {}
+
+void Shader::GenerateTextures() {}

@@ -4,7 +4,7 @@ CubeMapShader::CubeMapShader(std::string fileVertexShader,
                              std::string fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
 
-void CubeMapShader::LoadTextures(const std::string& path) {
+void CubeMapShader::GenerateTextures() {
   glGenTextures(1, &env_cube_map_texture_);
   glBindTexture(GL_TEXTURE_CUBE_MAP, env_cube_map_texture_);
 
