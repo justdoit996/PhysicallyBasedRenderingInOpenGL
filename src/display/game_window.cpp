@@ -78,6 +78,7 @@ void GameWindow::LoadContent() {
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
+  cube_map_shader_.LoadTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -107,31 +108,31 @@ void GameWindow::Render() {
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera_.GetViewMatrix();
 
-  // sphere_shader_.Use();
-  // sphere_shader_.SetMat4("model", model);
-  // sphere_shader_.SetMat4("view", view);
-  // sphere_shader_.SetVec3("cameraPos", camera_.position());
-  // sphere_shader_.BindAllTextures();
-  // sphere_->Draw();
+  sphere_shader_.Use();
+  sphere_shader_.SetMat4("model", model);
+  sphere_shader_.SetMat4("view", view);
+  sphere_shader_.SetVec3("cameraPos", camera_.position());
+  sphere_shader_.BindAllTextures();
+  sphere_->Draw();
 
-  // // Light sources
-  // // Use sphere shader as a light source for testing
-  // for (int i = 0; i < point_lights_.size(); i++) {
-  //   glm::vec3 newPos = point_lights_[i].position +
-  //                      glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
-  //   // newPos = point_lights_[i].position;
-  //   sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
-  //                          newPos);
-  //   sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
-  //                          point_lights_[i].color);
-  //   model = glm::mat4(1.0f);
-  //   model = glm::translate(model, newPos);
-  //   model = glm::scale(model, glm::vec3(0.5f));
-  //   sphere_shader_.SetMat4("model", model);
-  //   sphere_shader_.SetMat3("normalMatrix",
-  //                          glm::transpose(glm::inverse(glm::mat3(model))));
-  //   sphere_->Draw();
-  // }
+  // Light sources
+  // Use sphere shader as a light source for testing
+  for (int i = 0; i < point_lights_.size(); i++) {
+    glm::vec3 newPos = point_lights_[i].position +
+                       glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
+    // newPos = point_lights_[i].position;
+    sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
+                           newPos);
+    sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
+                           point_lights_[i].color);
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, newPos);
+    model = glm::scale(model, glm::vec3(0.5f));
+    sphere_shader_.SetMat4("model", model);
+    sphere_shader_.SetMat3("normalMatrix",
+                           glm::transpose(glm::inverse(glm::mat3(model))));
+    sphere_->Draw();
+  }
 
   // render skybox (render as last to prevent overdraw)
   cube_map_shader_.Use();
