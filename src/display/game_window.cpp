@@ -245,6 +245,7 @@ void GameWindow::DrawCubeMapToFramebuffer() {
       glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
                   glm::vec3(0.0f, -1.0f, 0.0f))};
 
+  // Create framebuffer and renderbuffer
   unsigned int captureFBO;
   glGenFramebuffers(1, &captureFBO);
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
