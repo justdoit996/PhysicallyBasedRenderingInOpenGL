@@ -40,7 +40,6 @@ void GameWindow::LoadContent() {
   // configure global opengl state
   // -----------------------------
   glEnable(GL_DEPTH_TEST);
-  // set depth function to less than AND equal for skybox depth trick.
   glDepthFunc(GL_LEQUAL);
 
   // Initialize imgui
@@ -67,10 +66,10 @@ void GameWindow::LoadContent() {
                                    "resources/shaders/pbr/cube_map.fs");
 
   // Bind projection uniform for camera shader (only need once)
-  sphere_shader_.Use();
   camera_perspective_projection_ =
       glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
                        constants::NEAR, constants::FAR);
+  sphere_shader_.Use();
   sphere_shader_.SetMat4("projection", camera_perspective_projection_);
   cube_map_shader_.Use();
   cube_map_shader_.SetMat4("projection", camera_perspective_projection_);
@@ -105,33 +104,34 @@ void GameWindow::Render() {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  sphere_shader_.Use();
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera_.GetViewMatrix();
-  sphere_shader_.SetMat4("model", model);
-  sphere_shader_.SetMat4("view", view);
-  sphere_shader_.SetVec3("cameraPos", camera_.position());
-  sphere_shader_.BindAllTextures();
-  sphere_->Draw();
 
-  // Light sources
-  // Use sphere shader as a light source for testing
-  for (int i = 0; i < point_lights_.size(); i++) {
-    glm::vec3 newPos = point_lights_[i].position +
-                       glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
-    // newPos = point_lights_[i].position;
-    sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
-                           newPos);
-    sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
-                           point_lights_[i].color);
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, newPos);
-    model = glm::scale(model, glm::vec3(0.5f));
-    sphere_shader_.SetMat4("model", model);
-    sphere_shader_.SetMat3("normalMatrix",
-                           glm::transpose(glm::inverse(glm::mat3(model))));
-    sphere_->Draw();
-  }
+  // sphere_shader_.Use();
+  // sphere_shader_.SetMat4("model", model);
+  // sphere_shader_.SetMat4("view", view);
+  // sphere_shader_.SetVec3("cameraPos", camera_.position());
+  // sphere_shader_.BindAllTextures();
+  // sphere_->Draw();
+
+  // // Light sources
+  // // Use sphere shader as a light source for testing
+  // for (int i = 0; i < point_lights_.size(); i++) {
+  //   glm::vec3 newPos = point_lights_[i].position +
+  //                      glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
+  //   // newPos = point_lights_[i].position;
+  //   sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
+  //                          newPos);
+  //   sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
+  //                          point_lights_[i].color);
+  //   model = glm::mat4(1.0f);
+  //   model = glm::translate(model, newPos);
+  //   model = glm::scale(model, glm::vec3(0.5f));
+  //   sphere_shader_.SetMat4("model", model);
+  //   sphere_shader_.SetMat3("normalMatrix",
+  //                          glm::transpose(glm::inverse(glm::mat3(model))));
+  //   sphere_->Draw();
+  // }
 
   // render skybox (render as last to prevent overdraw)
   cube_map_shader_.Use();

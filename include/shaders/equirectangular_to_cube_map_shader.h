@@ -18,7 +18,8 @@ class EquirectangularToCubeMapShader : public Shader {
   void LoadTextures(const std::string& path) override;
   void BindAllTextures() override;
 
- private:
   unsigned int hdr_texture_;
+
+ private:
 };
 #endif
