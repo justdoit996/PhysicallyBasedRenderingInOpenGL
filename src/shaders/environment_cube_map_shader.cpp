@@ -1,10 +1,11 @@
-#include "shaders/cube_map_shader.h"
+#include "shaders/environment_cube_map_shader.h"
 
-CubeMapShader::CubeMapShader(std::string fileVertexShader,
-                             std::string fileFragmentShader)
+EnvironmentCubeMapShader::EnvironmentCubeMapShader(
+    std::string fileVertexShader,
+    std::string fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
 
-void CubeMapShader::GenerateTextures() {
+void EnvironmentCubeMapShader::GenerateTextures() {
   glGenTextures(1, &env_cube_map_texture_);
   glBindTexture(GL_TEXTURE_CUBE_MAP, env_cube_map_texture_);
 
@@ -23,11 +24,11 @@ void CubeMapShader::GenerateTextures() {
   this->SetInt("cubeMap", 0);
 }
 
-void CubeMapShader::BindAllTextures() {
+void EnvironmentCubeMapShader::BindAllTextures() {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, env_cube_map_texture_);
 }
 
-unsigned int CubeMapShader::env_cube_map_texture() {
+unsigned int EnvironmentCubeMapShader::env_cube_map_texture() {
   return this->env_cube_map_texture_;
 }

@@ -7,7 +7,7 @@
 #include <memory>
 #include "camera.h"
 #include "point_light.h"
-#include "shaders/cube_map_shader.h"
+#include "shaders/environment_cube_map_shader.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"
 #include "shaders/irradiance_cube_map_shader.h"
 #include "shaders/shader.h"
@@ -45,7 +45,7 @@ class GameWindow : public BaseWindow {
   // Shaders
   SphereShader sphere_shader_;
   EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
-  CubeMapShader cube_map_shader_;
+  EnvironmentCubeMapShader cube_map_shader_;
   IrradianceCubeMapShader irradiance_cube_map_shader_;
 
   // Lights

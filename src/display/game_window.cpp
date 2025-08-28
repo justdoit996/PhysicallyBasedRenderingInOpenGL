@@ -62,8 +62,8 @@ void GameWindow::LoadContent() {
   equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader(
       "resources/shaders/pbr/equirectangular.vs",
       "resources/shaders/pbr/equirectangular.fs");
-  cube_map_shader_ = CubeMapShader("resources/shaders/pbr/cube_map.vs",
-                                   "resources/shaders/pbr/cube_map.fs");
+  cube_map_shader_ = EnvironmentCubeMapShader(
+      "resources/shaders/pbr/cube_map.vs", "resources/shaders/pbr/cube_map.fs");
   irradiance_cube_map_shader_ = IrradianceCubeMapShader(
       "resources/shaders/pbr/cube_map.vs", "resources/shaders/pbr/cube_map.fs");
 
@@ -287,7 +287,9 @@ void GameWindow::DrawCubeMapToFramebuffer() {
   for (unsigned int i = 0; i < 6; ++i) {
     irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, , 0);
+                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                           irradiance_cube_map_shader_.irradiance_map_texture(),
+                           0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cube_map_cube_->Draw();
   }
