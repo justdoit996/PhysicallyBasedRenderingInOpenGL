@@ -99,7 +99,10 @@ void GameWindow::LoadContent() {
 
 void GameWindow::Render() {
   // Clear the window
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  // black
+  // glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  // cyan
+  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   sphere_shader_.Use();
@@ -243,13 +246,15 @@ void GameWindow::DrawCubeMapToFramebuffer() {
                   glm::vec3(0.0f, -1.0f, 0.0f))};
 
   unsigned int captureFBO;
-  unsigned int captureRBO;
   glGenFramebuffers(1, &captureFBO);
-  glGenRenderbuffers(1, &captureRBO);
-
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+
+  unsigned int captureRBO;
+  glGenRenderbuffers(1, &captureRBO);
   glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+
+  // Attach renderbuffer to framebuffer
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
                             GL_RENDERBUFFER, captureRBO);
 
@@ -269,5 +274,10 @@ void GameWindow::DrawCubeMapToFramebuffer() {
 
     cube_map_cube_->Draw();
   }
+  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+    std::cout << "Framebuffer not complete!" << std::endl;
+    exit(1);
+  }
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_RENDERBUFFER, 0);
 }
