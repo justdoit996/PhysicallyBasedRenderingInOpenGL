@@ -1,5 +1,5 @@
-#ifndef SKYBOX_SHADER_H
-#define SKYBOX_SHADER_H
+#ifndef CUBE_MAP_SHADER_H
+#define CUBE_MAP_SHADER_H
 
 #define GLAD_GL_IMPLEMENTATION
 #include "glad.h"

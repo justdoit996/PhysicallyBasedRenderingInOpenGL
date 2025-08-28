@@ -9,6 +9,7 @@
 #include "point_light.h"
 #include "shaders/cube_map_shader.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"
+#include "shaders/irradiance_cube_map_shader.h"
 #include "shaders/shader.h"
 #include "shaders/sphere_shader.h"
 #include "shapes/cube.h"
@@ -45,6 +46,7 @@ class GameWindow : public BaseWindow {
   SphereShader sphere_shader_;
   EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
   CubeMapShader cube_map_shader_;
+  IrradianceCubeMapShader irradiance_cube_map_shader_;
 
   // Lights
   std::vector<PointLight> point_lights_;

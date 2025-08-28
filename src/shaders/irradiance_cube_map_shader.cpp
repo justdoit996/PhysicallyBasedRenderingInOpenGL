@@ -1,11 +1,10 @@
-#include "shaders/cube_map_convolution_shader.h"
+#include "shaders/irradiance_cube_map_shader.h"
 
-CubeMapConvolutionShader::CubeMapConvolutionShader(
-    std::string fileVertexShader,
-    std::string fileFragmentShader)
+IrradianceCubeMapShader::IrradianceCubeMapShader(std::string fileVertexShader,
+                                                 std::string fileFragmentShader)
     : Shader(fileVertexShader, fileFragmentShader) {}
 
-void CubeMapConvolutionShader::GenerateTextures() {
+void IrradianceCubeMapShader::GenerateTextures() {
   unsigned int irradiance_map_texture_;
   glGenTextures(1, &irradiance_map_texture_);
   glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_map_texture_);
@@ -18,9 +17,13 @@ void CubeMapConvolutionShader::GenerateTextures() {
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  // Texture uniforms
+  this->Use();
+  this->SetInt("irradianceMap", 0);
 }
 
-void CubeMapConvolutionShader::BindAllTextures() {
+void IrradianceCubeMapShader::BindAllTextures() {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_map_texture_);
 }

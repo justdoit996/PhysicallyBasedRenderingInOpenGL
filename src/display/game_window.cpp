@@ -64,6 +64,8 @@ void GameWindow::LoadContent() {
       "resources/shaders/pbr/equirectangular.fs");
   cube_map_shader_ = CubeMapShader("resources/shaders/pbr/cube_map.vs",
                                    "resources/shaders/pbr/cube_map.fs");
+  irradiance_cube_map_shader_ = IrradianceCubeMapShader(
+      "resources/shaders/pbr/cube_map.vs", "resources/shaders/pbr/cube_map.fs");
 
   // Bind projection uniform for camera shader (only need once)
   camera_perspective_projection_ =
@@ -74,11 +76,12 @@ void GameWindow::LoadContent() {
   cube_map_shader_.Use();
   cube_map_shader_.SetMat4("projection", camera_perspective_projection_);
 
-  // Load textures
+  // Load or generate textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
   cube_map_shader_.GenerateTextures();
+  irradiance_cube_map_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -260,11 +263,10 @@ void GameWindow::DrawCubeMapToFramebuffer() {
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
                             GL_RENDERBUFFER, captureRBO);
 
+  // Draw equirectangular map to 6 sided cubemap framebuffer
   equirectangular_to_cube_map_shader_.Use();
-  equirectangular_to_cube_map_shader_.SetInt("equirectangularMap", 0);
   equirectangular_to_cube_map_shader_.SetMat4("projection", capture_projection);
   equirectangular_to_cube_map_shader_.BindAllTextures();
-
   glViewport(0, 0, 512, 512);
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   for (unsigned int i = 0; i < 6; ++i) {
@@ -273,9 +275,23 @@ void GameWindow::DrawCubeMapToFramebuffer() {
                            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                            cube_map_shader_.env_cube_map_texture(), 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     cube_map_cube_->Draw();
   }
+
+  // Draw irradiance convolution map to 6 sided cubemap framebuffer
+  irradiance_cube_map_shader_.Use();
+  irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
+  irradiance_cube_map_shader_.BindAllTextures();
+  glViewport(0, 0, 32, 32);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  for (unsigned int i = 0; i < 6; ++i) {
+    irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, , 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    cube_map_cube_->Draw();
+  }
+
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
     std::cout << "Framebuffer not complete!" << std::endl;
     exit(1);
