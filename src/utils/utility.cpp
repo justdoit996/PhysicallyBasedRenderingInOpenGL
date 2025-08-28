@@ -36,7 +36,7 @@ long GetFileModTime(std::string file) {
   return fileInfo.st_mtime;
 }
 
-unsigned int loadTexture(const std::string& path) {
+unsigned int LoadTexture(const std::string& path) {
   unsigned int textureID;
 
   int width, height, nrComponents;
@@ -71,7 +71,7 @@ unsigned int loadTexture(const std::string& path) {
   return textureID;
 }
 
-unsigned int loadHdrTexture(const std::string& path) {
+unsigned int LoadHdrTexture(const std::string& path) {
   unsigned int hdrTexture;
 
   stbi_set_flip_vertically_on_load(true);

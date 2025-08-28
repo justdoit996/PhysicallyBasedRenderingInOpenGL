@@ -14,7 +14,7 @@ bool ReadFile(std::string file,
               bool addLineTerminator = false);
 long GetFileModTime(std::string file);
 
-unsigned int loadTexture(const std::string& path);
-unsigned int loadHdrTexture(const std::string& path);
+unsigned int LoadTexture(const std::string& path);
+unsigned int LoadHdrTexture(const std::string& path);
 
 #endif

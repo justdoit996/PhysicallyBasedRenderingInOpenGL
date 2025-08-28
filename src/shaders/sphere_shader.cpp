@@ -11,11 +11,11 @@ SphereShader::SphereShader(std::string fileVertexShader,
 
 void SphereShader::LoadTextures(const std::string& path) {
   // Load textures
-  albedo_map_ = loadTexture(path + "/albedo.png");
-  normal_map_ = loadTexture(path + "/normal.png");
-  metallic_map_ = loadTexture(path + "/metallic.png");
-  roughness_map_ = loadTexture(path + "/roughness.png");
-  ao_map_ = loadTexture(path + "/ao.png");
+  albedo_map_ = LoadTexture(path + "/albedo.png");
+  normal_map_ = LoadTexture(path + "/normal.png");
+  metallic_map_ = LoadTexture(path + "/metallic.png");
+  roughness_map_ = LoadTexture(path + "/roughness.png");
+  ao_map_ = LoadTexture(path + "/ao.png");
 
   // Texture uniforms
   this->Use();

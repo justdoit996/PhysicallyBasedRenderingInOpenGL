@@ -10,7 +10,7 @@ EquirectangularToCubeMapShader::EquirectangularToCubeMapShader(
     : Shader(fileVertexShader, fileFragmentShader) {}
 
 void EquirectangularToCubeMapShader::LoadTextures(const std::string& path) {
-  hdr_texture_ = loadHdrTexture(path);
+  hdr_texture_ = LoadHdrTexture(path);
 
   // Texture uniforms
   this->Use();
