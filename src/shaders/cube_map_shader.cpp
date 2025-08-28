@@ -20,7 +20,7 @@ void CubeMapShader::LoadTextures(const std::string& path) {
 
   // Texture uniforms
   this->Use();
-  this->SetInt("environmentMap", 0);
+  this->SetInt("cubeMap", 0);
 }
 
 void CubeMapShader::BindAllTextures() {

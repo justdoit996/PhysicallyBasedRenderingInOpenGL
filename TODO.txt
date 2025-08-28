@@ -1,6 +1,5 @@
-Aug. 25
-- Narrowed bug to framebuffer
-  - try rendering a normal skybox?
+Aug. 27
+- Start cubemap convolution
 
 
 ############### Long term #################
