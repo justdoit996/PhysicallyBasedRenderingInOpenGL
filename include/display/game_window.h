@@ -45,7 +45,7 @@ class GameWindow : public BaseWindow {
   // Shaders
   SphereShader sphere_shader_;
   EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
-  EnvironmentCubeMapShader cube_map_shader_;
+  EnvironmentCubeMapShader environment_cube_map_shader_;
   IrradianceCubeMapShader irradiance_cube_map_shader_;
 
   // Lights

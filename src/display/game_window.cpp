@@ -62,10 +62,12 @@ void GameWindow::LoadContent() {
   equirectangular_to_cube_map_shader_ = EquirectangularToCubeMapShader(
       "resources/shaders/pbr/equirectangular.vs",
       "resources/shaders/pbr/equirectangular.fs");
-  cube_map_shader_ = EnvironmentCubeMapShader(
-      "resources/shaders/pbr/cube_map.vs", "resources/shaders/pbr/cube_map.fs");
-  irradiance_cube_map_shader_ = IrradianceCubeMapShader(
-      "resources/shaders/pbr/cube_map.vs", "resources/shaders/pbr/cube_map.fs");
+  environment_cube_map_shader_ =
+      EnvironmentCubeMapShader("resources/shaders/pbr/env_cube_map.vs",
+                               "resources/shaders/pbr/env_cube_map.fs");
+  irradiance_cube_map_shader_ =
+      IrradianceCubeMapShader("resources/shaders/pbr/equirectangular.vs",
+                              "resources/shaders/pbr/irradiance_cube_map.fs");
 
   // Bind projection uniform for camera shader (only need once)
   camera_perspective_projection_ =
@@ -73,14 +75,15 @@ void GameWindow::LoadContent() {
                        constants::NEAR, constants::FAR);
   sphere_shader_.Use();
   sphere_shader_.SetMat4("projection", camera_perspective_projection_);
-  cube_map_shader_.Use();
-  cube_map_shader_.SetMat4("projection", camera_perspective_projection_);
+  environment_cube_map_shader_.Use();
+  environment_cube_map_shader_.SetMat4("projection",
+                                       camera_perspective_projection_);
 
   // Load or generate textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
-  cube_map_shader_.GenerateTextures();
+  environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
@@ -138,9 +141,10 @@ void GameWindow::Render() {
   }
 
   // render skybox (render background last to prevent overdrawing)
-  cube_map_shader_.Use();
-  cube_map_shader_.SetMat4("view", view);
-  cube_map_shader_.BindAllTextures();
+  environment_cube_map_shader_.Use();
+  environment_cube_map_shader_.SetMat4("view", view);
+  // irradiance_cube_map_shader_.BindAllTextures();
+  environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
   // Create new imgui frames
@@ -162,7 +166,7 @@ void GameWindow::Update() {
   // Performs hot-reload of shader. Only reloads whenever it has been modified -
   // so not every frame.
   sphere_shader_.ReloadFromFile();
-  cube_map_shader_.ReloadFromFile();
+  environment_cube_map_shader_.ReloadFromFile();
   equirectangular_to_cube_map_shader_.ReloadFromFile();
 }
 
@@ -273,7 +277,8 @@ void GameWindow::DrawCubeMapToFramebuffer() {
     equirectangular_to_cube_map_shader_.SetMat4("view", capture_views[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                           cube_map_shader_.env_cube_map_texture(), 0);
+                           environment_cube_map_shader_.env_cube_map_texture(),
+                           0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cube_map_cube_->Draw();
   }
@@ -294,6 +299,7 @@ void GameWindow::DrawCubeMapToFramebuffer() {
     cube_map_cube_->Draw();
   }
 
+  // Check framebuffer is complete
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
     std::cout << "Framebuffer not complete!" << std::endl;
     exit(1);
