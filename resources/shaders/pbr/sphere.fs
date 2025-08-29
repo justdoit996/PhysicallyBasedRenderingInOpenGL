@@ -38,7 +38,7 @@ float TrowbridgeReitzGGX(vec3 N, vec3 H, float roughness);
 float GeometrySchlickGGX(float NdotV, float roughness);
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness);
 // https://en.wikipedia.org/wiki/Schlick%27s_approximation
-vec3 FresnelSchlick(float cosTheta, vec3 F0);
+vec3 FresnelSchlick(float cosTheta, vec3 F0, float roughness);
 
 void main() {		
     vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
@@ -68,7 +68,7 @@ void main() {
         // Cook-Torrance BRDF
         float NDF = TrowbridgeReitzGGX(N, H, roughness);   
         float G   = GeometrySmith(N, V, L, roughness);      
-        vec3 F    = FresnelSchlick(max(dot(H, V), 0.0), F0);
+        vec3 F    = FresnelSchlick(max(dot(H, V), 0.0), F0, roughness);
            
         vec3 numerator    = NDF * G * F; 
         // + 0.0001 to prevent divide by zero
@@ -95,9 +95,16 @@ void main() {
         Lo += (kD * albedo / PI + specular) * incoming_radiance * NdotL;
     }   
     
+    vec3 kS = FresnelSchlick(max(dot(N, V), 0.0), F0, roughness);
+    vec3 kD = 1.0 - kS;
+    kD *= 1.0 - metallic;	  
+    vec3 irradiance = texture(irradianceMap, N).rgb;
+    vec3 diffuse      = irradiance * albedo;
+    vec3 ambient = (kD * diffuse) * ao;
+
     // ambient lighting (note that the next IBL tutorial will replace 
     // this ambient lighting with environment lighting).
-    vec3 ambient = vec3(0.03) * albedo * ao;
+    //vec3 ambient = vec3(0.03) * albedo * ao;
     
     vec3 color = ambient + Lo;
 
@@ -157,6 +164,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
     return ggx1 * ggx2;
 }
 
-vec3 FresnelSchlick(float cosTheta, vec3 F0) {
-    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+vec3 FresnelSchlick(float cosTheta, vec3 F0, float roughness) {
+    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+    //return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }

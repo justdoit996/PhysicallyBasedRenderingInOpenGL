@@ -74,7 +74,6 @@ void GameWindow::LoadContent() {
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
   environment_cube_map_shader_.GenerateTextures();
-  irradiance_cube_map_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -119,6 +118,9 @@ void GameWindow::Render() {
   sphere_shader_.SetMat4("view", view);
   sphere_shader_.SetVec3("cameraPos", camera_.position());
   sphere_shader_.BindAllTextures();
+  // TODO: BUG fix texture mapping overwriting for irradianceMap
+  glActiveTexture(GL_TEXTURE5);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_map_texture_);
   sphere_->Draw();
 
   // Light sources
@@ -143,7 +145,9 @@ void GameWindow::Render() {
   // render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
-  environment_cube_map_shader_.BindAllTextures();
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_map_texture_);
+  // environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
   // Create new imgui frames
@@ -283,6 +287,20 @@ void GameWindow::DrawCubeMapToFramebuffer() {
 
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
   // Adjust irradiance map dimensions to be 32x32
+
+  glGenTextures(1, &irradiance_map_texture_);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_map_texture_);
+  for (unsigned int i = 0; i < 6; ++i) {
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0,
+                 GL_RGB, GL_FLOAT, nullptr);
+  }
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
   irradiance_cube_map_shader_.Use();
   irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
@@ -293,8 +311,7 @@ void GameWindow::DrawCubeMapToFramebuffer() {
     irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                           irradiance_cube_map_shader_.irradiance_map_texture(),
-                           0);
+                           irradiance_map_texture_, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cube_map_cube_->Draw();
   }
