@@ -252,20 +252,20 @@ void GameWindow::DrawCubeMapToFramebuffer() {
       glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
                   glm::vec3(0.0f, -1.0f, 0.0f))};
 
-  // Create framebuffer and renderbuffer
+  // Create and bind framebuffer and renderbuffer
   unsigned int captureFBO;
   glGenFramebuffers(1, &captureFBO);
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   unsigned int captureRBO;
   glGenRenderbuffers(1, &captureRBO);
   glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
-
   // Attach renderbuffer to framebuffer
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
                             GL_RENDERBUFFER, captureRBO);
 
   // Draw equirectangular map to 6 sided cubemap framebuffer
+  // Adjust renderberffer size to be 512x512 (magic number)
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
   equirectangular_to_cube_map_shader_.Use();
   equirectangular_to_cube_map_shader_.SetMat4("projection", capture_projection);
   equirectangular_to_cube_map_shader_.BindAllTextures();
@@ -282,20 +282,22 @@ void GameWindow::DrawCubeMapToFramebuffer() {
   }
 
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
-  // irradiance_cube_map_shader_.Use();
-  // irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
-  // environment_cube_map_shader_.BindAllTextures();
-  // glViewport(0, 0, 32, 32);
-  // glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  // for (unsigned int i = 0; i < 6; ++i) {
-  //   irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
-  //   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-  //                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-  //                          irradiance_cube_map_shader_.irradiance_map_texture(),
-  //                          0);
-  //   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  //   cube_map_cube_->Draw();
-  // }
+  // Adjust irradiance map dimensions to be 32x32
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
+  irradiance_cube_map_shader_.Use();
+  irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
+  environment_cube_map_shader_.BindAllTextures();
+  glViewport(0, 0, 32, 32);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  for (unsigned int i = 0; i < 6; ++i) {
+    irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                           irradiance_cube_map_shader_.irradiance_map_texture(),
+                           0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    cube_map_cube_->Draw();
+  }
 
   // Check framebuffer is complete
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

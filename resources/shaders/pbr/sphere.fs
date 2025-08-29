@@ -16,7 +16,7 @@ uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 
 // IBL (image based lighting)
-// uniform samplerCube irradianceMap;
+uniform samplerCube irradianceMap;
 
 // Camera
 uniform vec3 cameraPos;

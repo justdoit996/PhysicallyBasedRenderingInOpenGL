@@ -16,6 +16,7 @@ class SphereShader : public Shader {
 
   void LoadTextures(const std::string& path) override;
   void BindAllTextures() override;
+  void BindTexture(const std::string& uniform, unsigned int texture_id);
 
  private:
   unsigned int albedo_map_;
