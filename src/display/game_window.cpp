@@ -237,6 +237,7 @@ void GameWindow::MouseCallback(GLFWwindow* window, double x, double y) {
   camera_.ProcessMouseMovement(x_offset, y_offset);
 }
 
+// TODO: Put all this and all the shaders into its own class
 void GameWindow::DrawCubeMapToFramebuffer() {
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection =
