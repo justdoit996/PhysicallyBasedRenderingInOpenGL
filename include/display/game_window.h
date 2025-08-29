@@ -47,7 +47,6 @@ class GameWindow : public BaseWindow {
   EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
   EnvironmentCubeMapShader environment_cube_map_shader_;
   IrradianceCubeMapShader irradiance_cube_map_shader_;
-  unsigned int irradiance_map_texture_;
 
   // Lights
   std::vector<PointLight> point_lights_;
