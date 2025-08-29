@@ -69,16 +69,6 @@ void GameWindow::LoadContent() {
       IrradianceCubeMapShader("resources/shaders/pbr/equirectangular.vs",
                               "resources/shaders/pbr/irradiance_cube_map.fs");
 
-  // Bind projection uniform for camera shader (only need once)
-  camera_perspective_projection_ =
-      glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
-                       constants::NEAR, constants::FAR);
-  sphere_shader_.Use();
-  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
-  environment_cube_map_shader_.Use();
-  environment_cube_map_shader_.SetMat4("projection",
-                                       camera_perspective_projection_);
-
   // Load or generate textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
@@ -95,6 +85,16 @@ void GameWindow::LoadContent() {
                              /*color*/ glm::vec3(150.0f, 150.0f, 150.0f));
 
   DrawCubeMapToFramebuffer();
+
+  // Bind projection uniform for camera shader (only need once)
+  camera_perspective_projection_ =
+      glm::perspective(glm::radians(camera_.zoom()), constants::ASPECT_RATIO,
+                       constants::NEAR, constants::FAR);
+  sphere_shader_.Use();
+  sphere_shader_.SetMat4("projection", camera_perspective_projection_);
+  environment_cube_map_shader_.Use();
+  environment_cube_map_shader_.SetMat4("projection",
+                                       camera_perspective_projection_);
 
   // Before rendering, configure the viewport to the original framebuffer's
   // screen dimensions
