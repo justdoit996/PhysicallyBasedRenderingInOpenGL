@@ -1,5 +1,5 @@
-Aug. 27
-- Start cubemap convolution
+Aug. 28
+- Start Specular IBL
 
 
 ############### Long term #################

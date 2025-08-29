@@ -29,9 +29,15 @@ $$
 L_o = \int_\Omega{(k_d\frac{c}{\pi} + k_s\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)})L_i(p, \omega_i)n \cdot \omega_i d\omega_i}
 $$
 
-By linearity
+By linearity:
 $$
 L_o = k_d\frac{c}{\pi}\int_\Omega{L_i(p, \omega_i)n \cdot \omega_i d\omega_i} +
 
-k_s\int\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}L_i(p, \omega_i)n \cdot \omega_i d\omega_i
+k_s\int_\Omega\frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}L_i(p, \omega_i)n \cdot \omega_i d\omega_i
+$$
+
+In essence:
+$$
+L_o = \int_\Omega{diffuse} + \int_\Omega{specular}
+
 $$
