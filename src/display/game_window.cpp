@@ -143,7 +143,6 @@ void GameWindow::Render() {
   // render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
-  // irradiance_cube_map_shader_.BindAllTextures();
   environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
@@ -257,7 +256,6 @@ void GameWindow::DrawCubeMapToFramebuffer() {
   unsigned int captureFBO;
   glGenFramebuffers(1, &captureFBO);
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-
   unsigned int captureRBO;
   glGenRenderbuffers(1, &captureRBO);
   glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
@@ -284,20 +282,20 @@ void GameWindow::DrawCubeMapToFramebuffer() {
   }
 
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
-  irradiance_cube_map_shader_.Use();
-  irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
-  irradiance_cube_map_shader_.BindAllTextures();
-  glViewport(0, 0, 32, 32);
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  for (unsigned int i = 0; i < 6; ++i) {
-    irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                           GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                           irradiance_cube_map_shader_.irradiance_map_texture(),
-                           0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    cube_map_cube_->Draw();
-  }
+  // irradiance_cube_map_shader_.Use();
+  // irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
+  // environment_cube_map_shader_.BindAllTextures();
+  // glViewport(0, 0, 32, 32);
+  // glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  // for (unsigned int i = 0; i < 6; ++i) {
+  //   irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
+  //   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+  //                          GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+  //                          irradiance_cube_map_shader_.irradiance_map_texture(),
+  //                          0);
+  //   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  //   cube_map_cube_->Draw();
+  // }
 
   // Check framebuffer is complete
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
