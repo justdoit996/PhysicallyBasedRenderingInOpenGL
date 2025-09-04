@@ -10,6 +10,7 @@ include_directories(libs/glad)
 include_directories(libs/KHR)
 include_directories(libs/imgui)
 include_directories(libs/glfw)
+include_directories(include)
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
 set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
@@ -38,7 +39,7 @@ set(CMAKE_CXX_STANDARD 17) # Sets C++17 as the default standard
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # Ensures the standard is strictly enforced
 
 target_link_libraries(pbropengl PRIVATE ${OPENGL_gl_LIBRARY})
-target_link_libraries(pbropengl PRIVATE glfw3)
+target_link_libraries(pbropengl PRIVATE glfw)
 target_link_libraries(pbropengl PRIVATE glm::glm-header-only)
 
 if (!WIN32)

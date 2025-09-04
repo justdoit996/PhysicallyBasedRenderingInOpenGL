@@ -18,10 +18,9 @@
       "displayName": "Linux Debug",
       "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build",
+      "binaryDir": "${sourceDir}/build/",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "/home/jeff/repos/vcpkg/scripts/buildsystems/vcpkg.cmake",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
         "CMAKE_C_COMPILER": "/usr/bin/gcc",
         "CMAKE_CXX_COMPILER": "/usr/bin/g++",
         "CMAKE_BUILD_TYPE": "Debug"
