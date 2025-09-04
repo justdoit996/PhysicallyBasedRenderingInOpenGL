@@ -9,7 +9,7 @@ find_package(assimp REQUIRED)
 include_directories(libs/glad)
 include_directories(libs/KHR)
 include_directories(libs/imgui)
-include_directories(libs/glfw)
+include_directories(libs/glfw/include/GLFW)
 include_directories(include)
 
 set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
