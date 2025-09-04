@@ -15,7 +15,7 @@
 ### The Rendering Equation
 Also called the "light transport equation" in some literature:
 $$
-L_o = \int_\Omega{f(\omega_o, \omega_i, n)L_i(p, \omega_i)n \cdot \omega_i d\omega_i}
+L_o = \int_\Omega{f_r(\omega_o, \omega_i, n)L_i(p, \omega_i)n \cdot \omega_i d\omega_i}
 $$
 
 Using [Lambertian](https://en.wikipedia.org/wiki/Lambertian_reflectance) and [Cook-Torrance](https://en.wikipedia.org/wiki/Specular_highlight#Cook%E2%80%93Torrance_model) for diffuse and specular reflection respectively where $k_d + k_s = 1$ and $c$ is the color :
