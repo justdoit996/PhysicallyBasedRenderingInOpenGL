@@ -269,7 +269,7 @@ void GameWindow::DrawCubeMapToFramebuffer() {
                             GL_RENDERBUFFER, captureRBO);
 
   // Draw equirectangular map to 6 sided cubemap framebuffer
-  // Adjust renderberffer size to be 512x512 (magic number)
+  // Adjust renderbuffer size to be 512x512 (magic number)
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
   equirectangular_to_cube_map_shader_.Use();
   equirectangular_to_cube_map_shader_.SetMat4("projection", capture_projection);

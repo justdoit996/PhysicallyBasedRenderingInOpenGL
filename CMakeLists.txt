@@ -33,5 +33,3 @@ target_link_libraries(pbropengl PRIVATE glm::glm-header-only)
 if (!WIN32)
 target_link_libraries(pbropengl assimp::assimp)
 endif()
-
-file(COPY resources DESTINATION /)
