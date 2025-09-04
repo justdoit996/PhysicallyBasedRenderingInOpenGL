@@ -6,13 +6,24 @@ find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 find_package(assimp REQUIRED)
 
-link_directories(libs/glfw)
-
 include_directories(libs/glad)
 include_directories(libs/KHR)
 include_directories(libs/imgui)
 include_directories(libs/glfw)
-include_directories(include)
+
+set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
+set( GLAD_GL "" )
+
+add_subdirectory(libs/glfw)
+
+## Turn ON if intending to use gl.h from glfw.
+## ON does not work with LearnOpenGL. Had to add "glad/include" manually.
+option( GLFW-CMAKE-STARTER-USE-GLFW-GLAD "Use GLAD from GLFW" OFF )
+if( GLFW-CMAKE-STARTER-USE-GLFW-GLAD )
+    include_directories("${GLFW_SOURCE_DIR}/deps")
+    set( GLAD_GL "${GLFW_SOURCE_DIR}/deps/glad/gl.h" )
+endif()
 
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_executable(pbropengl ${SOURCES})
