@@ -285,14 +285,18 @@ void GameWindow::DrawCubeMapToFramebuffer() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cube_map_cube_->Draw();
   }
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
   // Adjust irradiance map dimensions to be 32x32
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
   irradiance_cube_map_shader_.Use();
   irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
   environment_cube_map_shader_.BindAllTextures();
   glViewport(0, 0, 32, 32);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   for (unsigned int i = 0; i < 6; ++i) {
     irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
