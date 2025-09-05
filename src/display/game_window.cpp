@@ -68,6 +68,7 @@ void GameWindow::LoadContent() {
   irradiance_cube_map_shader_ =
       IrradianceCubeMapShader("resources/shaders/pbr/equirectangular.vs",
                               "resources/shaders/pbr/irradiance_cube_map.fs");
+  prefilter_shader_ = PrefilterShader("", "");
 
   // Load or generate textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
@@ -306,6 +307,8 @@ void GameWindow::DrawCubeMapToFramebuffer() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cube_map_cube_->Draw();
   }
+
+  // Prefilter HDR map
 
   // Check framebuffer is complete
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
