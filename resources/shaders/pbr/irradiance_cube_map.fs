@@ -4,7 +4,7 @@ in vec3 WorldPos;
 
 out vec4 FragColor;
 
-uniform samplerCube irradianceMap;
+uniform samplerCube environmentMap;
 
 const float PI = 3.14159265359;
 
@@ -32,7 +32,7 @@ void main() {
             // tangent space to world
             vec3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * N; 
 
-            irradiance += texture(irradianceMap, sampleVec).rgb * cos(theta) * sin(theta);
+            irradiance += texture(environmentMap, sampleVec).rgb * cos(theta) * sin(theta);
             nrSamples++;
         }
     }

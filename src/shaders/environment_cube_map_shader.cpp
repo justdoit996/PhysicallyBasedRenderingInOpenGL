@@ -21,7 +21,7 @@ void EnvironmentCubeMapShader::GenerateTextures() {
 
   // Texture uniforms
   this->Use();
-  this->SetInt("irradianceMap", 0);
+  this->SetInt("environmentMap", 0);
 }
 
 void EnvironmentCubeMapShader::BindAllTextures() {

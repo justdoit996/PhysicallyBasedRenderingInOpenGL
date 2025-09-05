@@ -16,7 +16,7 @@ uniform sampler2D roughnessMap;
 uniform sampler2D aoMap;
 
 // IBL (image based lighting)
-uniform samplerCube irradianceMap;
+uniform samplerCube environmentMap;
 
 // Camera
 uniform vec3 cameraPos;
@@ -98,7 +98,7 @@ void main() {
     vec3 kS = FresnelSchlick(max(dot(N, V), 0.0), F0, roughness);
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;	  
-    vec3 irradiance = texture(irradianceMap, N).rgb;
+    vec3 irradiance = texture(environmentMap, N).rgb;
     vec3 diffuse      = irradiance * albedo;
     vec3 ambient = (kD * diffuse) * ao;
 

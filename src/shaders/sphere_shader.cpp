@@ -24,7 +24,7 @@ void SphereShader::LoadTextures(const std::string& path) {
   this->SetInt("metallicMap", 2);
   this->SetInt("roughnessMap", 3);
   this->SetInt("aoMap", 4);
-  this->SetInt("irradianceMap", 5);
+  this->SetInt("environmentMap", 5);
 }
 
 void SphereShader::BindAllTextures() {
