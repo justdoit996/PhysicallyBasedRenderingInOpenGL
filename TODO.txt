@@ -1,5 +1,6 @@
-Aug. 28
-- Start Specular IBL
+Sept 4th
+- Pre-filter convolution artifacts
+  - Bright dots in the pre-filter convolution
 
 
 ############### Long term #################
