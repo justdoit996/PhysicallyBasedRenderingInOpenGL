@@ -41,6 +41,7 @@ void GameWindow::LoadContent() {
   // -----------------------------
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LEQUAL);
+  glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
   // Initialize imgui
   IMGUI_CHECKVERSION();
@@ -152,8 +153,7 @@ void GameWindow::Render() {
   // Render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
-  // environment_cube_map_shader_.BindAllTextures();
-  prefilter_shader_.BindAllTextures();
+  environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
   // Create new imgui frames
