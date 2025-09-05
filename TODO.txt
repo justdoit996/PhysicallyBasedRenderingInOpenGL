@@ -1,6 +1,5 @@
 Sept 4th
-- Pre-filter convolution artifacts
-  - Bright dots in the pre-filter convolution
+- Write a BRDF shader
 
 
 ############### Long term #################
