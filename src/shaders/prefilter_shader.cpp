@@ -30,5 +30,5 @@ unsigned int PrefilterShader::prefilter_map_texture() {
 
 void PrefilterShader::BindAllTextures() {
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, prefilter_map_texture_);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_map_texture_);
 }

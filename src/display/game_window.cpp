@@ -81,6 +81,7 @@ void GameWindow::LoadContent() {
       "resources/assets/textures/hdr/newport_loft.hdr");
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
+  prefilter_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -153,7 +154,11 @@ void GameWindow::Render() {
   // Render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
-  environment_cube_map_shader_.BindAllTextures();
+  // environment_cube_map_shader_.BindAllTextures();
+  // prefilter_shader_.Use();
+  // prefilter_shader_.SetMat4("view", view);
+  prefilter_shader_.BindAllTextures();
+  // irradiance_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
   // Create new imgui frames
@@ -316,7 +321,7 @@ void GameWindow::DrawCubeMapToFramebuffer() {
   // Prefilter HDR map
   prefilter_shader_.Use();
   prefilter_shader_.SetMat4("projection", capture_projection);
-  prefilter_shader_.BindAllTextures();
+  environment_cube_map_shader_.BindAllTextures();
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   unsigned int maxMipLevels = 5;
   for (unsigned int mip = 0; mip < maxMipLevels; ++mip) {
