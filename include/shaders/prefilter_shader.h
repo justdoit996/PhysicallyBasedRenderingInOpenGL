@@ -14,6 +14,8 @@ class PrefilterShader : public Shader {
   void GenerateTextures() override;
   void BindAllTextures() override;
 
+  unsigned int prefilter_map_texture();
+
  private:
   unsigned int prefilter_map_texture_;
 };

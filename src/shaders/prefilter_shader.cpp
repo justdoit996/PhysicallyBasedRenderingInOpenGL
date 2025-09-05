@@ -19,6 +19,16 @@ void PrefilterShader::GenerateTextures() {
                   GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+
+  this->Use();
+  this->SetInt("environmentMap", 0);
 }
 
-void PrefilterShader::BindAllTextures() {}
+unsigned int PrefilterShader::prefilter_map_texture() {
+  return prefilter_map_texture_;
+}
+
+void PrefilterShader::BindAllTextures() {
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, prefilter_map_texture_);
+}
