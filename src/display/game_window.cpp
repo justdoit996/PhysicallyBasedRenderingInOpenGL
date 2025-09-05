@@ -65,10 +65,14 @@ void GameWindow::LoadContent() {
   environment_cube_map_shader_ =
       EnvironmentCubeMapShader("resources/shaders/pbr/env_cube_map.vs",
                                "resources/shaders/pbr/env_cube_map.fs");
+  // reuse equirectangular vertex shader file
   irradiance_cube_map_shader_ =
       IrradianceCubeMapShader("resources/shaders/pbr/equirectangular.vs",
                               "resources/shaders/pbr/irradiance_cube_map.fs");
-  prefilter_shader_ = PrefilterShader("", "");
+  // reuse equirectangular vertex shader file
+  prefilter_shader_ =
+      PrefilterShader("resources/shaders/pbr/equirectangular.vs",
+                      "resources/shaders/pbr/prefilter_map.fs");
 
   // Load or generate textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
@@ -148,7 +152,8 @@ void GameWindow::Render() {
   // Render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
-  environment_cube_map_shader_.BindAllTextures();
+  // environment_cube_map_shader_.BindAllTextures();
+  prefilter_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
   // Create new imgui frames
@@ -169,9 +174,9 @@ void GameWindow::Render() {
 void GameWindow::Update() {
   // Performs hot-reload of shader. Only reloads whenever it has been modified -
   // so not every frame.
-  sphere_shader_.ReloadFromFile();
-  environment_cube_map_shader_.ReloadFromFile();
-  equirectangular_to_cube_map_shader_.ReloadFromFile();
+  // sphere_shader_.ReloadFromFile();
+  // environment_cube_map_shader_.ReloadFromFile();
+  // equirectangular_to_cube_map_shader_.ReloadFromFile();
 }
 
 void GameWindow::Unload() {
