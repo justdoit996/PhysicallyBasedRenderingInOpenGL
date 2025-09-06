@@ -1,8 +1,12 @@
 Sept 4th
-- Write a BRDF shader
+- Write a BRDF shader class
+- Quad class to manage the VAO for a quad
 
 
 ############### Long term #################
+- Class to manage all the pre-renderloop stuff e.g. cubemapping and prefiltering
+- Framebuffer class
+
 Wishlist
 - Interactive UI
   - selection menu for different materials

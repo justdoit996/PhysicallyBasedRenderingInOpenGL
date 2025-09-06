@@ -144,8 +144,8 @@ const float floor_quad_vertices[] = {  // positions, texture coords
     5.0f,  -0.5f, -5.0f, 2.0f, 2.0f};
 
 const float screen_vertices[] = {
-    // vertex attributes for a quad that fills the
-    // entire screen in Normalized Device Coordinates.
+    // vertex attributes for a quad (2 triangles) that fills the entire screen
+    // in Normalized Device Coordinates.
     // (x,y) positions   // (x,y) texCoords
     -1.0f, 1.0f,  0.0f, 1.0f,
 
@@ -161,7 +161,7 @@ const float screen_vertices[] = {
 
 // vertices of a vertical quad (wall)
 const float vertical_quad_vertices[] = {
-    // positions, texture coords
+    // positions (x, y, z), texture coords
     //
     // Triangle 1
     // top-left
