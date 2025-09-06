@@ -1,11 +1,12 @@
 Sept 4th
-- texture management in across shaders
-- implement brdf_shader.cpp
+- Texture management in across shaders
+- Implement brdf_shader.cpp
+- Create a framebuffer class to manage all the pre-renderloop stuff e.g. cubemapping and prefiltering
+- Compose framebuffer class inside SphereShader class
+
 
 
 ############### Long term #################
-- Class to manage all the pre-renderloop stuff e.g. cubemapping and prefiltering
-- Framebuffer class
 
 Wishlist
 - Interactive UI
