@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 project(pbropengl VERSION 0.1.0)
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)

@@ -4,21 +4,20 @@
     {
       "name": "Windows Debug",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build",
+      "binaryDir": "${sourceDir}/out/build/",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/gcc.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/g++.exe",
-        "CMAKE_MAKE_PROGRAM": "C:/Program Files/ninja-win/ninja.exe"
+        "CMAKE_MAKE_PROGRAM": "C:/Program Files/ninja-win/ninja.exe",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/"
       }
     },
     {
-      "name": "GCC 13.3.0 x86_64-linux-gnu",
-      "displayName": "Linux Debug",
-      "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+      "name": "Linux Debug",
       "generator": "Unix Makefiles",
-      "binaryDir": "${sourceDir}/build/",
+      "binaryDir": "${sourceDir}/out/build/",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "/home/jeff/repos/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_C_COMPILER": "/usr/bin/gcc",

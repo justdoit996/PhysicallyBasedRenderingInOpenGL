@@ -14,6 +14,7 @@
 #include "shaders/shader.h"
 #include "shaders/sphere_shader.h"
 #include "shapes/cube.h"
+#include "shapes/quad.h"
 #include "shapes/sphere.h"
 #include "utils/constants.h"
 
@@ -42,6 +43,7 @@ class GameWindow : public BaseWindow {
   // Shapes for generating, binding, or drawing vertices
   std::unique_ptr<Sphere> sphere_;
   std::unique_ptr<Cube> cube_map_cube_;
+  std::unique_ptr<Quad> quad_;
 
   // Shaders
   SphereShader sphere_shader_;
