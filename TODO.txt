@@ -1,8 +1,9 @@
-Sept 4th
-- Texture management in across shaders
-- Implement brdf_shader.cpp
-- Create a framebuffer class to manage all the pre-renderloop stuff e.g. cubemapping and prefiltering
-- Compose framebuffer class inside SphereShader class
+Sept 8th
+- finalize by porting sphere.fs shader code WITH all new texture maps
+- set uniform texture maps in render loop:
+  uniform samplerCube irradianceMap;
+  uniform samplerCube prefilterMap;
+  uniform sampler2D brdfLUT;
 
 
 
