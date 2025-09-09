@@ -41,7 +41,6 @@ class PbrScene {
   // Specular part of PBR (2/2)
   // Creates a LUT for the brdf part of the split-sum approximation
   void DrawBrdfIntegrationMap();
-
   void CreateAndBindFramebufferAndRenderBufferObjects();
 
   // Framebuffer and renderbuffer objects

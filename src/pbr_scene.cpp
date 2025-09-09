@@ -190,10 +190,14 @@ void PbrScene::Render() {
   sphere_shader_.SetMat4("view", view);
   sphere_shader_.SetVec3("cameraPos", camera_->position());
   sphere_shader_.BindAllTextures();
-  // TODO: BUG fix texture mapping overwriting for environmentMap
+  // TODO: Fix manual texture mapping overwriting
   glActiveTexture(GL_TEXTURE5);
   glBindTexture(GL_TEXTURE_CUBE_MAP,
                 irradiance_cube_map_shader_.irradiance_map_texture());
+  glActiveTexture(GL_TEXTURE6);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_shader_.prefilter_map_texture());
+  glActiveTexture(GL_TEXTURE7);
+  glBindTexture(GL_TEXTURE_2D, brdf_shader_.brdf_lut_texture());
   sphere_->Draw();
 
   // Light sources

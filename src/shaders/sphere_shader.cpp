@@ -25,9 +25,12 @@ void SphereShader::LoadTextures(const std::string& path) {
   this->SetInt("roughnessMap", 3);
   this->SetInt("aoMap", 4);
   this->SetInt("environmentMap", 5);
+  this->SetInt("prefilterMap", 6);
+  this->SetInt("brdfLUT", 7);
 }
 
 void SphereShader::BindAllTextures() {
+  // TODO: Fix texture binding to include environment, prefilter, and brdfLUT
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, albedo_map_);
   glActiveTexture(GL_TEXTURE1);

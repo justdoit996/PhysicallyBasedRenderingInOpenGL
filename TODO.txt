@@ -1,17 +1,11 @@
-Sept 8th
-- finalize by porting sphere.fs shader code WITH all new texture maps
-- set uniform texture maps in render loop:
-  uniform samplerCube irradianceMap;
-  uniform samplerCube prefilterMap;
-  uniform sampler2D brdfLUT;
-
+Sept 9th
+  - selection menu for different materials
 
 
 ############### Long term #################
 
 Wishlist
 - Interactive UI
-  - selection menu for different materials
   - selection for different skyboxes e.g. night, day skyboxes
   - slider for varying constants in rendering equation
   - direct (point) and indirect (IBL) lighting
