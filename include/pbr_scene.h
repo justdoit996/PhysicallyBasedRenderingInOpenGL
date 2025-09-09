@@ -8,6 +8,7 @@
 #include <memory>
 #include "camera.h"
 #include "point_light.h"
+#include "shaders/brdf_shader.h"
 #include "shaders/environment_cube_map_shader.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"
 #include "shaders/irradiance_cube_map_shader.h"
@@ -51,6 +52,7 @@ class PbrScene {
   EnvironmentCubeMapShader environment_cube_map_shader_;
   IrradianceCubeMapShader irradiance_cube_map_shader_;
   PrefilterShader prefilter_shader_;
+  BrdfShader brdf_shader_;
 
   // Lights
   std::vector<PointLight> point_lights_;

@@ -23,6 +23,9 @@ void PbrScene::Init() {
       PrefilterShader("resources/shaders/pbr/equirectangular.vs",
                       "resources/shaders/pbr/prefilter_map.fs");
 
+  brdf_shader_ = BrdfShader("resources/shaders/pbr/brdf.vs",
+                            "resources/shaders/pbr/brdf.fs");
+
   // Load or generate textures
   sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
