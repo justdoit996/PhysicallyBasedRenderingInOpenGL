@@ -7,6 +7,8 @@ out vec4 FragColor;
 uniform samplerCube environmentMap;
 
 void main() {		
+    // For testing and viewing other env textures e.g. prefilter
+    // vec3 envColor = textureLod(environmentMap, WorldPos, 1.2).rgb; 
     vec3 envColor = texture(environmentMap, WorldPos).rgb;
     
     // HDR tonemap and gamma correct

@@ -208,10 +208,9 @@ void PbrScene::Render() {
   // Render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
-  // environment_cube_map_shader_.BindAllTextures();
-  // prefilter_shader_.Use();
-  // prefilter_shader_.SetMat4("view", view);
+  environment_cube_map_shader_.BindAllTextures();
+  //  prefilter_shader_.Use();
+  //  prefilter_shader_.SetMat4("view", view);
   // prefilter_shader_.BindAllTextures();
-  irradiance_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 }

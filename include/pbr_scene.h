@@ -21,6 +21,7 @@
 
 class PbrScene {
  public:
+  PbrScene() = default;
   PbrScene(Camera* camera);
   void Render();
 

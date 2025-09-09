@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include "camera.h"
+#include "pbr_scene.h"
 #include "point_light.h"
 #include "shaders/environment_cube_map_shader.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"
@@ -33,27 +34,8 @@ class GameWindow : public BaseWindow {
   void SetUpMouseCallback();
   void MouseCallback(GLFWwindow* window, double x, double y);
 
-  // Converts HDR equirectangular environment map to cubemap equivalent
-  void DrawCubeMapToFramebuffer();
-
-  // Camera
-  Camera camera_;
-  glm::mat4 camera_perspective_projection_;
-
-  // Shapes for generating, binding, or drawing vertices
-  std::unique_ptr<Sphere> sphere_;
-  std::unique_ptr<Cube> cube_map_cube_;
-  std::unique_ptr<Quad> quad_;
-
-  // Shaders
-  SphereShader sphere_shader_;
-  EquirectangularToCubeMapShader equirectangular_to_cube_map_shader_;
-  EnvironmentCubeMapShader environment_cube_map_shader_;
-  IrradianceCubeMapShader irradiance_cube_map_shader_;
-  PrefilterShader prefilter_shader_;
-
-  // Lights
-  std::vector<PointLight> point_lights_;
+  std::unique_ptr<Camera> camera_;
+  PbrScene scene_;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;
