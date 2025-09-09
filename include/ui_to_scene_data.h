@@ -1,11 +1,21 @@
 #ifndef UI_TO_SCENE_DATA_H
 #define UI_TO_SCENE_DATA_H
 
-#include "pbr_scene.h"
-
 struct UiToSceneData {
-  PbrScene::Material material = PbrScene::Material::RUSTED_IRON;
-  PbrScene::Environment environment = PbrScene::Environment::SKY_LOFT;
+  enum Material {
+    RUSTED_IRON = 0,
+    GOLD = 1,
+    GRASS = 2,
+    PLASTIC = 3,
+    BRICK = 4,
+  };
+
+  enum Environment {
+    SKY_LOFT = 0,
+  };
+
+  UiToSceneData::Material material = UiToSceneData::Material::RUSTED_IRON;
+  UiToSceneData::Environment environment = UiToSceneData::Environment::SKY_LOFT;
 };
 
 #endif

@@ -56,7 +56,6 @@ void GameWindow::LoadContent() {
 
   camera_ =
       std::make_unique<Camera>(/*starting position*/ glm::vec3(0, 0, 3.0));
-  scene_data_;
   scene_ = PbrScene(camera_.get());
 
   // TODO: Move this inside scene class?

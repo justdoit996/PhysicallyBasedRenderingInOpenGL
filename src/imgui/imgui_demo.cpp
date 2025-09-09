@@ -748,7 +748,7 @@ static void ShowDemoWindowWidgets() {
     // display the combo contents. (your selection data could be an index, a
     // pointer to the object, an id for the object, a flag intrusively stored in
     // the object itself, etc.)
-    const char* items[] = {"Gold", "Grass", "Plastic", "Rusted Iron", "Brick"};
+    const char* items[] = {"Rusted Iron", "Gold", "Grass", "Plastic", "Brick"};
     // Here we store our selection data as an index.
     static int item_current_idx = 0;
     // Label to preview before opening the combo

@@ -27,18 +27,6 @@ class PbrScene {
   void Render();
   void UploadPbrTextures(const std::string& path);
 
-  enum Material {
-    RUSTED_IRON = 0,
-    GOLD = 1,
-    GRASS = 2,
-    PLASTIC = 3,
-    BRICK = 4,
-  };
-
-  enum Environment {
-    SKY_LOFT = 0,
-  };
-
  private:
   void Init();
   // Performs all pre-computations/convolutions, look-up tables, and
