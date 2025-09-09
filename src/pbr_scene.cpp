@@ -78,21 +78,8 @@ void PbrScene::ConvertEquirectangularTextureToCubeMap(unsigned int captureFBO) {
   glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
-// TODO: Put all this and all the shaders into its own class
-void PbrScene::DrawCubeMapToFramebuffer() {
-  // Create and bind framebuffer and renderbuffer
-  unsigned int captureFBO;
-  glGenFramebuffers(1, &captureFBO);
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  unsigned int captureRBO;
-  glGenRenderbuffers(1, &captureRBO);
-  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
-  // Attach renderbuffer to framebuffer
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                            GL_RENDERBUFFER, captureRBO);
-
-  ConvertEquirectangularTextureToCubeMap(captureFBO);
-
+void PbrScene::DrawIrradianceMap(unsigned int captureFBO,
+                                 unsigned int captureRBO) {
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
   // Adjust irradiance map dimensions to be 32x32
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
@@ -112,6 +99,24 @@ void PbrScene::DrawCubeMapToFramebuffer() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cube_map_cube_->Draw();
   }
+}
+
+// TODO: Put all this and all the shaders into its own class
+void PbrScene::DrawCubeMapToFramebuffer() {
+  // Create and bind framebuffer and renderbuffer
+  unsigned int captureFBO;
+  glGenFramebuffers(1, &captureFBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  unsigned int captureRBO;
+  glGenRenderbuffers(1, &captureRBO);
+  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+  // Attach renderbuffer to framebuffer
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                            GL_RENDERBUFFER, captureRBO);
+
+  ConvertEquirectangularTextureToCubeMap(captureFBO);
+
+  DrawIrradianceMap(captureFBO, captureRBO);
 
   // Prefilter HDR map
   prefilter_shader_.Use();

@@ -29,6 +29,7 @@ class PbrScene {
   void Init();
   void DrawCubeMapToFramebuffer();
   void ConvertEquirectangularTextureToCubeMap(unsigned int FBO);
+  void DrawIrradianceMap(unsigned int captureFBO, unsigned int captureRBO);
 
   // Shapes for generating, binding, or drawing vertices
   std::unique_ptr<Sphere> sphere_;
