@@ -102,6 +102,9 @@ void PbrScene::DrawCubeMapToFramebuffer() {
     cube_map_cube_->Draw();
   }
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindTexture(GL_TEXTURE_CUBE_MAP,
+                environment_cube_map_shader_.env_cube_map_texture());
+  glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
   // Adjust irradiance map dimensions to be 32x32
@@ -208,7 +211,7 @@ void PbrScene::Render() {
   // environment_cube_map_shader_.BindAllTextures();
   // prefilter_shader_.Use();
   // prefilter_shader_.SetMat4("view", view);
-  prefilter_shader_.BindAllTextures();
-  // irradiance_cube_map_shader_.BindAllTextures();
+  // prefilter_shader_.BindAllTextures();
+  irradiance_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 }
