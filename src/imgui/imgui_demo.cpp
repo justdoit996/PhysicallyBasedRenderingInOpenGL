@@ -744,21 +744,6 @@ static void ShowDemoWindowWidgets() {
   if (ImGui::TreeNode("Combo")) {
     // Expose flags as checkbox for the demo
     static ImGuiComboFlags flags = 0;
-    // ImGui::CheckboxFlags("ImGuiComboFlags_PopupAlignLeft", &flags,
-    //                      ImGuiComboFlags_PopupAlignLeft);
-    // ImGui::SameLine();
-    // HelpMarker("Only makes a difference if the popup is larger than the
-    // combo"); if (ImGui::CheckboxFlags("ImGuiComboFlags_NoArrowButton",
-    // &flags,
-    //                          ImGuiComboFlags_NoArrowButton))
-    //   flags &= ~ImGuiComboFlags_NoPreview;  // Clear the other flag, as we
-    //                                         // cannot combine both
-    // if (ImGui::CheckboxFlags("ImGuiComboFlags_NoPreview", &flags,
-    //                          ImGuiComboFlags_NoPreview))
-    //   flags &= ~ImGuiComboFlags_NoArrowButton;  // Clear the other flag, as
-    //   we
-    //                                             // cannot combine both
-
     // Using the generic BeginCombo() API, you have full control over how to
     // display the combo contents. (your selection data could be an index, a
     // pointer to the object, an id for the object, a flag intrusively stored in
