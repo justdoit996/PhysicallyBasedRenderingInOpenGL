@@ -37,6 +37,7 @@ void GameWindow::LoadContent() {
   glfwSetFramebufferSizeCallback(this->windowHandle, FramebufferSizeCallback);
   SetUpMouseCallback();
 
+  // TODO: Move this inside scene?
   // configure global opengl state
   // -----------------------------
   glEnable(GL_DEPTH_TEST);
@@ -53,11 +54,11 @@ void GameWindow::LoadContent() {
   ImGui_ImplOpenGL3_Init("#version 330");
   std::cout << "INFO::IMGUI::SUCCESSFULLY_INITIALIZED" << std::endl;
 
-  // Instance the camera
   camera_ =
       std::make_unique<Camera>(/*starting position*/ glm::vec3(0, 0, 3.0));
   scene_ = PbrScene(camera_.get());
 
+  // TODO: Move this inside scene class?
   // Before rendering, configure the viewport to the original framebuffer's
   // screen dimensions
   int scrWidth, scrHeight;
