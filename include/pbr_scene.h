@@ -32,11 +32,16 @@ class PbrScene {
   // framebuffers necessary before rendering loop.
   void InitAllTextureMaps();
   void ConvertEquirectangularTextureToCubeMap(unsigned int FBO);
+  // Diffuse part of PBR
+  // Pre convolve cube map to construct an irradiance cubemap texture.
   void DrawIrradianceMap(unsigned int captureFBO, unsigned int captureRBO);
-  // Pre-computed environment convolution map, but this time taking roughness
-  // into account.
+  // Specular part of PBR (1/2)
+  // Creates a cube map for the first part of the split-sum approximation
   void DrawPreFilteredEnvironmentMap(unsigned int captureFBO,
                                      unsigned int captureRBO);
+  // Specular part of PBR (2/2)
+  // Creates a LUT for the brdf part of the split-sum approximation
+  void DrawBrdfIntegrationMap(unsigned int captureFBO, unsigned int captureRBO);
 
   // Shapes for generating, binding, or drawing vertices
   std::unique_ptr<Sphere> sphere_;

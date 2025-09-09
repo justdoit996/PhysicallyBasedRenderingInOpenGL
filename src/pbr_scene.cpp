@@ -33,6 +33,7 @@ void PbrScene::Init() {
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
+  brdf_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -136,6 +137,19 @@ void PbrScene::DrawPreFilteredEnvironmentMap(unsigned int captureFBO,
   }
 }
 
+void PbrScene::DrawBrdfIntegrationMap(unsigned int captureFBO,
+                                      unsigned int captureRBO) {
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                         brdf_shader_.brdf_lut_texture(), 0);
+  glViewport(0, 0, 512, 512);
+  brdf_shader_.Use();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  quad_->Draw();
+}
+
 // TODO: Put all this and all the shaders into its own class
 void PbrScene::InitAllTextureMaps() {
   // Create and bind framebuffer and renderbuffer
@@ -152,6 +166,7 @@ void PbrScene::InitAllTextureMaps() {
   ConvertEquirectangularTextureToCubeMap(captureFBO);
   DrawIrradianceMap(captureFBO, captureRBO);
   DrawPreFilteredEnvironmentMap(captureFBO, captureRBO);
+  DrawBrdfIntegrationMap(captureFBO, captureRBO);
 
   // Check framebuffer is complete
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

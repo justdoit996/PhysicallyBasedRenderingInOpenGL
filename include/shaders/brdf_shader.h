@@ -10,8 +10,10 @@ class BrdfShader : public Shader {
   BrdfShader(std::string fileVertexShader, std::string fileFragmentShader);
   void GenerateTextures() override;
   void BindAllTextures() override;
+  unsigned int brdf_lut_texture() { return brdf_lut_texture_; }
 
  private:
+  unsigned int brdf_lut_texture_;
 };
 
 #endif
