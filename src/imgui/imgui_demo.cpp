@@ -96,6 +96,7 @@ ShowExampleAppCustomRendering()
 #include "imgui.h"
 #ifndef IMGUI_DISABLE
 #include "pbr_scene.h"
+#include "ui_to_scene_data.h"
 
 // System includes
 #include <ctype.h>   // toupper
@@ -750,6 +751,11 @@ static void ShowDemoWindowWidgets(void* scene) {
     // pointer to the object, an id for the object, a flag intrusively stored in
     // the object itself, etc.)
     const char* items[] = {"Rusted Iron", "Gold", "Grass", "Plastic", "Brick"};
+    pbr_scene::Material materials[] = {
+        pbr_scene::Material::RUSTED_IRON, pbr_scene::Material::GOLD,
+        pbr_scene::Material::GRASS,       pbr_scene::Material::PLASTIC,
+        pbr_scene::Material::BRICK,
+    };
     // Here we store our selection data as an index.
     static int item_current_idx = 0;
     // Label to preview before opening the combo
@@ -759,9 +765,10 @@ static void ShowDemoWindowWidgets(void* scene) {
       for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
         const bool is_selected = (item_current_idx == n);
         if (ImGui::Selectable(items[n], is_selected)) {
-          item_current_idx = n;
           // Only called when a different selection is made
-          ((PbrScene*)scene);
+          ((PbrScene*)scene)
+              ->UploadPbrTextures(pbr_scene::ConvertToFilePath(materials[n]));
+          item_current_idx = n;
         }
 
         // Set the initial focus when opening the combo (scrolling + keyboard
