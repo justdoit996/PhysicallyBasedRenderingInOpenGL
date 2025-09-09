@@ -760,6 +760,7 @@ static void ShowDemoWindowWidgets() {
         if (ImGui::Selectable(items[n], is_selected)) {
           item_current_idx = n;
         }
+        // Code scene change here
 
         // Set the initial focus when opening the combo (scrolling + keyboard
         // navigation focus)

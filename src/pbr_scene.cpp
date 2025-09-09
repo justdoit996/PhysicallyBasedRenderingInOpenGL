@@ -4,6 +4,11 @@ PbrScene::PbrScene(Camera* camera) : camera_(camera) {
   Init();
 }
 
+void PbrScene::UploadPbrTextures(const std::string& path) {
+  sphere_shader_.LoadTextures(path);
+  // sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
+}
+
 void PbrScene::Init() {
   // Shaders
   sphere_shader_ = SphereShader("resources/shaders/pbr/sphere.vs",
@@ -27,7 +32,7 @@ void PbrScene::Init() {
                             "resources/shaders/pbr/brdf.fs");
 
   // Load or generate textures
-  sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
+  UploadPbrTextures("resources/assets/textures/pbr/rusted_iron");
   equirectangular_to_cube_map_shader_.LoadTextures(
       "resources/assets/textures/hdr/newport_loft.hdr");
   environment_cube_map_shader_.GenerateTextures();

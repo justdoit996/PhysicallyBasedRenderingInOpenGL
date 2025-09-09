@@ -25,6 +25,7 @@ class PbrScene {
   PbrScene() = default;
   PbrScene(Camera* camera);
   void Render();
+  void UploadPbrTextures(const std::string& path);
 
  private:
   void Init();
