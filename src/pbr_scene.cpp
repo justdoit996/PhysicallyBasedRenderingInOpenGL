@@ -36,7 +36,7 @@ void PbrScene::Init() {
   cube_map_cube_ = std::make_unique<Cube>();
   quad_ = std::make_unique<Quad>();
 
-  DrawCubeMapToFramebuffer();
+  InitAllTextureMaps();
 
   // Light sources
   point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 10.0f),
@@ -134,7 +134,7 @@ void PbrScene::DrawPreFilteredEnvironmentMap(unsigned int captureFBO,
 }
 
 // TODO: Put all this and all the shaders into its own class
-void PbrScene::DrawCubeMapToFramebuffer() {
+void PbrScene::InitAllTextureMaps() {
   // Create and bind framebuffer and renderbuffer
   unsigned int captureFBO;
   glGenFramebuffers(1, &captureFBO);

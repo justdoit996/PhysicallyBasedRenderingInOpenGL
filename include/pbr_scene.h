@@ -27,7 +27,9 @@ class PbrScene {
 
  private:
   void Init();
-  void DrawCubeMapToFramebuffer();
+  // Performs all pre-computations/convolutions, look-up tables, and
+  // framebuffers necessary before rendering loop.
+  void InitAllTextureMaps();
   void ConvertEquirectangularTextureToCubeMap(unsigned int FBO);
   void DrawIrradianceMap(unsigned int captureFBO, unsigned int captureRBO);
   // Pre-computed environment convolution map, but this time taking roughness
