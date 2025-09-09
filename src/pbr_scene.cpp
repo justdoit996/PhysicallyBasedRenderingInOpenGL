@@ -223,4 +223,8 @@ void PbrScene::Render() {
   //  prefilter_shader_.SetMat4("view", view);
   // prefilter_shader_.BindAllTextures();
   cube_map_cube_->Draw();
+
+  // for testing quad
+  // brdf_shader_.Use();
+  // quad_->Draw();
 }
