@@ -30,6 +30,10 @@ class PbrScene {
   void DrawCubeMapToFramebuffer();
   void ConvertEquirectangularTextureToCubeMap(unsigned int FBO);
   void DrawIrradianceMap(unsigned int captureFBO, unsigned int captureRBO);
+  // Pre-computed environment convolution map, but this time taking roughness
+  // into account.
+  void DrawPreFilteredEnvironmentMap(unsigned int captureFBO,
+                                     unsigned int captureRBO);
 
   // Shapes for generating, binding, or drawing vertices
   std::unique_ptr<Sphere> sphere_;
