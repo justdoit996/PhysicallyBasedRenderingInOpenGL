@@ -17,6 +17,7 @@
 #include "shapes/cube.h"
 #include "shapes/quad.h"
 #include "shapes/sphere.h"
+#include "ui_to_scene_data.h"
 #include "utils/constants.h"
 
 class GameWindow : public BaseWindow {
@@ -36,6 +37,7 @@ class GameWindow : public BaseWindow {
 
   std::unique_ptr<Camera> camera_;
   PbrScene scene_;
+  UiToSceneData scene_data_;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;

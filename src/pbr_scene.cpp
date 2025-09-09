@@ -6,7 +6,6 @@ PbrScene::PbrScene(Camera* camera) : camera_(camera) {
 
 void PbrScene::UploadPbrTextures(const std::string& path) {
   sphere_shader_.LoadTextures(path);
-  // sphere_shader_.LoadTextures("resources/assets/textures/pbr/rusted_iron");
 }
 
 void PbrScene::Init() {
