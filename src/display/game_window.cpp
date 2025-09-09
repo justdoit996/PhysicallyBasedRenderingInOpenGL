@@ -56,7 +56,7 @@ void GameWindow::LoadContent() {
 
   camera_ =
       std::make_unique<Camera>(/*starting position*/ glm::vec3(0, 0, 3.0));
-  scene_ = PbrScene(camera_.get());
+  scene_ = std::make_unique<PbrScene>(camera_.get());
 
   // TODO: Move this inside scene class?
   // Before rendering, configure the viewport to the original framebuffer's
@@ -68,7 +68,7 @@ void GameWindow::LoadContent() {
 
 void GameWindow::Render() {
   // Draw PBR scene
-  scene_.Render();
+  scene_->Render();
 
   // Create new imgui frames
   ImGui_ImplOpenGL3_NewFrame();
@@ -76,7 +76,7 @@ void GameWindow::Render() {
   ImGui::NewFrame();
 
   // Draw imgui
-  ImGui::ShowDemoWindow();
+  ImGui::ShowDemoWindow(scene_.get());
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

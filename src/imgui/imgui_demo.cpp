@@ -95,6 +95,7 @@ ShowExampleAppCustomRendering()
 
 #include "imgui.h"
 #ifndef IMGUI_DISABLE
+#include "pbr_scene.h"
 
 // System includes
 #include <ctype.h>   // toupper
@@ -321,7 +322,7 @@ void ImGui::ShowUserGuide() {
 
 // We split the contents of the big ShowDemoWindow() function into smaller
 // functions (because the link time of very large functions grow non-linearly)
-static void ShowDemoWindowWidgets();
+static void ShowDemoWindowWidgets(void* scene);
 static void ShowDemoWindowLayout();
 static void ShowDemoWindowPopups();
 static void ShowDemoWindowTables();
@@ -332,7 +333,7 @@ static void ShowDemoWindowMisc();
 // You may execute this function to experiment with the UI and understand what
 // it does. You may then search for keywords in the code when you are interested
 // by a specific feature.
-void ImGui::ShowDemoWindow(bool* p_open) {
+void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
   // Exceptionally add an extra assert here for people confused about initial
   // Dear ImGui setup Most ImGui functions would normally just crash if the
   // context is missing.
@@ -500,14 +501,14 @@ void ImGui::ShowDemoWindow(bool* p_open) {
   }
 
   // All demo contents
-  ShowDemoWindowWidgets();
+  ShowDemoWindowWidgets(scene);
 
   // End of ShowDemoWindow()
   ImGui::PopItemWidth();
   ImGui::End();
 }
 
-static void ShowDemoWindowWidgets() {
+static void ShowDemoWindowWidgets(void* scene) {
   if (!ImGui::CollapsingHeader("Widgets"))
     return;
 
@@ -760,6 +761,7 @@ static void ShowDemoWindowWidgets() {
         if (ImGui::Selectable(items[n], is_selected)) {
           item_current_idx = n;
           // Only called when a different selection is made
+          ((PbrScene*)scene);
         }
 
         // Set the initial focus when opening the combo (scrolling + keyboard

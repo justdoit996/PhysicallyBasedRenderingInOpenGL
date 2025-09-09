@@ -35,7 +35,7 @@ class GameWindow : public BaseWindow {
   void MouseCallback(GLFWwindow* window, double x, double y);
 
   std::unique_ptr<Camera> camera_;
-  PbrScene scene_;
+  std::unique_ptr<PbrScene> scene_;
 
   // Keyboard input time delta
   float delta_time_ = 0.0f;
