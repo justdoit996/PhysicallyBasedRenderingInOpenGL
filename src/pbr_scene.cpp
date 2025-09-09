@@ -53,47 +53,18 @@ void PbrScene::Init() {
                                        camera_perspective_projection);
 }
 
-// TODO: Put all this and all the shaders into its own class
-void PbrScene::DrawCubeMapToFramebuffer() {
-  // Captures a vertical 90 deg FoV necessary for converting equirectangular
-  glm::mat4 capture_projection =
-      glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
-  // One for each side of the cube map
-  glm::mat4 capture_views[] = {
-      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
-                  glm::vec3(0.0f, -1.0f, 0.0f)),
-      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
-                  glm::vec3(0.0f, -1.0f, 0.0f)),
-      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
-                  glm::vec3(0.0f, 0.0f, 1.0f)),
-      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f),
-                  glm::vec3(0.0f, 0.0f, -1.0f)),
-      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f),
-                  glm::vec3(0.0f, -1.0f, 0.0f)),
-      glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f),
-                  glm::vec3(0.0f, -1.0f, 0.0f))};
-
-  // Create and bind framebuffer and renderbuffer
-  unsigned int captureFBO;
-  glGenFramebuffers(1, &captureFBO);
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  unsigned int captureRBO;
-  glGenRenderbuffers(1, &captureRBO);
-  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
-  // Attach renderbuffer to framebuffer
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                            GL_RENDERBUFFER, captureRBO);
-
+void PbrScene::ConvertEquirectangularTextureToCubeMap(unsigned int captureFBO) {
   // Draw equirectangular map to 6 sided cubemap framebuffer
   // Adjust renderbuffer size to be 512x512 (magic number)
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
   equirectangular_to_cube_map_shader_.Use();
-  equirectangular_to_cube_map_shader_.SetMat4("projection", capture_projection);
+  equirectangular_to_cube_map_shader_.SetMat4("projection",
+                                              capture_projection_);
   equirectangular_to_cube_map_shader_.BindAllTextures();
   glViewport(0, 0, 512, 512);
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   for (unsigned int i = 0; i < 6; ++i) {
-    equirectangular_to_cube_map_shader_.SetMat4("view", capture_views[i]);
+    equirectangular_to_cube_map_shader_.SetMat4("view", capture_views_[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                            environment_cube_map_shader_.env_cube_map_texture(),
@@ -105,6 +76,22 @@ void PbrScene::DrawCubeMapToFramebuffer() {
   glBindTexture(GL_TEXTURE_CUBE_MAP,
                 environment_cube_map_shader_.env_cube_map_texture());
   glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+}
+
+// TODO: Put all this and all the shaders into its own class
+void PbrScene::DrawCubeMapToFramebuffer() {
+  // Create and bind framebuffer and renderbuffer
+  unsigned int captureFBO;
+  glGenFramebuffers(1, &captureFBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  unsigned int captureRBO;
+  glGenRenderbuffers(1, &captureRBO);
+  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+  // Attach renderbuffer to framebuffer
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                            GL_RENDERBUFFER, captureRBO);
+
+  ConvertEquirectangularTextureToCubeMap(captureFBO);
 
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
   // Adjust irradiance map dimensions to be 32x32
@@ -112,12 +99,12 @@ void PbrScene::DrawCubeMapToFramebuffer() {
   glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
   irradiance_cube_map_shader_.Use();
-  irradiance_cube_map_shader_.SetMat4("projection", capture_projection);
+  irradiance_cube_map_shader_.SetMat4("projection", capture_projection_);
   environment_cube_map_shader_.BindAllTextures();
   glViewport(0, 0, 32, 32);
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   for (unsigned int i = 0; i < 6; ++i) {
-    irradiance_cube_map_shader_.SetMat4("view", capture_views[i]);
+    irradiance_cube_map_shader_.SetMat4("view", capture_views_[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                            irradiance_cube_map_shader_.irradiance_map_texture(),
@@ -128,7 +115,7 @@ void PbrScene::DrawCubeMapToFramebuffer() {
 
   // Prefilter HDR map
   prefilter_shader_.Use();
-  prefilter_shader_.SetMat4("projection", capture_projection);
+  prefilter_shader_.SetMat4("projection", capture_projection_);
   environment_cube_map_shader_.BindAllTextures();
   glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
   unsigned int maxMipLevels = 5;
@@ -145,7 +132,7 @@ void PbrScene::DrawCubeMapToFramebuffer() {
     float roughness = (float)mip / (float)(maxMipLevels - 1);
     prefilter_shader_.SetFloat("roughness", roughness);
     for (unsigned int i = 0; i < 6; ++i) {
-      prefilter_shader_.SetMat4("view", capture_views[i]);
+      prefilter_shader_.SetMat4("view", capture_views_[i]);
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                              GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                              prefilter_shader_.prefilter_map_texture(), mip);

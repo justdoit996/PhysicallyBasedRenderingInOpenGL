@@ -28,6 +28,7 @@ class PbrScene {
  private:
   void Init();
   void DrawCubeMapToFramebuffer();
+  void ConvertEquirectangularTextureToCubeMap(unsigned int FBO);
 
   // Shapes for generating, binding, or drawing vertices
   std::unique_ptr<Sphere> sphere_;
@@ -46,6 +47,29 @@ class PbrScene {
 
   // Lights
   std::vector<PointLight> point_lights_;
+
+  // Captures a vertical 90 deg FoV necessary for converting equirectangular
+  glm::mat4 capture_projection_ =
+      glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+  // One for each side of the cube map
+  glm::mat4 capture_views_[6] = {glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+                                             glm::vec3(1.0f, 0.0f, 0.0f),
+                                             glm::vec3(0.0f, -1.0f, 0.0f)),
+                                 glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+                                             glm::vec3(-1.0f, 0.0f, 0.0f),
+                                             glm::vec3(0.0f, -1.0f, 0.0f)),
+                                 glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+                                             glm::vec3(0.0f, 1.0f, 0.0f),
+                                             glm::vec3(0.0f, 0.0f, 1.0f)),
+                                 glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+                                             glm::vec3(0.0f, -1.0f, 0.0f),
+                                             glm::vec3(0.0f, 0.0f, -1.0f)),
+                                 glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+                                             glm::vec3(0.0f, 0.0f, 1.0f),
+                                             glm::vec3(0.0f, -1.0f, 0.0f)),
+                                 glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f),
+                                             glm::vec3(0.0f, 0.0f, -1.0f),
+                                             glm::vec3(0.0f, -1.0f, 0.0f))};
 };
 
 #endif
