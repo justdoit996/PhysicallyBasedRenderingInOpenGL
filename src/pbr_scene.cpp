@@ -57,7 +57,34 @@ void PbrScene::Init() {
                                        camera_perspective_projection);
 }
 
-void PbrScene::ConvertEquirectangularTextureToCubeMap(unsigned int captureFBO) {
+void PbrScene::InitAllTextureMaps() {
+  CreateAndBindFramebufferAndRenderBufferObjects();
+  ConvertEquirectangularTextureToCubeMap();
+  DrawIrradianceMap();
+  DrawPreFilteredEnvironmentMap();
+  DrawBrdfIntegrationMap();
+
+  // Check framebuffer is complete
+  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+    std::cout << "Framebuffer not complete!" << std::endl;
+    exit(1);
+  }
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glBindFramebuffer(GL_RENDERBUFFER, 0);
+}
+
+void PbrScene::CreateAndBindFramebufferAndRenderBufferObjects() {
+  // Create and bind framebuffer and renderbuffer
+  glGenFramebuffers(1, &capture_fbo_);
+  glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
+  glGenRenderbuffers(1, &capture_rbo_);
+  glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
+  // Attach renderbuffer to framebuffer
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                            GL_RENDERBUFFER, capture_rbo_);
+}
+
+void PbrScene::ConvertEquirectangularTextureToCubeMap() {
   // Draw equirectangular map to 6 sided cubemap framebuffer
   // Adjust renderbuffer size to be 512x512 (magic number)
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
@@ -66,7 +93,7 @@ void PbrScene::ConvertEquirectangularTextureToCubeMap(unsigned int captureFBO) {
                                               capture_projection_);
   equirectangular_to_cube_map_shader_.BindAllTextures();
   glViewport(0, 0, 512, 512);
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   for (unsigned int i = 0; i < 6; ++i) {
     equirectangular_to_cube_map_shader_.SetMat4("view", capture_views_[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
@@ -82,18 +109,17 @@ void PbrScene::ConvertEquirectangularTextureToCubeMap(unsigned int captureFBO) {
   glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
-void PbrScene::DrawIrradianceMap(unsigned int captureFBO,
-                                 unsigned int captureRBO) {
+void PbrScene::DrawIrradianceMap() {
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
   // Adjust irradiance map dimensions to be 32x32
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
+  glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
   irradiance_cube_map_shader_.Use();
   irradiance_cube_map_shader_.SetMat4("projection", capture_projection_);
   environment_cube_map_shader_.BindAllTextures();
   glViewport(0, 0, 32, 32);
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   for (unsigned int i = 0; i < 6; ++i) {
     irradiance_cube_map_shader_.SetMat4("view", capture_views_[i]);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
@@ -105,20 +131,19 @@ void PbrScene::DrawIrradianceMap(unsigned int captureFBO,
   }
 }
 
-void PbrScene::DrawPreFilteredEnvironmentMap(unsigned int captureFBO,
-                                             unsigned int captureRBO) {
+void PbrScene::DrawPreFilteredEnvironmentMap() {
   // Prefilter HDR map
   prefilter_shader_.Use();
   prefilter_shader_.SetMat4("projection", capture_projection_);
   environment_cube_map_shader_.BindAllTextures();
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+  glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   unsigned int maxMipLevels = 5;
   for (unsigned int mip = 0; mip < maxMipLevels; ++mip) {
     // resize framebuffer according to mip-level size.
     unsigned int mipWidth = static_cast<unsigned int>(128 * std::pow(0.5, mip));
     unsigned int mipHeight =
         static_cast<unsigned int>(128 * std::pow(0.5, mip));
-    glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+    glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth,
                           mipHeight);
     glViewport(0, 0, mipWidth, mipHeight);
@@ -137,10 +162,9 @@ void PbrScene::DrawPreFilteredEnvironmentMap(unsigned int captureFBO,
   }
 }
 
-void PbrScene::DrawBrdfIntegrationMap(unsigned int captureFBO,
-                                      unsigned int captureRBO) {
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+void PbrScene::DrawBrdfIntegrationMap() {
+  glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
+  glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          brdf_shader_.brdf_lut_texture(), 0);
@@ -148,33 +172,6 @@ void PbrScene::DrawBrdfIntegrationMap(unsigned int captureFBO,
   brdf_shader_.Use();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   quad_->Draw();
-}
-
-// TODO: Put all this and all the shaders into its own class
-void PbrScene::InitAllTextureMaps() {
-  // Create and bind framebuffer and renderbuffer
-  unsigned int captureFBO;
-  glGenFramebuffers(1, &captureFBO);
-  glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
-  unsigned int captureRBO;
-  glGenRenderbuffers(1, &captureRBO);
-  glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
-  // Attach renderbuffer to framebuffer
-  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                            GL_RENDERBUFFER, captureRBO);
-
-  ConvertEquirectangularTextureToCubeMap(captureFBO);
-  DrawIrradianceMap(captureFBO, captureRBO);
-  DrawPreFilteredEnvironmentMap(captureFBO, captureRBO);
-  DrawBrdfIntegrationMap(captureFBO, captureRBO);
-
-  // Check framebuffer is complete
-  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-    std::cout << "Framebuffer not complete!" << std::endl;
-    exit(1);
-  }
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  glBindFramebuffer(GL_RENDERBUFFER, 0);
 }
 
 void PbrScene::Render() {
