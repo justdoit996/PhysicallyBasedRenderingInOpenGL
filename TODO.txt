@@ -1,13 +1,8 @@
 Sept 9th
-  - selection menu for different materials
-
-
-############### Long term #################
-
-Wishlist
 - Interactive UI
-  - selection for different skyboxes e.g. night, day skyboxes
-  - slider for varying constants in rendering equation
+  - combo box for different materials
+  - combo box for different skyboxes e.g. night, day skyboxes
+  - slider (float) for varying constants in rendering equation
   - direct (point) and indirect (IBL) lighting
   - option for changing the number of randomly generated point lights
   - option to randomly revolve point lights?
