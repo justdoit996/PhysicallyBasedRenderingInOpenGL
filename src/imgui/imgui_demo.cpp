@@ -759,8 +759,8 @@ static void ShowDemoWindowWidgets() {
         const bool is_selected = (item_current_idx == n);
         if (ImGui::Selectable(items[n], is_selected)) {
           item_current_idx = n;
+          // Only called when a different selection is made
         }
-        // Code scene change here
 
         // Set the initial focus when opening the combo (scrolling + keyboard
         // navigation focus)
@@ -771,15 +771,15 @@ static void ShowDemoWindowWidgets() {
       ImGui::EndCombo();
     }
     // Simplified one-liner Combo() using an accessor function
-    struct Funcs {
-      static bool ItemGetter(void* data, int n, const char** out_str) {
-        *out_str = ((const char**)data)[n];
-        return true;
-      }
-    };
-    static int item_current_4 = 0;
-    ImGui::Combo("combo 4 (function)", &item_current_4, &Funcs::ItemGetter,
-                 items, IM_ARRAYSIZE(items));
+    // struct Funcs {
+    //   static bool ItemGetter(void* data, int n, const char** out_str) {
+    //     *out_str = ((const char**)data)[n];
+    //     return true;
+    //   }
+    // };
+    // static int item_current_4 = 1;
+    // ImGui::Combo("combo 4 (function)", &item_current_4, &Funcs::ItemGetter,
+    //              items, IM_ARRAYSIZE(items));
     ImGui::TreePop();
   }
 }
