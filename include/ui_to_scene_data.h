@@ -19,7 +19,8 @@ enum Environment {
 
 struct UiToSceneData {};
 
-std::string ConvertToFilePath(const Material& material);
+std::string ConvertMaterialToString(const Material& material);
+std::string ConvertMaterialToFilePath(const Material& material);
 
 }  // namespace pbr_scene
 #endif

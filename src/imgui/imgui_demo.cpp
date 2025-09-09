@@ -750,24 +750,31 @@ static void ShowDemoWindowWidgets(void* scene) {
     // display the combo contents. (your selection data could be an index, a
     // pointer to the object, an id for the object, a flag intrusively stored in
     // the object itself, etc.)
-    const char* items[] = {"Rusted Iron", "Gold", "Grass", "Plastic", "Brick"};
     pbr_scene::Material materials[] = {
         pbr_scene::Material::RUSTED_IRON, pbr_scene::Material::GOLD,
         pbr_scene::Material::GRASS,       pbr_scene::Material::PLASTIC,
         pbr_scene::Material::BRICK,
     };
+    std::string material_names[] = {
+        pbr_scene::ConvertMaterialToString(materials[0]),
+        pbr_scene::ConvertMaterialToString(materials[1]),
+        pbr_scene::ConvertMaterialToString(materials[2]),
+        pbr_scene::ConvertMaterialToString(materials[3]),
+        pbr_scene::ConvertMaterialToString(materials[4]),
+    };
     // Here we store our selection data as an index.
     static int item_current_idx = 0;
     // Label to preview before opening the combo
-    const char* combo_label = items[item_current_idx];
+    const std::string combo_label = material_names[item_current_idx];
     // (technically it could be anything)
-    if (ImGui::BeginCombo("Sphere Materials", combo_label, flags)) {
-      for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
+    if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
+      for (int n = 0; n < IM_ARRAYSIZE(material_names); n++) {
         const bool is_selected = (item_current_idx == n);
-        if (ImGui::Selectable(items[n], is_selected)) {
+        if (ImGui::Selectable(material_names[n].c_str(), is_selected)) {
           // Only called when a different selection is made
           ((PbrScene*)scene)
-              ->UploadPbrTextures(pbr_scene::ConvertToFilePath(materials[n]));
+              ->UploadPbrTextures(
+                  pbr_scene::ConvertMaterialToFilePath(materials[n]));
           item_current_idx = n;
         }
 
