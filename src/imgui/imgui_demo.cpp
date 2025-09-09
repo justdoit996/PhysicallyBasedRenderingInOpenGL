@@ -784,30 +784,6 @@ static void ShowDemoWindowWidgets() {
       }
       ImGui::EndCombo();
     }
-
-    // Simplified one-liner Combo() API, using values packed in a single
-    // constant string
-    static int item_current_2 = 0;
-    ImGui::Combo("combo 2 (one-liner)", &item_current_2,
-                 "aaaa\0bbbb\0cccc\0dddd\0eeee\0\0");
-
-    // Simplified one-liner Combo() using an array of const char*
-    static int item_current_3 = -1;  // If the selection isn't within 0..count,
-                                     // Combo won't display a preview
-    ImGui::Combo("combo 3 (array)", &item_current_3, items,
-                 IM_ARRAYSIZE(items));
-
-    // Simplified one-liner Combo() using an accessor function
-    struct Funcs {
-      static bool ItemGetter(void* data, int n, const char** out_str) {
-        *out_str = ((const char**)data)[n];
-        return true;
-      }
-    };
-    static int item_current_4 = 0;
-    ImGui::Combo("combo 4 (function)", &item_current_4, &Funcs::ItemGetter,
-                 items, IM_ARRAYSIZE(items));
-
     ImGui::TreePop();
   }
 }
