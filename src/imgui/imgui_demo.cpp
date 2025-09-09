@@ -741,31 +741,31 @@ static void ShowDemoWindowWidgets() {
 
     ImGui::TreePop();
   }
-  if (ImGui::TreeNode("Combo")) {
+  if (ImGui::TreeNode("Materials")) {
     // Expose flags as checkbox for the demo
     static ImGuiComboFlags flags = 0;
     // Using the generic BeginCombo() API, you have full control over how to
     // display the combo contents. (your selection data could be an index, a
     // pointer to the object, an id for the object, a flag intrusively stored in
     // the object itself, etc.)
-    const char* items[] = {"AAAA", "BBBB",    "CCCC", "DDDD",   "EEEE",
-                           "FFFF", "GGGG",    "HHHH", "IIII",   "JJJJ",
-                           "KKKK", "LLLLLLL", "MMMM", "OOOOOOO"};
+    const char* items[] = {"Gold", "Grass", "Plastic", "Rusted Iron", "Brick"};
     // Here we store our selection data as an index.
     static int item_current_idx = 0;
     // Label to preview before opening the combo
     const char* combo_label = items[item_current_idx];
     // (technically it could be anything)
-    if (ImGui::BeginCombo("combo 1", combo_label, flags)) {
+    if (ImGui::BeginCombo("Sphere Materials", combo_label, flags)) {
       for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
         const bool is_selected = (item_current_idx == n);
-        if (ImGui::Selectable(items[n], is_selected))
+        if (ImGui::Selectable(items[n], is_selected)) {
           item_current_idx = n;
+        }
 
         // Set the initial focus when opening the combo (scrolling + keyboard
         // navigation focus)
-        if (is_selected)
+        if (is_selected) {
           ImGui::SetItemDefaultFocus();
+        }
       }
       ImGui::EndCombo();
     }
