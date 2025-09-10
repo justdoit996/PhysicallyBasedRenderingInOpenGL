@@ -1,4 +1,8 @@
 Sept 9th
+
+- Create new combo box for environments
+
+
 - Interactive UI
   - combo box for different skyboxes e.g. night, day skyboxes
   - slider (float) for varying constants in rendering equation
