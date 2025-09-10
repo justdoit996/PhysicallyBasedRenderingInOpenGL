@@ -34,5 +34,8 @@
 # Imgui save preferences
 *.ini
 
+# Visual Studio
+.vs
+
 build/
 .vscode/
