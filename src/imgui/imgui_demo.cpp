@@ -543,6 +543,31 @@ static void ShowDemoWindowWidgets(void* scene) {
       }
       ImGui::EndCombo();
     }
+    static int environment_item_current_idx = 0;
+    // Label to preview before opening the combo
+    const std::string environment_combo_label =
+        pbr_scene::environment_names[environment_item_current_idx];
+    if (ImGui::BeginCombo("Environments", environment_combo_label.c_str(),
+                          flags)) {
+      for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::environment_names); i++) {
+        const bool is_selected = (environment_item_current_idx == i);
+        if (ImGui::Selectable(pbr_scene::environment_names[i].c_str(),
+                              is_selected)) {
+          // Only called when a different selection is made
+          ((PbrScene*)scene)
+              ->UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(
+                  pbr_scene::environments[i]));
+          environment_item_current_idx = i;
+        }
+
+        // Set the initial focus when opening the combo (scrolling + keyboard
+        // navigation focus)
+        if (is_selected) {
+          ImGui::SetItemDefaultFocus();
+        }
+      }
+      ImGui::EndCombo();
+    }
     ImGui::TreePop();
   }
   if (ImGui::TreeNode("Demo of Imgui")) {

@@ -78,6 +78,6 @@ std::string ConvertEnvironmentToString(const Environment& env) {
 
 std::string ConvertEnvironmentToFilePath(const Environment& env) {
   std::string path_prefix = "resources/assets/textures/hdr/";
-  return path_prefix + environment_names[static_cast<int>(env)];
+  return path_prefix + environment_names[static_cast<int>(env)] + ".hdr";
 }
 };  // namespace pbr_scene
