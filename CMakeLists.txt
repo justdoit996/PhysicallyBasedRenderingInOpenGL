@@ -37,6 +37,9 @@ add_compile_options(-Wunused-variable) # Variable is defined but unused
 set(CMAKE_CXX_STANDARD 17) # Sets C++17 as the default standard
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # Ensures the standard is strictly enforced
 
+## This is for MSVC, the working directory is set to the source dir to get relative paths right.
+set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
 target_link_libraries(pbropengl PRIVATE ${OPENGL_gl_LIBRARY})
 target_link_libraries(pbropengl PRIVATE glfw)
 target_link_libraries(pbropengl PRIVATE glm::glm-header-only)
