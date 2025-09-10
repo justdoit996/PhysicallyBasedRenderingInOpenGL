@@ -30,13 +30,15 @@ void PbrScene::Init() {
   prefilter_shader_ =
       PrefilterShader("resources/shaders/pbr/equirectangular.vs",
                       "resources/shaders/pbr/prefilter_map.fs");
-
   brdf_shader_ = BrdfShader("resources/shaders/pbr/brdf.vs",
                             "resources/shaders/pbr/brdf.fs");
+  light_sphere_shader_ =
+      Shader("resources/shaders/light_sphere/light_sphere.vs",
+             "resources/shaders/light_sphere/light_sphere.fs");
 
   // Load or generate textures
-  UploadPbrTextures("resources/assets/textures/pbr/titanium-scuffed");
-  UploadHdrMap("resources/assets/textures/hdr/qwantani_night_puresky.hdr");
+  UploadPbrTextures("resources/assets/textures/pbr/rusted_iron");
+  UploadHdrMap("resources/assets/textures/hdr/newport_loft.hdr");
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
@@ -59,6 +61,8 @@ void PbrScene::Init() {
                        constants::NEAR, constants::FAR);
   sphere_shader_.Use();
   sphere_shader_.SetMat4("projection", camera_perspective_projection);
+  light_sphere_shader_.Use();
+  light_sphere_shader_.SetMat4("projection", camera_perspective_projection);
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("projection",
                                        camera_perspective_projection);
@@ -205,10 +209,9 @@ void PbrScene::Render() {
   glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_shader_.prefilter_map_texture());
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D, brdf_shader_.brdf_lut_texture());
-  sphere_->Draw();
+  // sphere_->Draw();
 
   // Light sources
-  // Use sphere shader as a light source for testing
   for (int i = 0; i < point_lights_.size(); i++) {
     glm::vec3 newPos = point_lights_[i].position +
                        glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
@@ -217,12 +220,18 @@ void PbrScene::Render() {
                            newPos);
     sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
                            point_lights_[i].color);
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, newPos);
-    model = glm::scale(model, glm::vec3(0.5f));
-    sphere_shader_.SetMat4("model", model);
     sphere_shader_.SetMat3("normalMatrix",
                            glm::transpose(glm::inverse(glm::mat3(model))));
+
+    sphere_->Draw();
+
+    light_sphere_shader_.Use();
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, newPos);
+    model = glm::scale(model, glm::vec3(.5f));
+    light_sphere_shader_.SetMat4("model", model);
+    light_sphere_shader_.SetMat4("view", view);
+    light_sphere_shader_.SetVec3("light_color", point_lights_[i].color);
     sphere_->Draw();
   }
 

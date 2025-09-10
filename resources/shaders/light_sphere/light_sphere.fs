@@ -1,6 +1,9 @@
 #version 330 core
+
+// out
 out vec4 FragColor;
 
+// uniforms
 uniform vec3 light_color;
 
 void main() {

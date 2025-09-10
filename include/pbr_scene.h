@@ -66,6 +66,7 @@ class PbrScene {
   IrradianceCubeMapShader irradiance_cube_map_shader_;
   PrefilterShader prefilter_shader_;
   BrdfShader brdf_shader_;
+  Shader light_sphere_shader_;
 
   // Lights
   std::vector<PointLight> point_lights_;
