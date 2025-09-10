@@ -510,69 +510,68 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
 }
 
 static void ShowDemoWindowWidgets(void* scene) {
-  if (!ImGui::CollapsingHeader("PBR"))
+  if (!ImGui::CollapsingHeader("PBR")) {
     return;
-  if (ImGui::TreeNode("Materials")) {
-    // Expose flags as checkbox for the demo
-    static ImGuiComboFlags flags = 0;
-    // Using the generic BeginCombo() API, you have full control over how to
-    // display the combo contents. (your selection data could be an index, a
-    // pointer to the object, an id for the object, a flag intrusively stored in
-    // the object itself, etc.)
-    // Here we store our selection data as an index.
-    static int item_current_idx = 0;
-    // Label to preview before opening the combo
-    const std::string combo_label = pbr_scene::material_names[item_current_idx];
-    if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
-      for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::material_names); i++) {
-        const bool is_selected = (item_current_idx == i);
-        if (ImGui::Selectable(pbr_scene::material_names[i].c_str(),
-                              is_selected)) {
-          // Only called when a different selection is made
-          ((PbrScene*)scene)
-              ->UploadPbrTextures(pbr_scene::ConvertMaterialToFilePath(
-                  pbr_scene::materials[i]));
-          item_current_idx = i;
-        }
-
-        // Set the initial focus when opening the combo (scrolling + keyboard
-        // navigation focus)
-        if (is_selected) {
-          ImGui::SetItemDefaultFocus();
-        }
-      }
-      ImGui::EndCombo();
-    }
-    static int environment_item_current_idx = 0;
-    // Label to preview before opening the combo
-    const std::string environment_combo_label =
-        pbr_scene::environment_names[environment_item_current_idx];
-    if (ImGui::BeginCombo("Environments", environment_combo_label.c_str(),
-                          flags)) {
-      for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::environment_names); i++) {
-        const bool is_selected = (environment_item_current_idx == i);
-        if (ImGui::Selectable(pbr_scene::environment_names[i].c_str(),
-                              is_selected)) {
-          // Only called when a different selection is made
-          ((PbrScene*)scene)
-              ->UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(
-                  pbr_scene::environments[i]));
-          ((PbrScene*)scene)->InitAllTextureMaps();
-          environment_item_current_idx = i;
-        }
-
-        // Set the initial focus when opening the combo (scrolling + keyboard
-        // navigation focus)
-        if (is_selected) {
-          ImGui::SetItemDefaultFocus();
-        }
-      }
-      ImGui::EndCombo();
-    }
-    ImGui::TreePop();
   }
-  if (ImGui::TreeNode("Demo of Imgui")) {
-    static int clicked = 0;
+  // Expose flags as checkbox for the demo
+  static ImGuiComboFlags flags = 0;
+  // Using the generic BeginCombo() API, you have full control over how to
+  // display the combo contents. (your selection data could be an index, a
+  // pointer to the object, an id for the object, a flag intrusively stored in
+  // the object itself, etc.)
+  // Here we store our selection data as an index.
+  static int item_current_idx = 0;
+  // Label to preview before opening the combo
+  const std::string combo_label = pbr_scene::material_names[item_current_idx];
+  if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
+    for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::material_names); i++) {
+      const bool is_selected = (item_current_idx == i);
+      if (ImGui::Selectable(pbr_scene::material_names[i].c_str(),
+                            is_selected)) {
+        // Only called when a different selection is made
+        ((PbrScene*)scene)
+            ->UploadPbrTextures(
+                pbr_scene::ConvertMaterialToFilePath(pbr_scene::materials[i]));
+        item_current_idx = i;
+      }
+
+      // Set the initial focus when opening the combo (scrolling + keyboard
+      // navigation focus)
+      if (is_selected) {
+        ImGui::SetItemDefaultFocus();
+      }
+    }
+    ImGui::EndCombo();
+  }
+  static int environment_item_current_idx = 0;
+  // Label to preview before opening the combo
+  const std::string environment_combo_label =
+      pbr_scene::environment_names[environment_item_current_idx];
+  if (ImGui::BeginCombo("Environments", environment_combo_label.c_str(),
+                        flags)) {
+    for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::environment_names); i++) {
+      const bool is_selected = (environment_item_current_idx == i);
+      if (ImGui::Selectable(pbr_scene::environment_names[i].c_str(),
+                            is_selected)) {
+        // Only called when a different selection is made
+        ((PbrScene*)scene)
+            ->UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(
+                pbr_scene::environments[i]));
+        ((PbrScene*)scene)->InitAllTextureMaps();
+        environment_item_current_idx = i;
+      }
+
+      // Set the initial focus when opening the combo (scrolling + keyboard
+      // navigation focus)
+      if (is_selected) {
+        ImGui::SetItemDefaultFocus();
+      }
+    }
+    ImGui::EndCombo();
+  }
+
+  /* Uncomment to view demo of imgui widgets
+  if (ImGui::TreeNode("Demo of Imgui Widgets")) { static int clicked = 0;
     if (ImGui::Button("Button"))
       clicked++;
     if (clicked & 1) {
@@ -801,6 +800,7 @@ static void ShowDemoWindowWidgets(void* scene) {
 
     ImGui::TreePop();
   }
+*/
 }
 
 static void ShowDemoWindowLayout() {
