@@ -447,7 +447,8 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
   ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
 
   // Main body of the Demo window starts here.
-  if (!ImGui::Begin("Dear ImGui Demo", p_open, window_flags)) {
+  if (!ImGui::Begin("Physically Based Rendering in OpenGL", p_open,
+                    window_flags)) {
     // Early out if the window is collapsed, as an optimization.
     ImGui::End();
     return;
@@ -496,8 +497,7 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
     ImGui::EndMenuBar();
   }
 
-  if (ImGui::CollapsingHeader("Help")) {
-    ImGui::Text("USER GUIDE:");
+  if (ImGui::CollapsingHeader("USER GUIDE")) {
     ImGui::ShowUserGuide();
   }
 
@@ -510,10 +510,65 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
 }
 
 static void ShowDemoWindowWidgets(void* scene) {
-  if (!ImGui::CollapsingHeader("Widgets"))
+  if (!ImGui::CollapsingHeader("PBR"))
     return;
+  if (ImGui::TreeNode("Materials")) {
+    // Expose flags as checkbox for the demo
+    static ImGuiComboFlags flags = 0;
+    // Using the generic BeginCombo() API, you have full control over how to
+    // display the combo contents. (your selection data could be an index, a
+    // pointer to the object, an id for the object, a flag intrusively stored in
+    // the object itself, etc.)
+    pbr_scene::Material materials[] = {
+        pbr_scene::Material::RUSTED_IRON, pbr_scene::Material::GOLD,
+        pbr_scene::Material::GRASS,       pbr_scene::Material::PLASTIC,
+        pbr_scene::Material::BRICK,
+    };
+    std::string material_names[] = {
+        pbr_scene::ConvertMaterialToString(materials[0]),
+        pbr_scene::ConvertMaterialToString(materials[1]),
+        pbr_scene::ConvertMaterialToString(materials[2]),
+        pbr_scene::ConvertMaterialToString(materials[3]),
+        pbr_scene::ConvertMaterialToString(materials[4]),
+    };
+    // Here we store our selection data as an index.
+    static int item_current_idx = 0;
+    // Label to preview before opening the combo
+    const std::string combo_label = material_names[item_current_idx];
+    // (technically it could be anything)
+    if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
+      for (int n = 0; n < IM_ARRAYSIZE(material_names); n++) {
+        const bool is_selected = (item_current_idx == n);
+        if (ImGui::Selectable(material_names[n].c_str(), is_selected)) {
+          // Only called when a different selection is made
+          ((PbrScene*)scene)
+              ->UploadPbrTextures(
+                  pbr_scene::ConvertMaterialToFilePath(materials[n]));
+          item_current_idx = n;
+        }
 
-  if (ImGui::TreeNode("Basic")) {
+        // Set the initial focus when opening the combo (scrolling + keyboard
+        // navigation focus)
+        if (is_selected) {
+          ImGui::SetItemDefaultFocus();
+        }
+      }
+      ImGui::EndCombo();
+    }
+
+    // Simplified one-liner Combo() using an accessor function
+    // struct Funcs {
+    //   static bool ItemGetter(void* data, int n, const char** out_str) {
+    //     *out_str = ((const char**)data)[n];
+    //     return true;
+    //   }
+    // };
+    // static int item_current_4 = 1;
+    // ImGui::Combo("combo 4 (function)", &item_current_4, &Funcs::ItemGetter,
+    //              items, IM_ARRAYSIZE(items));
+    ImGui::TreePop();
+  }
+  if (ImGui::TreeNode("Demo of Imgui")) {
     static int clicked = 0;
     if (ImGui::Button("Button"))
       clicked++;
@@ -741,62 +796,6 @@ static void ShowDemoWindowWidgets(void* scene) {
           "more flexible and general BeginListBox/EndListBox API.");
     }
 
-    ImGui::TreePop();
-  }
-  if (ImGui::TreeNode("Materials")) {
-    // Expose flags as checkbox for the demo
-    static ImGuiComboFlags flags = 0;
-    // Using the generic BeginCombo() API, you have full control over how to
-    // display the combo contents. (your selection data could be an index, a
-    // pointer to the object, an id for the object, a flag intrusively stored in
-    // the object itself, etc.)
-    pbr_scene::Material materials[] = {
-        pbr_scene::Material::RUSTED_IRON, pbr_scene::Material::GOLD,
-        pbr_scene::Material::GRASS,       pbr_scene::Material::PLASTIC,
-        pbr_scene::Material::BRICK,
-    };
-    std::string material_names[] = {
-        pbr_scene::ConvertMaterialToString(materials[0]),
-        pbr_scene::ConvertMaterialToString(materials[1]),
-        pbr_scene::ConvertMaterialToString(materials[2]),
-        pbr_scene::ConvertMaterialToString(materials[3]),
-        pbr_scene::ConvertMaterialToString(materials[4]),
-    };
-    // Here we store our selection data as an index.
-    static int item_current_idx = 0;
-    // Label to preview before opening the combo
-    const std::string combo_label = material_names[item_current_idx];
-    // (technically it could be anything)
-    if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
-      for (int n = 0; n < IM_ARRAYSIZE(material_names); n++) {
-        const bool is_selected = (item_current_idx == n);
-        if (ImGui::Selectable(material_names[n].c_str(), is_selected)) {
-          // Only called when a different selection is made
-          ((PbrScene*)scene)
-              ->UploadPbrTextures(
-                  pbr_scene::ConvertMaterialToFilePath(materials[n]));
-          item_current_idx = n;
-        }
-
-        // Set the initial focus when opening the combo (scrolling + keyboard
-        // navigation focus)
-        if (is_selected) {
-          ImGui::SetItemDefaultFocus();
-        }
-      }
-      ImGui::EndCombo();
-    }
-
-    // Simplified one-liner Combo() using an accessor function
-    // struct Funcs {
-    //   static bool ItemGetter(void* data, int n, const char** out_str) {
-    //     *out_str = ((const char**)data)[n];
-    //     return true;
-    //   }
-    // };
-    // static int item_current_4 = 1;
-    // ImGui::Combo("combo 4 (function)", &item_current_4, &Funcs::ItemGetter,
-    //              items, IM_ARRAYSIZE(items));
     ImGui::TreePop();
   }
 }
