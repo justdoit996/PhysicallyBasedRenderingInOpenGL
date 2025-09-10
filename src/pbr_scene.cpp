@@ -31,9 +31,9 @@ void PbrScene::Init() {
                             "resources/shaders/pbr/brdf.fs");
 
   // Load or generate textures
-  UploadPbrTextures("resources/assets/textures/pbr/rusted_iron");
+  UploadPbrTextures("resources/assets/textures/pbr/titanium-scuffed-bl");
   equirectangular_to_cube_map_shader_.LoadTextures(
-      "resources/assets/textures/hdr/newport_loft.hdr");
+      "resources/assets/textures/hdr/qwantani_night_puresky.hdr");
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
