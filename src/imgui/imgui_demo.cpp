@@ -524,15 +524,15 @@ static void ShowDemoWindowWidgets(void* scene) {
     // Label to preview before opening the combo
     const std::string combo_label = pbr_scene::material_names[item_current_idx];
     if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
-      for (int n = 0; n < IM_ARRAYSIZE(pbr_scene::material_names); n++) {
-        const bool is_selected = (item_current_idx == n);
-        if (ImGui::Selectable(pbr_scene::material_names[n].c_str(),
+      for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::material_names); i++) {
+        const bool is_selected = (item_current_idx == i);
+        if (ImGui::Selectable(pbr_scene::material_names[i].c_str(),
                               is_selected)) {
           // Only called when a different selection is made
           ((PbrScene*)scene)
               ->UploadPbrTextures(pbr_scene::ConvertMaterialToFilePath(
-                  pbr_scene::materials[n]));
-          item_current_idx = n;
+                  pbr_scene::materials[i]));
+          item_current_idx = i;
         }
 
         // Set the initial focus when opening the combo (scrolling + keyboard

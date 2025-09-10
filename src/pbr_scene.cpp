@@ -35,7 +35,7 @@ void PbrScene::Init() {
                             "resources/shaders/pbr/brdf.fs");
 
   // Load or generate textures
-  UploadPbrTextures("resources/assets/textures/pbr/titanium-scuffed-bl");
+  UploadPbrTextures("resources/assets/textures/pbr/titanium-scuffed");
   UploadHdrMap("resources/assets/textures/hdr/qwantani_night_puresky.hdr");
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
