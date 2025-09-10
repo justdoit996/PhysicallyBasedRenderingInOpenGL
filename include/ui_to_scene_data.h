@@ -28,11 +28,14 @@ extern std::string material_names[9];
 enum Environment {
   NEWPORT_LOFT = 0,
   CITRUS_ORCHARD_PURESKY = 1,
-  QUANTANI_NIGHT_PURESKY = 2
+  QUANTANI_NIGHT_PURESKY = 2,
+  NIGHT_PORT = 3,
+  SUNNY_FIELD = 4,
+  SUNNY_SNOW = 5,
 };
 
-extern Environment environments[3];
-extern std::string environment_names[3];
+extern Environment environments[6];
+extern std::string environment_names[6];
 
 std::string ConvertEnvironmentToString(const Environment& env);
 std::string ConvertEnvironmentToFilePath(const Environment& env_path);

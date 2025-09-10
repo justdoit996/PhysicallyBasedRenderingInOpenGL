@@ -57,16 +57,15 @@ void GameWindow::LoadContent() {
   camera_ =
       std::make_unique<Camera>(/*starting position*/ glm::vec3(0, 0, 3.0));
   scene_ = std::make_unique<PbrScene>(camera_.get());
+}
 
-  // TODO: Move this inside scene class?
+void GameWindow::Render() {
   // Before rendering, configure the viewport to the original framebuffer's
   // screen dimensions
   int scrWidth, scrHeight;
   glfwGetFramebufferSize(this->windowHandle, &scrWidth, &scrHeight);
   glViewport(0, 0, scrWidth, scrHeight);
-}
 
-void GameWindow::Render() {
   // Draw PBR scene
   scene_->Render();
 
@@ -123,10 +122,7 @@ void GameWindow::ProcessKeyboardInput() {
   if (glfwGetKey(this->windowHandle, GLFW_KEY_SPACE) == GLFW_PRESS) {
     camera_->ProcessKeyboard(UP, delta_time_);
   }
-  if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    camera_->ProcessKeyboard(DOWN, delta_time_);
-  }
-  if (glfwGetKey(this->windowHandle, GLFW_KEY_P) == GLFW_PRESS &&
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS &&
       !pause_key_pressed_) {
     pause_key_pressed_ = true;
     mouse_camera_enabled_ = !mouse_camera_enabled_;
@@ -134,7 +130,7 @@ void GameWindow::ProcessKeyboardInput() {
         this->windowHandle, GLFW_CURSOR,
         mouse_camera_enabled_ ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
   }
-  if (glfwGetKey(this->windowHandle, GLFW_KEY_P) == GLFW_RELEASE) {
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
     pause_key_pressed_ = false;
   }
 }
