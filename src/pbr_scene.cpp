@@ -8,6 +8,10 @@ void PbrScene::UploadPbrTextures(const std::string& path) {
   sphere_shader_.LoadTextures(path);
 }
 
+void PbrScene::UploadHdrMap(const std::string& path) {
+  equirectangular_to_cube_map_shader_.LoadTextures(path);
+}
+
 void PbrScene::Init() {
   // Shaders
   sphere_shader_ = SphereShader("resources/shaders/pbr/sphere.vs",
@@ -32,8 +36,7 @@ void PbrScene::Init() {
 
   // Load or generate textures
   UploadPbrTextures("resources/assets/textures/pbr/titanium-scuffed-bl");
-  equirectangular_to_cube_map_shader_.LoadTextures(
-      "resources/assets/textures/hdr/qwantani_night_puresky.hdr");
+  UploadHdrMap("resources/assets/textures/hdr/qwantani_night_puresky.hdr");
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();

@@ -535,7 +535,6 @@ static void ShowDemoWindowWidgets(void* scene) {
     static int item_current_idx = 0;
     // Label to preview before opening the combo
     const std::string combo_label = material_names[item_current_idx];
-    // (technically it could be anything)
     if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
       for (int n = 0; n < IM_ARRAYSIZE(material_names); n++) {
         const bool is_selected = (item_current_idx == n);
@@ -543,6 +542,26 @@ static void ShowDemoWindowWidgets(void* scene) {
           // Only called when a different selection is made
           ((PbrScene*)scene)
               ->UploadPbrTextures(
+                  pbr_scene::ConvertMaterialToFilePath(materials[n]));
+          item_current_idx = n;
+        }
+
+        // Set the initial focus when opening the combo (scrolling + keyboard
+        // navigation focus)
+        if (is_selected) {
+          ImGui::SetItemDefaultFocus();
+        }
+      }
+      ImGui::EndCombo();
+    }
+    if (ImGui::BeginCombo("Environments (Skyboxes)", combo_label.c_str(),
+                          flags)) {
+      for (int n = 0; n < IM_ARRAYSIZE(material_names); n++) {
+        const bool is_selected = (item_current_idx == n);
+        if (ImGui::Selectable(material_names[n].c_str(), is_selected)) {
+          // Only called when a different selection is made
+          ((PbrScene*)scene)
+              ->UploadHdrMap(
                   pbr_scene::ConvertMaterialToFilePath(materials[n]));
           item_current_idx = n;
         }
