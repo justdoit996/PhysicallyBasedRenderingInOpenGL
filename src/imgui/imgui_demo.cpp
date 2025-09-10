@@ -557,6 +557,7 @@ static void ShowDemoWindowWidgets(void* scene) {
           ((PbrScene*)scene)
               ->UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(
                   pbr_scene::environments[i]));
+          ((PbrScene*)scene)->InitAllTextureMaps();
           environment_item_current_idx = i;
         }
 
