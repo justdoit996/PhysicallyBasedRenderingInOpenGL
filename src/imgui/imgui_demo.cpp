@@ -786,6 +786,7 @@ static void ShowDemoWindowWidgets(void* scene) {
       }
       ImGui::EndCombo();
     }
+
     // Simplified one-liner Combo() using an accessor function
     // struct Funcs {
     //   static bool ItemGetter(void* data, int n, const char** out_str) {

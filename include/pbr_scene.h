@@ -26,12 +26,14 @@ class PbrScene {
   PbrScene(Camera* camera);
   void Render();
   void UploadPbrTextures(const std::string& path);
-
- private:
-  void Init();
+  // Called AFTER Init().
+  // Can be used after loading new environment (hdr) maps
   // Performs all pre-computations/convolutions, look-up tables, and
   // framebuffers necessary before rendering loop.
   void InitAllTextureMaps();
+
+ private:
+  void Init();
   void ConvertEquirectangularTextureToCubeMap();
   // Diffuse part of PBR
   // Pre convolve cube map to construct an irradiance cubemap texture.

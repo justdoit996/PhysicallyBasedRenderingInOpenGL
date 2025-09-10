@@ -1,6 +1,5 @@
 Sept 9th
 - Interactive UI
-  - combo box for different materials
   - combo box for different skyboxes e.g. night, day skyboxes
   - slider (float) for varying constants in rendering equation
   - direct (point) and indirect (IBL) lighting
