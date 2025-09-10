@@ -13,14 +13,15 @@ enum Material {
   BRICK = 4,
 };
 
+std::string ConvertMaterialToString(const Material& material);
+std::string ConvertMaterialToFilePath(const Material& material);
+
+extern pbr_scene::Material materials[5];
+extern std::string material_names[5];
+
 enum Environment {
   SKY_LOFT = 0,
 };
-
-struct UiToSceneData {};
-
-std::string ConvertMaterialToString(const Material& material);
-std::string ConvertMaterialToFilePath(const Material& material);
 
 }  // namespace pbr_scene
 #endif

@@ -2,6 +2,19 @@
 
 namespace pbr_scene {
 
+pbr_scene::Material materials[] = {
+    pbr_scene::Material::RUSTED_IRON, pbr_scene::Material::GOLD,
+    pbr_scene::Material::GRASS,       pbr_scene::Material::PLASTIC,
+    pbr_scene::Material::BRICK,
+};
+std::string material_names[] = {
+    pbr_scene::ConvertMaterialToString(materials[0]),
+    pbr_scene::ConvertMaterialToString(materials[1]),
+    pbr_scene::ConvertMaterialToString(materials[2]),
+    pbr_scene::ConvertMaterialToString(materials[3]),
+    pbr_scene::ConvertMaterialToString(materials[4]),
+};
+
 std::string ConvertMaterialToString(const Material& material) {
   switch (material) {
     case Material::RUSTED_IRON:
