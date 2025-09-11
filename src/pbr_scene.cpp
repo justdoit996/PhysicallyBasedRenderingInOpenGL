@@ -213,9 +213,16 @@ void PbrScene::Render() {
 
   // Light sources
   for (int i = 0; i < point_lights_.size(); i++) {
+    // Light cube's revolution
+    float radius_of_revolution = 4.5f;
+    // New position for light cube
     glm::vec3 newPos = point_lights_[i].position +
-                       glm::vec3(sin(glfwGetTime()) * 5.0, 0.0, 0.0);
-    // newPos = point_lights_[i].position;
+                       glm::vec3(point_lights_[i].position.x +
+                                     radius_of_revolution * cos(glfwGetTime()),
+                                 point_lights_[i].position.y +
+                                     radius_of_revolution * sin(glfwGetTime()),
+                                 0);
+    // Add missing direct light properties in sphere shader
     sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
                            newPos);
     sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
@@ -224,6 +231,7 @@ void PbrScene::Render() {
                            glm::transpose(glm::inverse(glm::mat3(model))));
     sphere_->Draw();
 
+    // Render the light cube
     light_sphere_shader_.Use();
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, newPos);
@@ -238,12 +246,5 @@ void PbrScene::Render() {
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
   environment_cube_map_shader_.BindAllTextures();
-  //  prefilter_shader_.Use();
-  //  prefilter_shader_.SetMat4("view", view);
-  // prefilter_shader_.BindAllTextures();
   cube_map_cube_->Draw();
-
-  // for testing quad
-  // brdf_shader_.Use();
-  // quad_->Draw();
 }
