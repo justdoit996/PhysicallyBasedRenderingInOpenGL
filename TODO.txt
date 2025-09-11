@@ -1,9 +1,5 @@
 Sept 9th
-  - checkbox toggle for light sphere visibility
-  - checkbox toggle for environment visibility
-  - RGB slider for light sphere color
-  - slider for light sphere intensity
-
-
 - Interactive UI
+	- checkbox toggle for environment visibility
 	- custom pbr material with sliders for albedo, metallic, roughness, ao
+

@@ -53,7 +53,7 @@ void PbrScene::Init() {
 
   // Light sources
   point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
-                            /*color*/ glm::vec3(200.0f, 200.0f, 0.0f));
+                            /*color*/ glm::vec3(1.0f, 1.0f, 1.0f));
 
   // Bind projection uniform for camera shader (only need once)
   glm::mat4 camera_perspective_projection =
@@ -222,7 +222,7 @@ void PbrScene::Render() {
   // TODO: Toggle on/off point light source
   sphere_shader_.SetBool("pointLightEnabled", point_light_enabled_);
   sphere_shader_.SetVec3("pointLight.Position", newPos);
-  sphere_shader_.SetVec3("pointLight.Color", point_light_.color);
+  sphere_shader_.SetVec3("pointLight.Color", point_light_.GetColorLuminance());
   sphere_shader_.SetMat3("normalMatrix",
                          glm::transpose(glm::inverse(glm::mat3(model))));
   sphere_->Draw();
@@ -235,7 +235,7 @@ void PbrScene::Render() {
     model = glm::scale(model, glm::vec3(.5f));
     light_sphere_shader_.SetMat4("model", model);
     light_sphere_shader_.SetMat4("view", view);
-    light_sphere_shader_.SetVec3("light_color", point_light_.color);
+    light_sphere_shader_.SetVec3("light_color", point_light_.GetColorLuminance());
     sphere_->Draw();
   }
 
@@ -248,4 +248,20 @@ void PbrScene::Render() {
 
 void PbrScene::SetPointLightEnabled(bool enable) {
   point_light_enabled_ = enable;
+}
+
+void PbrScene::SetRedColor(unsigned int r) {
+  point_light_.color.r = r / 255.f;
+}
+
+void PbrScene::SetGreenColor(unsigned int g) {
+  point_light_.color.g = g / 255.f;
+}
+
+void PbrScene::SetBlueColor(unsigned int b) {
+  point_light_.color.b = b / 255.f;
+}
+
+void PbrScene::SetLightIntensity(float intense) {
+  point_light_.SetIntensity(intense);
 }

@@ -33,6 +33,10 @@ class PbrScene {
   // framebuffers necessary before rendering loop.
   void InitAllTextureMaps();
   void SetPointLightEnabled(bool enable);
+  void SetRedColor(unsigned int r);
+  void SetGreenColor(unsigned int g);
+  void SetBlueColor(unsigned int b);
+  void SetLightIntensity(float intense);
 
  private:
   void Init();

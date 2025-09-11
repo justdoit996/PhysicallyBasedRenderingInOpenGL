@@ -569,6 +569,8 @@ static void ShowDemoWindowWidgets(void* scene) {
     }
     ImGui::EndCombo();
   }
+  // Light sphere settings
+  // Checkbox Toggle
   static bool revolving_light_enabled = false;
   if (ImGui::Checkbox("Enable Revolving Light", &revolving_light_enabled)) {
     if (revolving_light_enabled) {
@@ -578,6 +580,24 @@ static void ShowDemoWindowWidgets(void* scene) {
       std::cout << "revolving light is off" << std::endl;
       ((PbrScene*)scene)->SetPointLightEnabled(false);
     }
+  }
+  // RGB Sliders
+  ImGui::BulletText("RGB of Light Sphere");
+  static int red = 255;
+  if (ImGui::SliderInt("Red Color", &red, 0, 255)) {
+    ((PbrScene*)scene)->SetRedColor(red);
+  }
+  static int green = 255;
+  if (ImGui::SliderInt("Green Color", &green, 0, 255)) {
+    ((PbrScene*)scene)->SetGreenColor(green);
+  }
+  static int blue = 255;
+  if (ImGui::SliderInt("Blue Color", &blue, 0, 255)) {
+    ((PbrScene*)scene)->SetBlueColor(blue);
+  }
+  static float intensity = 1.f;
+  if (ImGui::SliderFloat("Light Intensity", &intensity, 0, 1000.f)) {
+    ((PbrScene*)scene)->SetLightIntensity(intensity);
   }
 
   // Uncomment to view demo of imgui widgets
