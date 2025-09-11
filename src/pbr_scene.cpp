@@ -220,7 +220,7 @@ void PbrScene::Render() {
           point_light_.position.z + radius_of_revolution * sin(glfwGetTime()));
   // Add direct light properties in sphere shader
   // TODO: Toggle on/off point light source
-  sphere_shader_.SetBool("pointLightEnabled", true);
+  sphere_shader_.SetBool("pointLightEnabled", point_light_enabled_);
   sphere_shader_.SetVec3("pointLight.Position", newPos);
   sphere_shader_.SetVec3("pointLight.Color", point_light_.color);
   sphere_shader_.SetMat3("normalMatrix",
@@ -228,18 +228,24 @@ void PbrScene::Render() {
   sphere_->Draw();
 
   // Render the light cube
-  light_sphere_shader_.Use();
-  model = glm::mat4(1.0f);
-  model = glm::translate(model, newPos);
-  model = glm::scale(model, glm::vec3(.5f));
-  light_sphere_shader_.SetMat4("model", model);
-  light_sphere_shader_.SetMat4("view", view);
-  light_sphere_shader_.SetVec3("light_color", point_light_.color);
-  sphere_->Draw();
+  if (point_light_enabled_) {
+    light_sphere_shader_.Use();
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, newPos);
+    model = glm::scale(model, glm::vec3(.5f));
+    light_sphere_shader_.SetMat4("model", model);
+    light_sphere_shader_.SetMat4("view", view);
+    light_sphere_shader_.SetVec3("light_color", point_light_.color);
+    sphere_->Draw();
+  }
 
   // Render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();
   environment_cube_map_shader_.SetMat4("view", view);
   environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
+}
+
+void PbrScene::SetPointLightEnabled(bool enable) {
+  point_light_enabled_ = enable;
 }

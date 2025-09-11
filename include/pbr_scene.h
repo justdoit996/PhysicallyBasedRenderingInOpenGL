@@ -32,6 +32,7 @@ class PbrScene {
   // Performs all pre-computations/convolutions, look-up tables, and
   // framebuffers necessary before rendering loop.
   void InitAllTextureMaps();
+  void SetPointLightEnabled(bool enable);
 
  private:
   void Init();
@@ -68,8 +69,9 @@ class PbrScene {
   BrdfShader brdf_shader_;
   Shader light_sphere_shader_;
 
-  // Point Light
+  // Point Light Sphere
   PointLight point_light_;
+  bool point_light_enabled_ = false;
 
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection_ =

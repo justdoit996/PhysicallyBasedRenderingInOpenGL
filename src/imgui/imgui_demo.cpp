@@ -569,9 +569,20 @@ static void ShowDemoWindowWidgets(void* scene) {
     }
     ImGui::EndCombo();
   }
+  static bool revolving_light_enabled = false;
+  if (ImGui::Checkbox("Enable Revolving Light", &revolving_light_enabled)) {
+    if (revolving_light_enabled) {
+      std::cout << "revolving light is on" << std::endl;
+      ((PbrScene*)scene)->SetPointLightEnabled(true);
+    } else {
+      std::cout << "revolving light is off" << std::endl;
+      ((PbrScene*)scene)->SetPointLightEnabled(false);
+    }
+  }
 
-  /* Uncomment to view demo of imgui widgets
-  if (ImGui::TreeNode("Demo of Imgui Widgets")) { static int clicked = 0;
+  // Uncomment to view demo of imgui widgets
+  if (ImGui::TreeNode("Demo of Imgui Widgets")) {
+    static int clicked = 0;
     if (ImGui::Button("Button"))
       clicked++;
     if (clicked & 1) {
@@ -800,7 +811,6 @@ static void ShowDemoWindowWidgets(void* scene) {
 
     ImGui::TreePop();
   }
-*/
 }
 
 static void ShowDemoWindowLayout() {
