@@ -52,8 +52,8 @@ void PbrScene::Init() {
   InitAllTextureMaps();
 
   // Light sources
-  point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 10.0f),
-                             /*color*/ glm::vec3(150.0f, 150.0f, 150.0f));
+  point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
+                             /*color*/ glm::vec3(200.0f, 200.0f, 0.0f));
 
   // Bind projection uniform for camera shader (only need once)
   glm::mat4 camera_perspective_projection =
@@ -214,14 +214,14 @@ void PbrScene::Render() {
   // Light sources
   for (int i = 0; i < point_lights_.size(); i++) {
     // Light cube's revolution
-    float radius_of_revolution = 4.5f;
+    float radius_of_revolution = 10.f;
     // New position for light cube
     glm::vec3 newPos = point_lights_[i].position +
                        glm::vec3(point_lights_[i].position.x +
                                      radius_of_revolution * cos(glfwGetTime()),
-                                 point_lights_[i].position.y +
-                                     radius_of_revolution * sin(glfwGetTime()),
-                                 0);
+                                 0,
+                                 point_lights_[i].position.z +
+                                     radius_of_revolution * sin(glfwGetTime()));
     // Add missing direct light properties in sphere shader
     sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
                            newPos);
