@@ -28,8 +28,8 @@ struct PointLight {
   vec3 Position;
   vec3 Color;
 };
-#define NR_POINT_LIGHTS 1
-uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform PointLight pointLight;
+uniform bool pointLightEnabled;
 
 const float PI = 3.14159265359;
 
@@ -60,13 +60,13 @@ void main() {
 
   // reflectance equation
   vec3 Lo = vec3(0.0);
-  for (int i = 0; i < NR_POINT_LIGHTS; ++i) {
+  if (pointLightEnabled) {
     // calculate incoming radiance (Li) per-light source
-    vec3 L = normalize(pointLights[i].Position - WorldPos);
+    vec3 L = normalize(pointLight.Position - WorldPos);
     vec3 H = normalize(V + L);
-    float distance = length(pointLights[i].Position - WorldPos);
+    float distance = length(pointLight.Position - WorldPos);
     float attenuation = 1.0 / (distance * distance);
-    vec3 incoming_radiance = pointLights[i].Color * attenuation;
+    vec3 incoming_radiance = pointLight.Color * attenuation;
 
     // Cook-Torrance BRDF
     float NDF = TrowbridgeReitzGGX(N, H, roughness);

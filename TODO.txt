@@ -1,6 +1,6 @@
 Sept 9th
-  - checkbox for light sphere visibility
-  - checkbox for environment visibility
+  - checkbox toggle for light sphere visibility
+  - checkbox toggle for environment visibility
   - RGB slider for light sphere color
   - slider for light sphere intensity
 

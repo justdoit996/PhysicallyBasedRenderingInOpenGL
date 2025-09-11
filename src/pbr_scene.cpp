@@ -52,8 +52,8 @@ void PbrScene::Init() {
   InitAllTextureMaps();
 
   // Light sources
-  point_lights_.emplace_back(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
-                             /*color*/ glm::vec3(200.0f, 200.0f, 0.0f));
+  point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
+                            /*color*/ glm::vec3(200.0f, 200.0f, 0.0f));
 
   // Bind projection uniform for camera shader (only need once)
   glm::mat4 camera_perspective_projection =
@@ -190,7 +190,7 @@ void PbrScene::Render() {
   // black
   glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   // cyan
-  //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glm::mat4 model = glm::mat4(1.0f);
@@ -209,38 +209,33 @@ void PbrScene::Render() {
   glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_shader_.prefilter_map_texture());
   glActiveTexture(GL_TEXTURE7);
   glBindTexture(GL_TEXTURE_2D, brdf_shader_.brdf_lut_texture());
-  // sphere_->Draw();
 
-  // Light sources
-  for (int i = 0; i < point_lights_.size(); i++) {
-    // Light cube's revolution
-    float radius_of_revolution = 10.f;
-    // New position for light cube
-    glm::vec3 newPos = point_lights_[i].position +
-                       glm::vec3(point_lights_[i].position.x +
-                                     radius_of_revolution * cos(glfwGetTime()),
-                                 0,
-                                 point_lights_[i].position.z +
-                                     radius_of_revolution * sin(glfwGetTime()));
-    // Add missing direct light properties in sphere shader
-    sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
-                           newPos);
-    sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Color",
-                           point_lights_[i].color);
-    sphere_shader_.SetMat3("normalMatrix",
-                           glm::transpose(glm::inverse(glm::mat3(model))));
-    sphere_->Draw();
+  // New position for light cube
+  float radius_of_revolution = 10.f;
+  glm::vec3 newPos =
+      point_light_.position +
+      glm::vec3(
+          point_light_.position.x + radius_of_revolution * cos(glfwGetTime()),
+          0,
+          point_light_.position.z + radius_of_revolution * sin(glfwGetTime()));
+  // Add direct light properties in sphere shader
+  // TODO: Toggle on/off point light source
+  sphere_shader_.SetBool("pointLightEnabled", true);
+  sphere_shader_.SetVec3("pointLight.Position", newPos);
+  sphere_shader_.SetVec3("pointLight.Color", point_light_.color);
+  sphere_shader_.SetMat3("normalMatrix",
+                         glm::transpose(glm::inverse(glm::mat3(model))));
+  sphere_->Draw();
 
-    // Render the light cube
-    light_sphere_shader_.Use();
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, newPos);
-    model = glm::scale(model, glm::vec3(.5f));
-    light_sphere_shader_.SetMat4("model", model);
-    light_sphere_shader_.SetMat4("view", view);
-    light_sphere_shader_.SetVec3("light_color", point_lights_[i].color);
-    sphere_->Draw();
-  }
+  // Render the light cube
+  light_sphere_shader_.Use();
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, newPos);
+  model = glm::scale(model, glm::vec3(.5f));
+  light_sphere_shader_.SetMat4("model", model);
+  light_sphere_shader_.SetMat4("view", view);
+  light_sphere_shader_.SetVec3("light_color", point_light_.color);
+  sphere_->Draw();
 
   // Render skybox (render background last to prevent overdrawing)
   environment_cube_map_shader_.Use();

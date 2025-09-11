@@ -5,6 +5,7 @@
 
 class PointLight {
  public:
+  PointLight() = default;
   PointLight(const glm::vec3& position, const glm::vec3& color);
   PointLight(glm::vec3&& position, glm::vec3&& color);
 

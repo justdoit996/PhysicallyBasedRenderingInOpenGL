@@ -68,8 +68,8 @@ class PbrScene {
   BrdfShader brdf_shader_;
   Shader light_sphere_shader_;
 
-  // Lights
-  std::vector<PointLight> point_lights_;
+  // Point Light
+  PointLight point_light_;
 
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection_ =
