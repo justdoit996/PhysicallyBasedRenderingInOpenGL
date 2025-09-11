@@ -54,21 +54,21 @@ std::string ConvertMaterialToFilePath(const Material& material) {
   return path_prefix + material_names[static_cast<int>(material)];
 }
 
-Environment environments[6] = {Environment::NEWPORT_LOFT,
+Environment environments[] = {Environment::NEWPORT_LOFT,
                                Environment::CITRUS_ORCHARD_PURESKY,
                                Environment::QUANTANI_NIGHT_PURESKY,
                                Environment::NIGHT_PORT,
 							   Environment::SUNNY_FIELD,
 							   Environment::SUNNY_SNOW,
-};
-std::string environment_names[6] = {
+                              Environment::BLUE_NEBULA};
+std::string environment_names[] = {
     ConvertEnvironmentToString(Environment::NEWPORT_LOFT),
     ConvertEnvironmentToString(Environment::CITRUS_ORCHARD_PURESKY),
     ConvertEnvironmentToString(Environment::QUANTANI_NIGHT_PURESKY),
     ConvertEnvironmentToString(Environment::NIGHT_PORT),
     ConvertEnvironmentToString(Environment::SUNNY_FIELD),
     ConvertEnvironmentToString(Environment::SUNNY_SNOW),
-};
+    ConvertEnvironmentToString(Environment::BLUE_NEBULA)};
 
 std::string ConvertEnvironmentToString(const Environment& env) {
   switch (env) {
@@ -84,6 +84,8 @@ std::string ConvertEnvironmentToString(const Environment& env) {
       return "sunny_field";
     case Environment::SUNNY_SNOW:
       return "sunny_snow";
+    case Environment::BLUE_NEBULA:
+      return "blue_nebula";
     default:
       return "ERORR: ENVIRONMENT NOT FOUND";
   }

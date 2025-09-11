@@ -17,12 +17,13 @@ enum Material {
   RED_SCIFI_METAL = 7,
   TITANIUM_SCUFFED = 8
 };
+const int max_materials = 9;
 
 std::string ConvertMaterialToString(const Material& material);
 std::string ConvertMaterialToFilePath(const Material& material_path);
 
-extern Material materials[9];
-extern std::string material_names[9];
+extern Material materials[max_materials];
+extern std::string material_names[max_materials];
 
 // HDR environments aka Skybox
 enum Environment {
@@ -32,10 +33,12 @@ enum Environment {
   NIGHT_PORT = 3,
   SUNNY_FIELD = 4,
   SUNNY_SNOW = 5,
+  BLUE_NEBULA = 6,
 };
+const int max_environments = 7;
 
-extern Environment environments[6];
-extern std::string environment_names[6];
+extern Environment environments[max_environments];
+extern std::string environment_names[max_environments];
 
 std::string ConvertEnvironmentToString(const Environment& env);
 std::string ConvertEnvironmentToFilePath(const Environment& env_path);

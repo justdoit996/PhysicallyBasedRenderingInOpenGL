@@ -1,14 +1,9 @@
 Sept 9th
-
-- Create new combo box for environments
-- Get more pbr materials online
-- Make a shader for the point light source
+  - checkbox for light sphere visibility
+  - checkbox for environment visibility
+  - RGB slider for light sphere color
+  - slider for light sphere intensity
 
 
 - Interactive UI
-  - combo box for different skyboxes e.g. night, day skyboxes
   - slider (float) for varying constants in rendering equation
-  - direct (point) and indirect (IBL) lighting
-  - option for changing the number of randomly generated point lights
-  - option to randomly revolve point lights?
-  - option to gamma correct?
