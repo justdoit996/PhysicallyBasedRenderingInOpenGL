@@ -214,7 +214,7 @@ void PbrScene::Render() {
   // Light sources
   for (int i = 0; i < point_lights_.size(); i++) {
     glm::vec3 newPos = point_lights_[i].position +
-                       glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
+                       glm::vec3(sin(glfwGetTime()) * 5.0, 0.0, 0.0);
     // newPos = point_lights_[i].position;
     sphere_shader_.SetVec3("pointLights[" + std::to_string(i) + "].Position",
                            newPos);
@@ -222,7 +222,6 @@ void PbrScene::Render() {
                            point_lights_[i].color);
     sphere_shader_.SetMat3("normalMatrix",
                            glm::transpose(glm::inverse(glm::mat3(model))));
-
     sphere_->Draw();
 
     light_sphere_shader_.Use();
