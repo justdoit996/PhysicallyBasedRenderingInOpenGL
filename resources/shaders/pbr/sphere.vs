@@ -12,8 +12,7 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform mat3 normalMatrix;
 
-void main()
-{
+void main() {
     WorldPos = vec3(model * vec4(aPos, 1.0));
     TexCoords = aTexCoords;
     Normal = normalMatrix * aNormal;

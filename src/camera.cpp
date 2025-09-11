@@ -12,6 +12,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
   pitch_ = pitch;
   updateCameraVectors();
 }
+
 // constructor with scalar values
 Camera::Camera(float posX,
                float posY,
