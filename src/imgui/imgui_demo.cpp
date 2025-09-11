@@ -277,37 +277,14 @@ static void HelpMarker(const char* desc) {
 
 // Helper to display basic user controls.
 void ImGui::ShowUserGuide() {
-  ImGuiIO& io = ImGui::GetIO();
-  ImGui::BulletText("Double-click on title bar to collapse window.");
-  ImGui::BulletText(
-      "Click and drag on lower corner to resize window\n"
-      "(double-click to auto fit window to its contents).");
-  ImGui::BulletText(
-      "CTRL+Click on a slider or drag box to input value as text.");
-  ImGui::BulletText("TAB/SHIFT+TAB to cycle through keyboard editable fields.");
-  if (io.FontAllowUserScaling)
-    ImGui::BulletText("CTRL+Mouse Wheel to zoom window contents.");
-  ImGui::BulletText("While inputing text:\n");
-  ImGui::Indent();
-  ImGui::BulletText("CTRL+Left/Right to word jump.");
-  ImGui::BulletText("CTRL+A or double-click to select all.");
-  ImGui::BulletText("CTRL+X/C/V to use clipboard cut/copy/paste.");
-  ImGui::BulletText("CTRL+Z,CTRL+Y to undo/redo.");
-  ImGui::BulletText("ESCAPE to revert.");
-  ImGui::BulletText(
-      "You can apply arithmetic operators +,*,/ on numerical values.\nUse +- "
-      "to subtract.");
-  ImGui::Unindent();
-  ImGui::BulletText("With keyboard navigation enabled:");
-  ImGui::Indent();
-  ImGui::BulletText("Arrow keys to navigate.");
-  ImGui::BulletText("Space to activate a widget.");
-  ImGui::BulletText("Return to input text into a widget.");
-  ImGui::BulletText(
-      "Escape to deactivate a widget, close popup, exit child window.");
-  ImGui::BulletText("Alt to jump to the menu layer of a window.");
-  ImGui::BulletText("CTRL+Tab to select a window.");
-  ImGui::Unindent();
+  ImGui::Text("Keyboard movement");
+  ImGui::BulletText("Forward: W");
+  ImGui::BulletText("Backward: S");
+  ImGui::BulletText("Left: A");
+  ImGui::BulletText("Right: D");
+  ImGui::BulletText("Up: Space");
+  ImGui::BulletText("Down: Shift");
+  ImGui::BulletText("Press ESC key to bind/unbind mouse from camera");
 }
 
 //-----------------------------------------------------------------------------
@@ -497,12 +474,14 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
     ImGui::EndMenuBar();
   }
 
-  if (ImGui::CollapsingHeader("USER GUIDE")) {
+  if (ImGui::CollapsingHeader("USER GUIDE", ImGuiTreeNodeFlags_DefaultOpen)) {
     ImGui::ShowUserGuide();
   }
 
   // All demo contents
-  ShowDemoWindowWidgets(scene);
+  if (ImGui::CollapsingHeader("PBR", ImGuiTreeNodeFlags_DefaultOpen)) {
+    ShowDemoWindowWidgets(scene);
+  }
 
   // End of ShowDemoWindow()
   ImGui::PopItemWidth();
@@ -510,9 +489,6 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
 }
 
 static void ShowDemoWindowWidgets(void* scene) {
-  if (!ImGui::CollapsingHeader("PBR")) {
-    return;
-  }
   // Expose flags as checkbox for the demo
   static ImGuiComboFlags flags = 0;
   // Using the generic BeginCombo() API, you have full control over how to
@@ -541,6 +517,7 @@ static void ShowDemoWindowWidgets(void* scene) {
         ImGui::SetItemDefaultFocus();
       }
     }
+    ImGui::SameLine();
     ImGui::EndCombo();
   }
   static int environment_item_current_idx = 0;
@@ -572,17 +549,15 @@ static void ShowDemoWindowWidgets(void* scene) {
   // Light sphere settings
   // Checkbox Toggle
   static bool revolving_light_enabled = false;
-  if (ImGui::Checkbox("Enable Revolving Light", &revolving_light_enabled)) {
+  if (ImGui::Checkbox("Enable Light Sphere", &revolving_light_enabled)) {
     if (revolving_light_enabled) {
-      std::cout << "revolving light is on" << std::endl;
       ((PbrScene*)scene)->SetPointLightEnabled(true);
     } else {
-      std::cout << "revolving light is off" << std::endl;
       ((PbrScene*)scene)->SetPointLightEnabled(false);
     }
   }
   // RGB Sliders
-  ImGui::BulletText("RGB of Light Sphere");
+  ImGui::Text("RGB of Light Sphere");
   static int red = 255;
   if (ImGui::SliderInt("Red Color", &red, 0, 255)) {
     ((PbrScene*)scene)->SetRedColor(red);
@@ -601,6 +576,7 @@ static void ShowDemoWindowWidgets(void* scene) {
   }
 
   // Uncomment to view demo of imgui widgets
+  /*
   if (ImGui::TreeNode("Demo of Imgui Widgets")) {
     static int clicked = 0;
     if (ImGui::Button("Button"))
@@ -831,6 +807,7 @@ static void ShowDemoWindowWidgets(void* scene) {
 
     ImGui::TreePop();
   }
+*/
 }
 
 static void ShowDemoWindowLayout() {
