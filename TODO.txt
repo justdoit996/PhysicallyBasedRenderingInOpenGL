@@ -6,4 +6,4 @@ Sept 9th
 
 
 - Interactive UI
-  - slider (float) for varying constants in rendering equation
+	- custom pbr material with sliders for albedo, metallic, roughness, ao
