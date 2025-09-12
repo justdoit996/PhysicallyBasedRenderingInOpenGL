@@ -8,7 +8,7 @@ void IrradianceCubeMapShader::GenerateTextures() {
   glGenTextures(1, &irradiance_map_texture_);
   glBindTexture(GL_TEXTURE_CUBE_MAP, irradiance_map_texture_);
   for (unsigned int i = 0; i < 6; ++i) {
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0,
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 64, 64, 0,
                  GL_RGB, GL_FLOAT, nullptr);
   }
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

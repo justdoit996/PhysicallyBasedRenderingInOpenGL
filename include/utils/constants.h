@@ -199,10 +199,8 @@ const float skybox_vertices[] = {
     -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
     1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
 
-const std::vector<std::string> SKYBOX_TEXTURE_FACES = {
-    "assets/skybox/right.jpg", "assets/skybox/left.jpg",
-    "assets/skybox/top.jpg",   "assets/skybox/bottom.jpg",
-    "assets/skybox/front.jpg", "assets/skybox/back.jpg"};
+
+const int environment_cubemap_width = 1024;
 
 };  // namespace constants
 
