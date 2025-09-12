@@ -9,7 +9,7 @@ Material materials[] = {Material::RUSTED_IRON,
                         Material::BRICK,
                         Material::OAK_WOOD_BARE,
                         Material::RECTANGLE_POLISHED_TILE,
-                        Material::RED_SCIFI_METAL,
+                        Material::POWDER_COATED_METAL,
                         Material::TITANIUM_SCUFFED};
 
 std::string material_names[] = {
@@ -40,8 +40,8 @@ std::string ConvertMaterialToString(const Material& material) {
       return "oak-wood-bare";
     case Material::RECTANGLE_POLISHED_TILE:
       return "rectangle-polished-tile";
-    case Material::RED_SCIFI_METAL:
-      return "red-scifi-metal";
+    case Material::POWDER_COATED_METAL:
+      return "powder-coated-metal";
     case Material::TITANIUM_SCUFFED:
       return "titanium-scuffed";
     default:
@@ -62,6 +62,7 @@ Environment environments[] = {
     Environment::SUNNY_FIELD,
     Environment::SUNNY_SNOW,
     Environment::NEWPORT_LOFT,
+    Environment::EARTHLIKE_PLANET,
 };
 std::string environment_names[] = {
     ConvertEnvironmentToString(Environment::BLUE_NEBULA),
@@ -71,6 +72,7 @@ std::string environment_names[] = {
     ConvertEnvironmentToString(Environment::SUNNY_FIELD),
     ConvertEnvironmentToString(Environment::SUNNY_SNOW),
     ConvertEnvironmentToString(Environment::NEWPORT_LOFT),
+    ConvertEnvironmentToString(Environment::EARTHLIKE_PLANET),
 };
 
 std::string ConvertEnvironmentToString(const Environment& env) {
@@ -89,6 +91,8 @@ std::string ConvertEnvironmentToString(const Environment& env) {
       return "sunny_snow";
     case Environment::BLUE_NEBULA:
       return "blue_nebula";
+    case Environment::EARTHLIKE_PLANET:
+      return "earthlike_planet";
     default:
       return "ERORR: ENVIRONMENT NOT FOUND";
   }

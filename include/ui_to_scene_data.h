@@ -14,7 +14,7 @@ enum Material {
   BRICK = 4,
   OAK_WOOD_BARE = 5,
   RECTANGLE_POLISHED_TILE = 6,
-  RED_SCIFI_METAL = 7,
+  POWDER_COATED_METAL = 7,
   TITANIUM_SCUFFED = 8
 };
 const int max_materials = 9;
@@ -34,8 +34,9 @@ enum Environment {
   SUNNY_FIELD = 4,
   SUNNY_SNOW = 5,
   NEWPORT_LOFT = 6,
+  EARTHLIKE_PLANET = 7,
 };
-const int max_environments = 7;
+const int max_environments = 8;
 
 extern Environment environments[max_environments];
 extern std::string environment_names[max_environments];
