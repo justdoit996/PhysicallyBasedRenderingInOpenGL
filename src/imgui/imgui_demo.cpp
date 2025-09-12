@@ -278,10 +278,7 @@ static void HelpMarker(const char* desc) {
 // Helper to display basic user controls.
 void ImGui::ShowUserGuide() {
   ImGui::Text("Keyboard movement");
-  ImGui::BulletText("Forward: W");
-  ImGui::BulletText("Backward: S");
-  ImGui::BulletText("Left: A");
-  ImGui::BulletText("Right: D");
+  ImGui::BulletText("Foward/backward/strafe: W/A/S/D");
   ImGui::BulletText("Up: Space");
   ImGui::BulletText("Down: Shift");
   ImGui::BulletText("Press ESC key to bind/unbind mouse from camera");
@@ -548,7 +545,7 @@ static void ShowDemoWindowWidgets(void* scene) {
   }
   // Light sphere settings
   // Checkbox Toggle
-  static bool revolving_light_enabled = false;
+  static bool revolving_light_enabled = true;
   if (ImGui::Checkbox("Enable Light Sphere", &revolving_light_enabled)) {
     if (revolving_light_enabled) {
       ((PbrScene*)scene)->SetPointLightEnabled(true);
@@ -570,7 +567,7 @@ static void ShowDemoWindowWidgets(void* scene) {
   if (ImGui::SliderInt("Blue Color", &blue, 0, 255)) {
     ((PbrScene*)scene)->SetBlueColor(blue);
   }
-  static float intensity = 1.f;
+  static float intensity = 200.f;
   if (ImGui::SliderFloat("Light Intensity", &intensity, 0, 1000.f)) {
     ((PbrScene*)scene)->SetLightIntensity(intensity);
   }

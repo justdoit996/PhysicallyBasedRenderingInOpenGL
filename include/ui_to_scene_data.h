@@ -27,13 +27,13 @@ extern std::string material_names[max_materials];
 
 // HDR environments aka Skybox
 enum Environment {
-  NEWPORT_LOFT = 0,
+  BLUE_NEBULA = 0,
   CITRUS_ORCHARD_PURESKY = 1,
   QUANTANI_NIGHT_PURESKY = 2,
   NIGHT_PORT = 3,
   SUNNY_FIELD = 4,
   SUNNY_SNOW = 5,
-  BLUE_NEBULA = 6,
+  NEWPORT_LOFT = 6,
 };
 const int max_environments = 7;
 

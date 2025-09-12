@@ -1,5 +1,8 @@
 #include "pbr_scene.h"
 
+
+#include "ui_to_scene_data.h"
+
 PbrScene::PbrScene(Camera* camera) : camera_(camera) {
   Init();
 }
@@ -37,8 +40,8 @@ void PbrScene::Init() {
              "resources/shaders/light_sphere/light_sphere.fs");
 
   // Load or generate textures
-  UploadPbrTextures("resources/assets/textures/pbr/rusted_iron");
-  UploadHdrMap("resources/assets/textures/hdr/newport_loft.hdr");
+  UploadPbrTextures(pbr_scene::ConvertMaterialToFilePath(pbr_scene::materials[0]));
+  UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(pbr_scene::environments[0]));
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
@@ -54,6 +57,7 @@ void PbrScene::Init() {
   // Light sources
   point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
                             /*color*/ glm::vec3(1.0f, 1.0f, 1.0f));
+  point_light_.SetIntensity(200.f);
 
   // Bind projection uniform for camera shader (only need once)
   glm::mat4 camera_perspective_projection =
@@ -235,7 +239,7 @@ void PbrScene::Render() {
     model = glm::scale(model, glm::vec3(.5f));
     light_sphere_shader_.SetMat4("model", model);
     light_sphere_shader_.SetMat4("view", view);
-    light_sphere_shader_.SetVec3("light_color", point_light_.GetColorLuminance());
+    light_sphere_shader_.SetVec3("light_color", point_light_.GetColor());
     sphere_->Draw();
   }
 

@@ -75,7 +75,7 @@ class PbrScene {
 
   // Point Light Sphere
   PointLight point_light_;
-  bool point_light_enabled_ = false;
+  bool point_light_enabled_ = true;
 
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection_ =

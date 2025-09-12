@@ -54,21 +54,24 @@ std::string ConvertMaterialToFilePath(const Material& material) {
   return path_prefix + material_names[static_cast<int>(material)];
 }
 
-Environment environments[] = {Environment::NEWPORT_LOFT,
-                               Environment::CITRUS_ORCHARD_PURESKY,
-                               Environment::QUANTANI_NIGHT_PURESKY,
-                               Environment::NIGHT_PORT,
-							   Environment::SUNNY_FIELD,
-							   Environment::SUNNY_SNOW,
-                              Environment::BLUE_NEBULA};
+Environment environments[] = {
+    Environment::BLUE_NEBULA,
+    Environment::CITRUS_ORCHARD_PURESKY,
+    Environment::QUANTANI_NIGHT_PURESKY,
+    Environment::NIGHT_PORT,
+    Environment::SUNNY_FIELD,
+    Environment::SUNNY_SNOW,
+    Environment::NEWPORT_LOFT,
+};
 std::string environment_names[] = {
-    ConvertEnvironmentToString(Environment::NEWPORT_LOFT),
+    ConvertEnvironmentToString(Environment::BLUE_NEBULA),
     ConvertEnvironmentToString(Environment::CITRUS_ORCHARD_PURESKY),
     ConvertEnvironmentToString(Environment::QUANTANI_NIGHT_PURESKY),
     ConvertEnvironmentToString(Environment::NIGHT_PORT),
     ConvertEnvironmentToString(Environment::SUNNY_FIELD),
     ConvertEnvironmentToString(Environment::SUNNY_SNOW),
-    ConvertEnvironmentToString(Environment::BLUE_NEBULA)};
+    ConvertEnvironmentToString(Environment::NEWPORT_LOFT),
+};
 
 std::string ConvertEnvironmentToString(const Environment& env) {
   switch (env) {
