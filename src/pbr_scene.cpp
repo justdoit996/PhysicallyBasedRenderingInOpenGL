@@ -1,6 +1,5 @@
 #include "pbr_scene.h"
 
-
 #include "ui_to_scene_data.h"
 #include "utils/constants.h"
 
@@ -41,8 +40,10 @@ void PbrScene::Init() {
              "resources/shaders/light_sphere/light_sphere.fs");
 
   // Load or generate textures
-  UploadPbrTextures(pbr_utils::ConvertMaterialToFilePath(pbr_utils::materials[0]));
-  UploadHdrMap(pbr_utils::ConvertEnvironmentToFilePath(pbr_utils::environments[0]));
+  UploadPbrTextures(
+      pbr_utils::ConvertMaterialToFilePath(pbr_utils::materials[0]));
+  UploadHdrMap(
+      pbr_utils::ConvertEnvironmentToFilePath(pbr_utils::environments[0]));
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
@@ -102,12 +103,15 @@ void PbrScene::CreateAndBindFramebufferAndRenderBufferObjects() {
 
 void PbrScene::ConvertEquirectangularTextureToCubeMap() {
   // Draw equirectangular map to 6 sided cubemap framebuffer
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, constants::environment_cubemap_width, constants::environment_cubemap_width);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+                        constants::environment_cubemap_width,
+                        constants::environment_cubemap_width);
   equirectangular_to_cube_map_shader_.Use();
   equirectangular_to_cube_map_shader_.SetMat4("projection",
                                               capture_projection_);
   equirectangular_to_cube_map_shader_.BindAllTextures();
-  glViewport(0, 0, constants::environment_cubemap_width, constants::environment_cubemap_width);
+  glViewport(0, 0, constants::environment_cubemap_width,
+             constants::environment_cubemap_width);
   glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   for (unsigned int i = 0; i < 6; ++i) {
     equirectangular_to_cube_map_shader_.SetMat4("view", capture_views_[i]);
@@ -126,14 +130,16 @@ void PbrScene::ConvertEquirectangularTextureToCubeMap() {
 
 void PbrScene::DrawIrradianceMap() {
   // Draw irradiance convolution map to 6 sided cubemap framebuffer
-  // Adjust irradiance map dimensions to be 64x64
   glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 64, 64);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+                        constants::irradiance_map_dimension,
+                        constants::irradiance_map_dimension);
   irradiance_cube_map_shader_.Use();
   irradiance_cube_map_shader_.SetMat4("projection", capture_projection_);
   environment_cube_map_shader_.BindAllTextures();
-  glViewport(0, 0, 64, 64);
+  glViewport(0, 0, constants::irradiance_map_dimension,
+             constants::irradiance_map_dimension);
   glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   for (unsigned int i = 0; i < 6; ++i) {
     irradiance_cube_map_shader_.SetMat4("view", capture_views_[i]);
@@ -155,9 +161,10 @@ void PbrScene::DrawPreFilteredEnvironmentMap() {
   unsigned int maxMipLevels = 5;
   for (unsigned int mip = 0; mip < maxMipLevels; ++mip) {
     // resize framebuffer according to mip-level size.
-    unsigned int mipWidth = static_cast<unsigned int>(128 * std::pow(0.5, mip));
-    unsigned int mipHeight =
-        static_cast<unsigned int>(128 * std::pow(0.5, mip));
+    unsigned int mipWidth = static_cast<unsigned int>(
+        constants::prefilter_map_dimension * std::pow(0.5, mip));
+    unsigned int mipHeight = static_cast<unsigned int>(
+        constants::prefilter_map_dimension * std::pow(0.5, mip));
     glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth,
                           mipHeight);
@@ -180,10 +187,13 @@ void PbrScene::DrawPreFilteredEnvironmentMap() {
 void PbrScene::DrawBrdfIntegrationMap() {
   glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
   glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 1024, 1024);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+                        constants::brdf_integration_map_dimension,
+                        constants::brdf_integration_map_dimension);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                          brdf_shader_.brdf_lut_texture(), 0);
-  glViewport(0, 0, 1024, 1024);
+  glViewport(0, 0, constants::brdf_integration_map_dimension,
+             constants::brdf_integration_map_dimension);
   brdf_shader_.Use();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   quad_->Draw();

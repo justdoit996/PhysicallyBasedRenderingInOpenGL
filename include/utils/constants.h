@@ -200,7 +200,10 @@ const float skybox_vertices[] = {
     1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
 
 
-const int environment_cubemap_width = 1024;
+const int environment_cubemap_width = 2048;
+const int irradiance_map_dimension = 64;
+const int prefilter_map_dimension = 64;
+const int brdf_integration_map_dimension = 1024;
 
 };  // namespace constants
 
