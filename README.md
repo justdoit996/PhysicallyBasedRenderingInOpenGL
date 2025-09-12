@@ -6,7 +6,7 @@
 
 Based off [LearnOpenGL](https://learnopengl.com/PBR/Theory) which is based off [Unreal 4 Engine's implementation of PBR](https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf)
 
-Includes a [UI](https://github.com/ocornut/imgui) to toggle things like materials and HDR maps.
+I included a [GUI](https://github.com/ocornut/imgui) to toggle things like materials and HDR maps.
 
 ## Getting started
 
