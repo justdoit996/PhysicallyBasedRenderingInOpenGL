@@ -11,8 +11,12 @@ Includes a [UI](https://github.com/ocornut/imgui) to toggle things like material
 ## Getting started
 
 1. Clone repo.
-2. Download some [GLFW pre-compiled binaries](https://www.glfw.org/download) and put the `libglfw3.a` file in `libs/glfw/`. 
-3. Compile with CMake and then run it! Piece of cake!
+```
+git clone --recurse-submodules https://github.com/steamedhams42/PhysicallyBasedRenderingInOpenGL.git
+```
+2. Compile with CMake and then run it! Piece of cake!
+
+Tested and working on mingw64, ucrt64, g++, MSVC x64 compilers
 
 ## Remarks
 
