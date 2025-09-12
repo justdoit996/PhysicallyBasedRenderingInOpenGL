@@ -495,16 +495,16 @@ static void ShowDemoWindowWidgets(void* scene) {
   // Here we store our selection data as an index.
   static int item_current_idx = 0;
   // Label to preview before opening the combo
-  const std::string combo_label = pbr_scene::material_names[item_current_idx];
+  const std::string combo_label = pbr_utils::material_names[item_current_idx];
   if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
-    for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::material_names); i++) {
+    for (int i = 0; i < IM_ARRAYSIZE(pbr_utils::material_names); i++) {
       const bool is_selected = (item_current_idx == i);
-      if (ImGui::Selectable(pbr_scene::material_names[i].c_str(),
+      if (ImGui::Selectable(pbr_utils::material_names[i].c_str(),
                             is_selected)) {
         // Only called when a different selection is made
         ((PbrScene*)scene)
             ->UploadPbrTextures(
-                pbr_scene::ConvertMaterialToFilePath(pbr_scene::materials[i]));
+                pbr_utils::ConvertMaterialToFilePath(pbr_utils::materials[i]));
         item_current_idx = i;
       }
 
@@ -520,17 +520,17 @@ static void ShowDemoWindowWidgets(void* scene) {
   static int environment_item_current_idx = 0;
   // Label to preview before opening the combo
   const std::string environment_combo_label =
-      pbr_scene::environment_names[environment_item_current_idx];
+      pbr_utils::environment_names[environment_item_current_idx];
   if (ImGui::BeginCombo("Environments", environment_combo_label.c_str(),
                         flags)) {
-    for (int i = 0; i < IM_ARRAYSIZE(pbr_scene::environment_names); i++) {
+    for (int i = 0; i < IM_ARRAYSIZE(pbr_utils::environment_names); i++) {
       const bool is_selected = (environment_item_current_idx == i);
-      if (ImGui::Selectable(pbr_scene::environment_names[i].c_str(),
+      if (ImGui::Selectable(pbr_utils::environment_names[i].c_str(),
                             is_selected)) {
         // Only called when a different selection is made
         ((PbrScene*)scene)
-            ->UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(
-                pbr_scene::environments[i]));
+            ->UploadHdrMap(pbr_utils::ConvertEnvironmentToFilePath(
+                pbr_utils::environments[i]));
         ((PbrScene*)scene)->InitAllTextureMaps();
         environment_item_current_idx = i;
       }

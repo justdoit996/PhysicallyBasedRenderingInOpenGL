@@ -1,5 +1,5 @@
-#ifndef PBR_SCENE_H
-#define PBR_SCENE_H
+#ifndef pbr_utils_H
+#define pbr_utils_H
 
 #define GLAD_GL_IMPLEMENTATION
 #include "glad.h"

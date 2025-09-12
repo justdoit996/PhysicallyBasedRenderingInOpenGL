@@ -40,8 +40,8 @@ void PbrScene::Init() {
              "resources/shaders/light_sphere/light_sphere.fs");
 
   // Load or generate textures
-  UploadPbrTextures(pbr_scene::ConvertMaterialToFilePath(pbr_scene::materials[0]));
-  UploadHdrMap(pbr_scene::ConvertEnvironmentToFilePath(pbr_scene::environments[0]));
+  UploadPbrTextures(pbr_utils::ConvertMaterialToFilePath(pbr_utils::materials[0]));
+  UploadHdrMap(pbr_utils::ConvertEnvironmentToFilePath(pbr_utils::environments[0]));
   environment_cube_map_shader_.GenerateTextures();
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
@@ -215,7 +215,7 @@ void PbrScene::Render() {
   glBindTexture(GL_TEXTURE_2D, brdf_shader_.brdf_lut_texture());
 
   // New position for light cube
-  float radius_of_revolution = 10.f;
+  float radius_of_revolution = 5.f;
   glm::vec3 newPos =
       point_light_.position +
       glm::vec3(

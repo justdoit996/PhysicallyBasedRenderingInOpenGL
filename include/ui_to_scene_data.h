@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace pbr_scene {
+namespace pbr_utils {
 
 // Sphere materials
 enum Material {
@@ -42,6 +42,6 @@ extern std::string environment_names[max_environments];
 
 std::string ConvertEnvironmentToString(const Environment& env);
 std::string ConvertEnvironmentToFilePath(const Environment& env_path);
-}  // namespace pbr_scene
+}  // namespace pbr_utils
 
 #endif

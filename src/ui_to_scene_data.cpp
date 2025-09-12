@@ -1,6 +1,6 @@
 #include "ui_to_scene_data.h"
 
-namespace pbr_scene {
+namespace pbr_utils {
 
 Material materials[] = {Material::RUSTED_IRON,
                         Material::GOLD,
@@ -98,4 +98,4 @@ std::string ConvertEnvironmentToFilePath(const Environment& env) {
   std::string path_prefix = "resources/assets/textures/hdr/";
   return path_prefix + environment_names[static_cast<int>(env)] + ".hdr";
 }
-};  // namespace pbr_scene
+};  // namespace pbr_utils
