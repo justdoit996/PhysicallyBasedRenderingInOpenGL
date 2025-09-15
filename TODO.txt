@@ -1,5 +1,6 @@
-Sept 9th
-- Interactive UI
-	- checkbox toggle for environment visibility
-	- custom pbr material with sliders for albedo, metallic, roughness, ao
+Sep 15
+- Add a bloom filter for the light sphere
+	- render whole scene to an HDR framebuffer
+- Create custom sliders for albedo, metallic, roughness, ao
+	- Start with a "base" sphere material
 
