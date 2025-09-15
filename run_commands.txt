@@ -1,5 +1,5 @@
 ### Windows
-.\build\pbropengl
+.\out\build\pbropengl
 
 ### Linux
-./build/pbropengl
+./out/build/pbropengl
