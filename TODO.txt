@@ -1,5 +1,6 @@
 Sep 15
-- Add a bloom filter for the light sphere
+- Add PBR bloom for the light sphere
+	- https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom
 	- render whole scene to an HDR framebuffer
 - Create custom sliders for albedo, metallic, roughness, ao
 	- Start with a "base" sphere material
