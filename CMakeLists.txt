@@ -3,7 +3,6 @@ project(pbropengl VERSION 0.1.0)
 
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
-find_package(assimp REQUIRED)
 
 include_directories(libs/glad)
 include_directories(libs/KHR)
@@ -44,6 +43,3 @@ target_link_libraries(pbropengl PRIVATE ${OPENGL_gl_LIBRARY})
 target_link_libraries(pbropengl PRIVATE glfw)
 target_link_libraries(pbropengl PRIVATE glm::glm-header-only)
 
-if (!WIN32)
-target_link_libraries(pbropengl assimp::assimp)
-endif()
