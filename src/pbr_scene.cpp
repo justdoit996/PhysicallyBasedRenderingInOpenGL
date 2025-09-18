@@ -1,5 +1,6 @@
 #include "pbr_scene.h"
 
+#include "bloom_framebuffer.h"
 #include "ui_to_scene_data.h"
 #include "utils/constants.h"
 
@@ -162,25 +163,25 @@ void PbrScene::DrawPreFilteredEnvironmentMap() {
   prefilter_shader_.SetMat4("projection", capture_projection_);
   environment_cube_map_shader_.BindAllTextures();
   glBindFramebuffer(GL_FRAMEBUFFER, capture_fbo_);
-  unsigned int maxMipLevels = 5;
-  for (unsigned int mip = 0; mip < maxMipLevels; ++mip) {
+  unsigned int max_mip_levels = 5;
+  for (unsigned int mip_level = 0; mip_level < max_mip_levels; ++mip_level) {
     // resize framebuffer according to mip-level size.
     unsigned int mipWidth = static_cast<unsigned int>(
-        constants::prefilter_map_dimension * std::pow(0.5, mip));
+        constants::prefilter_map_dimension * std::pow(0.5, mip_level));
     unsigned int mipHeight = static_cast<unsigned int>(
-        constants::prefilter_map_dimension * std::pow(0.5, mip));
+        constants::prefilter_map_dimension * std::pow(0.5, mip_level));
     glBindRenderbuffer(GL_RENDERBUFFER, capture_rbo_);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth,
                           mipHeight);
     glViewport(0, 0, mipWidth, mipHeight);
 
-    float roughness = (float)mip / (float)(maxMipLevels - 1);
+    float roughness = (float)mip_level / (float)(max_mip_levels - 1);
     prefilter_shader_.SetFloat("roughness", roughness);
     for (unsigned int i = 0; i < 6; ++i) {
       prefilter_shader_.SetMat4("view", capture_views_[i]);
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                              GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                             prefilter_shader_.prefilter_map_texture(), mip);
+                             prefilter_shader_.prefilter_map_texture(), i);
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       cube_map_cube_->Draw();
