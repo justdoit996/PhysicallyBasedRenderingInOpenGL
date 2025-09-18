@@ -6,6 +6,7 @@
 
 #include <glm/glm.hpp>
 #include <memory>
+#include "bloom_renderer.h"
 #include "camera.h"
 #include "point_light.h"
 #include "shaders/brdf_shader.h"
@@ -74,6 +75,8 @@ class PbrScene {
   BrdfShader brdf_shader_;
   Shader light_sphere_shader_;
   FramebufferShader framebuffer_to_screen_shader_;
+
+  BloomRenderer bloom_renderer_;
 
   // Point Light Sphere
   PointLight point_light_;

@@ -60,7 +60,9 @@ void PbrScene::Init() {
   quad_ = std::make_unique<Quad>();
 
   InitAllTextureMaps();
-  BloomRenderer br();
+
+  // bloom renderer
+  bloom_renderer_.Init();
 
   // Light sources
   point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),

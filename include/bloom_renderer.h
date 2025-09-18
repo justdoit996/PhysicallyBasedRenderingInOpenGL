@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "bloom_framebuffer.h"
 #include "shaders/shader.h"
+#include "shapes/quad.h"
 #include "utils/constants.h"
 
 class BloomRenderer {
@@ -29,6 +30,8 @@ class BloomRenderer {
 
   Shader down_sample_shader_;
   Shader up_sample_shader_;
+
+  Quad quad_;
 
   bool mKarisAverageOnDownsample = true;
 };
