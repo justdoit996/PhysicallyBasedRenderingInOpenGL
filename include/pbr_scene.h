@@ -11,6 +11,7 @@
 #include "shaders/brdf_shader.h"
 #include "shaders/environment_cube_map_shader.h"
 #include "shaders/equirectangular_to_cube_map_shader.h"
+#include "shaders/framebuffer_shader.h"
 #include "shaders/irradiance_cube_map_shader.h"
 #include "shaders/prefilter_shader.h"
 #include "shaders/shader.h"
@@ -72,6 +73,7 @@ class PbrScene {
   PrefilterShader prefilter_shader_;
   BrdfShader brdf_shader_;
   Shader light_sphere_shader_;
+  FramebufferShader framebuffer_to_screen_shader_;
 
   // Point Light Sphere
   PointLight point_light_;

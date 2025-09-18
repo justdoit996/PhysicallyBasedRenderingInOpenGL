@@ -38,6 +38,9 @@ void PbrScene::Init() {
   light_sphere_shader_ =
       Shader("resources/shaders/light_sphere/light_sphere.vs",
              "resources/shaders/light_sphere/light_sphere.fs");
+  framebuffer_to_screen_shader_ =
+      FramebufferShader("resources/shaders/pbr/framebuffer.vs",
+                        "resources/shaders/pbr/framebuffer.fs");
 
   // Load or generate textures
   UploadPbrTextures(
@@ -48,6 +51,7 @@ void PbrScene::Init() {
   irradiance_cube_map_shader_.GenerateTextures();
   prefilter_shader_.GenerateTextures();
   brdf_shader_.GenerateTextures();
+  framebuffer_to_screen_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
@@ -210,6 +214,9 @@ void PbrScene::Render() {
   glm::mat4 model = glm::mat4(1.0f);
   glm::mat4 view = camera_->GetViewMatrix();
 
+  // Draw the whole scene to a framebuffer
+  framebuffer_to_screen_shader_.BindFramebuffer();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   sphere_shader_.Use();
   sphere_shader_.SetMat4("model", model);
   sphere_shader_.SetMat4("view", view);
@@ -258,6 +265,15 @@ void PbrScene::Render() {
   environment_cube_map_shader_.SetMat4("view", view);
   environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
+
+  // NOT OPTIONAL STEP: Clear the framebuffer!!
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  // Draw the scene from framebuffer to screen
+  framebuffer_to_screen_shader_.Use();
+  framebuffer_to_screen_shader_.BindAllTextures();
+  framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
+  quad_->Draw();
 }
 
 void PbrScene::SetPointLightEnabled(bool enable) {
