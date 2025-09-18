@@ -1,7 +1,5 @@
 Sep 15
-- Add PBR bloom for the light sphere: https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom
-	- Create a BloomRenderer class that reads from the framebuffer and makes the necessary modifications
-	- framebuffer shader class + shader files done
+- add slider for bloom strength?
 
 - Create a custom material with sliders for albedo, metallic, roughness, ao
 	- Start with a "base" sphere material

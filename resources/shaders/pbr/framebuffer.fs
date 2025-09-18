@@ -6,7 +6,7 @@ in vec2 TexCoords;
 uniform sampler2D scene;
 uniform sampler2D bloomBlur;
 uniform float exposure;
-uniform float bloomStrength = 0.04f;
+uniform float bloomStrength = 0.004f;
 
 vec3 bloom_none() {
     vec3 hdrColor = texture(scene, TexCoords).rgb;
@@ -20,12 +20,13 @@ vec3 bloom_new() {
 }
 
 void main() {
-    // to bloom or not to bloom
     vec3 result = vec3(0.0);
     result = bloom_new();
+
     // HDR tone mapping
     result = vec3(1.0) - exp(-result * exposure);
-    // gamma correct
+
+    // Gamma correct
     const float gamma = 2.2;
     result = pow(result, vec3(1.0 / gamma));
     FragColor = vec4(result, 1.0);
