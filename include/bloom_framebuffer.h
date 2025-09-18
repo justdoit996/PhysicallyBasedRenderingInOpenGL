@@ -7,11 +7,11 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-// Class to manage bloom framebuffer for up/down sampling
-class BloomFbo {
+// Class to manage bloom framebuffer for up/down sampling mipmaps
+class BloomFramebuffer {
  public:
-  BloomFbo();
-  ~BloomFbo();
+  BloomFramebuffer();
+  ~BloomFramebuffer();
 
   // struct that represents one "layer" of a mip map
   struct Mip {

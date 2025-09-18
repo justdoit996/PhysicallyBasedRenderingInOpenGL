@@ -3,11 +3,11 @@
 #include <iostream>
 #include "utils/constants.h"
 
-BloomFbo::BloomFbo() : init_(false), fbo_(0) {}
+BloomFramebuffer::BloomFramebuffer() : init_(false), fbo_(0) {}
 
-BloomFbo::~BloomFbo() {}
+BloomFramebuffer::~BloomFramebuffer() {}
 
-bool BloomFbo::Init(unsigned int mipChainLength) {
+bool BloomFramebuffer::Init(unsigned int mipChainLength) {
   if (init_) {
     return true;
   }
@@ -21,7 +21,7 @@ bool BloomFbo::Init(unsigned int mipChainLength) {
   for (GLuint i = 0; i < mipChainLength; i++) {
     mipSize *= 0.5f;
     mipIntSize /= 2;
-    BloomFbo::Mip mip{mipSize, mipIntSize};
+    BloomFramebuffer::Mip mip{mipSize, mipIntSize};
 
     glGenTextures(1, &mip.texture);
     glBindTexture(GL_TEXTURE_2D, mip.texture);
@@ -58,7 +58,7 @@ bool BloomFbo::Init(unsigned int mipChainLength) {
   return true;
 }
 
-void BloomFbo::Destroy() {
+void BloomFramebuffer::Destroy() {
   for (int i = 0; i < (int)mip_chain_.size(); i++) {
     glDeleteTextures(1, &mip_chain_[i].texture);
     mip_chain_[i].texture = 0;
@@ -68,10 +68,10 @@ void BloomFbo::Destroy() {
   init_ = false;
 }
 
-void BloomFbo::BindForWriting() {
+void BloomFramebuffer::BindForWriting() {
   glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 }
 
-const std::vector<BloomFbo::Mip>& BloomFbo::MipChain() const {
+const std::vector<BloomFramebuffer::Mip>& BloomFramebuffer::MipChain() const {
   return mip_chain_;
 }
