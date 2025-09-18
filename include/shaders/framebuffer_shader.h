@@ -9,8 +9,8 @@ class FramebufferShader : public Shader {
   FramebufferShader() = default;
 
   void GenerateTextures() override;
-  void BindAllTextures() override;
   void BindFramebuffer();
+  unsigned int color_buffer(int idx) { return color_buffers_[idx]; }
 
  private:
   unsigned int fbo_ = 0;

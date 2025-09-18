@@ -48,13 +48,6 @@ void FramebufferShader::GenerateTextures() {
   this->SetInt("bloomBlur", 1);
 }
 
-void FramebufferShader::BindAllTextures() {
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, color_buffers_[0]);
-  glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, color_buffers_[1]);
-}
-
 void FramebufferShader::BindFramebuffer() {
   glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 }

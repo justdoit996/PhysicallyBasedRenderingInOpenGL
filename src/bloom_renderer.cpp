@@ -19,7 +19,8 @@ bool BloomRenderer::Init() {
   // Shaders
   down_sample_shader_ = Shader("resources/shaders/pbr/down_sample.vs",
                                "resources/shaders/pbr/down_sample.fs");
-  up_sample_shader_ = Shader("6.new_upsample.vs", "6.new_upsample.fs");
+  up_sample_shader_ = Shader("resources/shaders/pbr/up_sample.vs",
+                             "resources/shaders/pbr/up_sample.fs");
 
   // Downsample
   down_sample_shader_.Use();
@@ -40,6 +41,17 @@ void BloomRenderer::Destroy() {
 
 void BloomRenderer::RenderBloomTexture(unsigned int srcTexture,
                                        float filterRadius) {
+  bloom_framebuffer_.BindForWriting();
+
+  this->RenderDownsamples(srcTexture);
+  this->RenderUpsamples(filterRadius);
+
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  // Restore viewport
+  glViewport(0, 0, src_viewport_size_.x, src_viewport_size_.y);
+}
+
+void BloomRenderer::RenderDownsamples(unsigned int srcTexture) {
   const std::vector<BloomFramebuffer::Mip>& mipChain =
       bloom_framebuffer_.MipChain();
 
@@ -75,6 +87,7 @@ void BloomRenderer::RenderBloomTexture(unsigned int srcTexture,
 
   glUseProgram(0);
 }
+
 void BloomRenderer::RenderUpsamples(float filterRadius) {
   const std::vector<BloomFramebuffer::Mip>& mipChain =
       bloom_framebuffer_.MipChain();

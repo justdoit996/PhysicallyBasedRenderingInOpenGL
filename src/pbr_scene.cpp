@@ -273,9 +273,21 @@ void PbrScene::Render() {
   // NOT OPTIONAL STEP: Clear the framebuffer!!
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  // Draw the scene from framebuffer to screen
+  bloom_renderer_.RenderBloomTexture(
+      framebuffer_to_screen_shader_.color_buffer(1),
+      constants::bloom_filter_radius);
+
+  // NOT OPTIONAL STEP: Clear the framebuffer!!
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  //  Draw the scene from framebuffer to screen
   framebuffer_to_screen_shader_.Use();
-  framebuffer_to_screen_shader_.BindAllTextures();
+  // Bind the original color texture
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, framebuffer_to_screen_shader_.color_buffer(0));
+  // Bind the blurred texture
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, bloom_renderer_.BloomTexture());
+  // Shader will mix the two textures
   framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
   quad_->Draw();
 }

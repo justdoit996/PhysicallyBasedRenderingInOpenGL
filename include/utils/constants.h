@@ -204,6 +204,8 @@ const int irradiance_map_dimension = 64;
 const int prefilter_map_dimension = 64;
 const int brdf_integration_map_dimension = 1024;
 
+const float bloom_filter_radius = 0.005f;
+
 };  // namespace constants
 
 #endif
