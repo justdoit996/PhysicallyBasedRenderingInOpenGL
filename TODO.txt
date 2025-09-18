@@ -1,5 +1,7 @@
 Sep 15
-- add slider for bloom strength?
+- toggle for bloom on/off
+- add slider for bloomStrength in shader
+- replace light "intensity" slider for HDR exposure
 
 - Create a custom material with sliders for albedo, metallic, roughness, ao
 	- Start with a "base" sphere material
