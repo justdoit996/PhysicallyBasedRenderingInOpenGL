@@ -1,6 +1,6 @@
 #include "pbr_scene.h"
 
-#include "bloom_framebuffer.h"
+#include "bloom_renderer.h"
 #include "ui_to_scene_data.h"
 #include "utils/constants.h"
 
@@ -60,6 +60,7 @@ void PbrScene::Init() {
   quad_ = std::make_unique<Quad>();
 
   InitAllTextureMaps();
+  BloomRenderer br();
 
   // Light sources
   point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),

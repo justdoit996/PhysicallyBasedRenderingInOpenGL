@@ -1,14 +1,16 @@
 #ifndef BLOOM_RENDERER_H
 #define BLOOM_RENDERER_H
 
+#include <glm/glm.hpp>
 #include "bloom_framebuffer.h"
 #include "shaders/shader.h"
+#include "utils/constants.h"
 
-class BloomRenderer : public Shader {
+class BloomRenderer {
  public:
   BloomRenderer();
   ~BloomRenderer();
-  bool Init(unsigned int windowWidth, unsigned int windowHeight);
+  bool Init();
   void Destroy();
   void RenderBloomTexture(unsigned int srcTexture, float filterRadius);
   unsigned int BloomTexture();
@@ -18,12 +20,15 @@ class BloomRenderer : public Shader {
   void RenderDownsamples(unsigned int srcTexture);
   void RenderUpsamples(float filterRadius);
 
-  bool mInit;
-  BloomFramebuffer mFBO;
-  glm::ivec2 mSrcViewportSize;
-  glm::vec2 mSrcViewportSizeFloat;
-  Shader* mDownsampleShader;
-  Shader* mUpsampleShader;
+  bool init_;
+  BloomFramebuffer bloom_framebuffer_;
+  glm::ivec2 src_viewport_size_ =
+      glm::ivec2(constants::WIDTH, constants::HEIGHT);
+  glm::vec2 src_viewport_size_float_ =
+      glm::vec2((float)constants::WIDTH, (float)constants::HEIGHT);
+
+  Shader down_sample_shader_;
+  Shader up_sample_shader_;
 
   bool mKarisAverageOnDownsample = true;
 };
