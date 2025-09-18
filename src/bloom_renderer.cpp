@@ -18,7 +18,8 @@ bool BloomRenderer::Init() {
   }
 
   // Shaders
-  down_sample_shader_ = Shader("6.new_downsample.vs", "6.new_downsample.fs");
+  down_sample_shader_ = Shader("resources/shaders/pbr/down_sample.vs",
+                               "resources/shaders/pbr/down_sample.fs");
   up_sample_shader_ = Shader("6.new_upsample.vs", "6.new_upsample.fs");
 
   // Downsample
