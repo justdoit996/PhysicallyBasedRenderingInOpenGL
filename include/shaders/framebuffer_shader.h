@@ -17,6 +17,6 @@ class FramebufferShader : public Shader {
   // create 2 floating point color buffers
   // 0 for normal rendering
   // 1 for brightness threshold values
-  unsigned int color_buffers_[2];
-  unsigned int rbo_depth_;
+  unsigned int color_buffers_[2] = {};
+  unsigned int rbo_depth_ = 0;
 };
