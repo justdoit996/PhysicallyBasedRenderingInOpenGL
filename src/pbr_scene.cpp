@@ -13,7 +13,11 @@ void PbrScene::UploadPbrTextures(const std::string& path) {
 }
 
 void PbrScene::UploadHdrMap(const std::string& path) {
-  equirectangular_to_cube_map_shader_.LoadTextures(path);
+  ibl_renderer_.UploadHdrMap(path);
+}
+
+void PbrScene::InitAllIblTextureMaps() {
+  ibl_renderer_.InitAllTextureMaps();
 }
 
 void PbrScene::Init() {
@@ -36,7 +40,8 @@ void PbrScene::Init() {
   sphere_ = std::make_unique<Sphere>(/*sectors*/ 64, /*stacks*/ 64);
   quad_ = std::make_unique<Quad>();
 
-  ibl_renderer_.InitAllTextureMaps();
+  // Pre-render all texture maps and LUTs for IBL
+  InitAllIblTextureMaps();
 
   // bloom renderer
   bloom_renderer_.Init();
@@ -79,15 +84,9 @@ void PbrScene::Render() {
   sphere_shader_.SetMat4("model", model);
   sphere_shader_.SetMat4("view", view);
   sphere_shader_.SetVec3("cameraPos", camera_->position());
+  // TODO: synchronize the binding of these textures to same shader file
   sphere_shader_.BindAllTextures();
-  // TODO: Fix manual texture mapping overwriting
-  glActiveTexture(GL_TEXTURE5);
-  glBindTexture(GL_TEXTURE_CUBE_MAP,
-                irradiance_cube_map_shader_.irradiance_map_texture());
-  glActiveTexture(GL_TEXTURE6);
-  glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_shader_.prefilter_map_texture());
-  glActiveTexture(GL_TEXTURE7);
-  glBindTexture(GL_TEXTURE_2D, brdf_shader_.brdf_lut_texture());
+  ibl_renderer_.BindAllTextures();
 
   // New position for light cube
   float radius_of_revolution = 5.f;
@@ -117,11 +116,7 @@ void PbrScene::Render() {
     sphere_->Draw();
   }
 
-  // Render skybox (render background last to prevent overdrawing)
-  environment_cube_map_shader_.Use();
-  environment_cube_map_shader_.SetMat4("view", view);
-  environment_cube_map_shader_.BindAllTextures();
-  cube_map_cube_->Draw();
+  ibl_renderer_.RenderEnvironment(view);
 
   // NOT OPTIONAL STEP: Clear the framebuffer!!
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -133,15 +128,14 @@ void PbrScene::Render() {
         constants::bloom_filter_radius);
   }
 
+  // Use framebuffer shader to draw from framebuffer to screen
   // NOT OPTIONAL STEP: Clear the framebuffer!!
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  // Use framebuffer shader to draw from framebuffer to screen
   framebuffer_to_screen_shader_.Use();
   // Bind the original color texture
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, framebuffer_to_screen_shader_.color_buffer(0));
-
-  // If bloom enabled bind the post-bloom texture
+  // If bloom enabled, bind the post-bloom texture
   // else bind nothing (same as default)
   glActiveTexture(GL_TEXTURE1);
   if (bloom_enabled_) {
@@ -151,8 +145,8 @@ void PbrScene::Render() {
   }
   // TODO: slider for HDR exposure?
   framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
-  framebuffer_to_screen_shader_.SetFloat("bloomStrength", bloom_strength_);
   framebuffer_to_screen_shader_.SetBool("bloomEnabled", bloom_enabled_);
+  framebuffer_to_screen_shader_.SetFloat("bloomStrength", bloom_strength_);
   quad_->Draw();
 }
 

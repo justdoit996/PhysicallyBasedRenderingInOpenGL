@@ -22,13 +22,12 @@ class PbrScene {
  public:
   PbrScene() = default;
   PbrScene(Camera* camera);
+
   void Render();
   void UploadPbrTextures(const std::string& path);
   void UploadHdrMap(const std::string& path);
-  // Called AFTER Init().
-  // Can be used after loading new environment (hdr) maps
-  // Performs all pre-computations/convolutions, look-up tables, and
-  // framebuffers necessary before rendering loop.
+  void PbrScene::InitAllIblTextureMaps();
+
   void SetPointLightEnabled(bool enable);
   void SetRedColor(float r);
   void SetGreenColor(float g);

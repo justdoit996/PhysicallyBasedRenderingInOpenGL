@@ -95,6 +95,7 @@ ShowExampleAppCustomRendering()
 
 #include "imgui.h"
 #ifndef IMGUI_DISABLE
+#include "ibl_renderer.h"
 #include "pbr_scene.h"
 #include "ui_to_scene_data.h"
 
@@ -532,7 +533,7 @@ static void ShowDemoWindowWidgets(void* scene) {
         ((PbrScene*)scene)
             ->UploadHdrMap(pbr_utils::ConvertEnvironmentToFilePath(
                 pbr_utils::environments[i]));
-        ((PbrScene*)scene)->InitAllTextureMaps();
+        ((PbrScene*)scene)->InitAllIblTextureMaps();
         environment_item_current_idx = i;
       }
 

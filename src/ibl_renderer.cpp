@@ -165,3 +165,27 @@ void IblRenderer::DrawBrdfIntegrationMap() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   quad_->Draw();
 }
+
+void IblRenderer::UploadHdrMap(const std::string& path) {
+  equirectangular_to_cube_map_shader_.LoadTextures(path);
+}
+
+void IblRenderer::RenderEnvironment(const glm::mat4& view) {
+  // Render skybox (render background last to prevent overdrawing)
+  environment_cube_map_shader_.Use();
+  environment_cube_map_shader_.SetMat4("view", view);
+  environment_cube_map_shader_.BindAllTextures();
+  cube_map_cube_->Draw();
+}
+
+// TODO: Fix manual texture mapping. Needs to be syncd with sphere shader's
+// textures
+void IblRenderer::BindAllTextures() {
+  glActiveTexture(GL_TEXTURE5);
+  glBindTexture(GL_TEXTURE_CUBE_MAP,
+                irradiance_cube_map_shader_.irradiance_map_texture());
+  glActiveTexture(GL_TEXTURE6);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, prefilter_shader_.prefilter_map_texture());
+  glActiveTexture(GL_TEXTURE7);
+  glBindTexture(GL_TEXTURE_2D, brdf_shader_.brdf_lut_texture());
+}

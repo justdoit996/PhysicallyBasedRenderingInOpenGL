@@ -15,12 +15,19 @@
 #include "shapes/cube.h"
 #include "shapes/quad.h"
 
+// Performs all pre-computations/convolutions, look-up tables, and
+// framebuffers necessary before rendering loop.
 class IblRenderer {
  public:
-  IblRenderer() = default;
+  IblRenderer();
   void InitAllTextureMaps();
+  void UploadHdrMap(const std::string& path);
+  void RenderEnvironment(const glm::mat4& view);
+  void BindAllTextures();
 
  private:
+  void CreateAndBindFramebufferAndRenderBufferObjects();
+  // Does what it says
   void ConvertEquirectangularTextureToCubeMap();
   // Diffuse part of PBR
   // Pre convolve cube map to construct an irradiance cubemap texture.
@@ -31,11 +38,6 @@ class IblRenderer {
   // Specular part of PBR (2/2)
   // Creates a LUT for the brdf part of the split-sum approximation
   void DrawBrdfIntegrationMap();
-  void CreateAndBindFramebufferAndRenderBufferObjects();
-
-  // Shapes
-  std::unique_ptr<Cube> cube_map_cube_;
-  std::unique_ptr<Quad> quad_;
 
   // Framebuffer and renderbuffer objects
   unsigned int capture_fbo_;
@@ -47,6 +49,10 @@ class IblRenderer {
   IrradianceCubeMapShader irradiance_cube_map_shader_;
   PrefilterShader prefilter_shader_;
   BrdfShader brdf_shader_;
+
+  // Shapes
+  std::unique_ptr<Cube> cube_map_cube_;
+  std::unique_ptr<Quad> quad_;
 
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection_ =
