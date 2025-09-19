@@ -62,7 +62,7 @@ void PbrScene::Init() {
   InitAllTextureMaps();
 
   // bloom renderer
-  bloom_renderer_.Init();
+  // bloom_renderer_.Init();
 
   // Light sources
   point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
