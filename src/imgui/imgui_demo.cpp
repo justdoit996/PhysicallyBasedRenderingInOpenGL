@@ -564,19 +564,17 @@ static void ShowDemoWindowWidgets(void* scene) {
     }
   }
 
-  // RGB Sliders
-  ImGui::Text("RGB of Light Sphere");
-  static int red = pbr_utils::ui_defaults::light_sphere::red;
-  if (ImGui::SliderInt("Red Color", &red, 0, 255)) {
-    ((PbrScene*)scene)->SetRedColor(red);
-  }
-  static int green = pbr_utils::ui_defaults::light_sphere::green;
-  if (ImGui::SliderInt("Green Color", &green, 0, 255)) {
-    ((PbrScene*)scene)->SetGreenColor(green);
-  }
-  static int blue = pbr_utils::ui_defaults::light_sphere::blue;
-  if (ImGui::SliderInt("Blue Color", &blue, 0, 255)) {
-    ((PbrScene*)scene)->SetBlueColor(blue);
+  // RGB Slider
+  // ImGui::Text("RGB of Light Sphere");
+  static float light_sphere_color[3] = {
+      pbr_utils::ui_defaults::light_sphere::redf,
+      pbr_utils::ui_defaults::light_sphere::greenf,
+      pbr_utils::ui_defaults::light_sphere::bluef};
+  // Color was changed by the user
+  if (ImGui::ColorEdit3("Light Sphere Color", light_sphere_color)) {
+    ((PbrScene*)scene)->SetRedColor(light_sphere_color[0]);
+    ((PbrScene*)scene)->SetGreenColor(light_sphere_color[1]);
+    ((PbrScene*)scene)->SetBlueColor(light_sphere_color[2]);
   }
   static float intensity = pbr_utils::ui_defaults::light_sphere::intensity;
   if (ImGui::SliderFloat("Light Intensity", &intensity, 0,
@@ -816,7 +814,7 @@ static void ShowDemoWindowWidgets(void* scene) {
 
     ImGui::TreePop();
   }
-*/
+  */
 }
 
 static void ShowDemoWindowLayout() {

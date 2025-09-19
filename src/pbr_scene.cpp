@@ -306,16 +306,16 @@ void PbrScene::SetPointLightEnabled(bool enable) {
   point_light_enabled_ = enable;
 }
 
-void PbrScene::SetRedColor(unsigned int r) {
-  point_light_.color.r = r / 255.f;
+void PbrScene::SetRedColor(float r) {
+  point_light_.color.r = r;
 }
 
-void PbrScene::SetGreenColor(unsigned int g) {
-  point_light_.color.g = g / 255.f;
+void PbrScene::SetGreenColor(float g) {
+  point_light_.color.g = g;
 }
 
-void PbrScene::SetBlueColor(unsigned int b) {
-  point_light_.color.b = b / 255.f;
+void PbrScene::SetBlueColor(float b) {
+  point_light_.color.b = b;
 }
 
 void PbrScene::SetLightIntensity(float intense) {

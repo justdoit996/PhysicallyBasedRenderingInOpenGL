@@ -51,6 +51,12 @@ const bool enabled = true;
 const int red = 255;
 const int green = 255;
 const int blue = 255;
+const int rgb_max = 255;
+
+const float redf = 1.f * red / rgb_max;
+const float greenf = 1.f * green / rgb_max;
+const float bluef = 1.f * blue / rgb_max;
+
 const float intensity = 200.f;
 const float max_intensity = 1000.f;
 };  // namespace light_sphere
