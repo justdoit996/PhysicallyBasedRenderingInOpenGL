@@ -63,8 +63,9 @@ const float max_intensity = 1000.f;
 
 namespace bloom {
 const bool enabled = true;
-
-}
+const float strength = 0.004;
+const float max_strength = 0.1;
+}  // namespace bloom
 
 }  // namespace ui_defaults
 

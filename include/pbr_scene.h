@@ -41,6 +41,7 @@ class PbrScene {
   void SetBlueColor(float b);
   void SetLightIntensity(float intense);
   void SetBloomEnabled(bool bloom);
+  void SetBloomStrength(float str);
 
  private:
   void Init();
@@ -81,7 +82,7 @@ class PbrScene {
   // Bloom
   BloomRenderer bloom_renderer_;
   bool bloom_enabled_ = pbr_utils::ui_defaults::bloom::enabled;
-  float bloom_strength_;
+  float bloom_strength_ = pbr_utils::ui_defaults::bloom::strength;
 
   // Point Light Sphere
   PointLight point_light_;

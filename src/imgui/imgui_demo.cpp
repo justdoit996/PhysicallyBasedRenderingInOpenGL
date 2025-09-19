@@ -555,14 +555,6 @@ static void ShowDemoWindowWidgets(void* scene) {
       ((PbrScene*)scene)->SetPointLightEnabled(false);
     }
   }
-  static bool bloom_enabled = pbr_utils::ui_defaults::bloom::enabled;
-  if (ImGui::Checkbox("Enable Bloom", &bloom_enabled)) {
-    if (bloom_enabled) {
-      ((PbrScene*)scene)->SetBloomEnabled(true);
-    } else {
-      ((PbrScene*)scene)->SetBloomEnabled(false);
-    }
-  }
 
   // RGB Slider
   // ImGui::Text("RGB of Light Sphere");
@@ -580,6 +572,21 @@ static void ShowDemoWindowWidgets(void* scene) {
   if (ImGui::SliderFloat("Light Intensity", &intensity, 0,
                          pbr_utils::ui_defaults::light_sphere::max_intensity)) {
     ((PbrScene*)scene)->SetLightIntensity(intensity);
+  }
+
+  // Bloom settings
+  static bool bloom_enabled = pbr_utils::ui_defaults::bloom::enabled;
+  if (ImGui::Checkbox("Enable Bloom", &bloom_enabled)) {
+    if (bloom_enabled) {
+      ((PbrScene*)scene)->SetBloomEnabled(true);
+    } else {
+      ((PbrScene*)scene)->SetBloomEnabled(false);
+    }
+  }
+  static float bloom_strength = pbr_utils::ui_defaults::bloom::strength;
+  if (ImGui::SliderFloat("Bloom Strength", &bloom_strength, 0,
+                         pbr_utils::ui_defaults::bloom::max_strength)) {
+    ((PbrScene*)scene)->SetBloomStrength(bloom_strength);
   }
 
   // Uncomment to view demo of imgui widgets

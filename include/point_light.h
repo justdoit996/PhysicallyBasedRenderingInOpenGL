@@ -6,16 +6,16 @@
 class PointLight {
  public:
   PointLight() = default;
-  PointLight(const glm::vec3& position, const glm::vec3& color);
-  PointLight(glm::vec3&& position, glm::vec3&& color);
+  PointLight(const glm::vec3& position,
+             const glm::vec3& color,
+             const float& i = 1.f);
   glm::vec3 GetColor() const;
   // Returns the color amplified by the intensity
   glm::vec3 GetTotalColor() const;
-  void SetIntensity(float intense) { intensity = intense; }
 
   glm::vec3 position;
   glm::vec3 color;
-  float intensity = 1.f;
+  float intensity;
 };
 
 #endif

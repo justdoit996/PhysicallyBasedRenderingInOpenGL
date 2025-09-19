@@ -67,10 +67,11 @@ void PbrScene::Init() {
   // Light sources
   point_light_ = PointLight(
       /*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
-      /*color*/ glm::vec3(pbr_utils::ui_defaults::light_sphere::redf,
-                          pbr_utils::ui_defaults::light_sphere::greenf,
-                          pbr_utils::ui_defaults::light_sphere::bluef));
-  point_light_.SetIntensity(200.f);
+      /*color*/
+      glm::vec3(pbr_utils::ui_defaults::light_sphere::redf,
+                pbr_utils::ui_defaults::light_sphere::greenf,
+                pbr_utils::ui_defaults::light_sphere::bluef),
+      /*intensity*/ 200.f);
 
   // Bind projection uniform for camera shader (only need once)
   glm::mat4 camera_perspective_projection =
@@ -300,7 +301,9 @@ void PbrScene::Render() {
   } else {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
+  // TODO: slider for HDR exposure?
   framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
+  framebuffer_to_screen_shader_.SetFloat("bloomStrength", bloom_strength_);
   framebuffer_to_screen_shader_.SetBool("bloomEnabled", bloom_enabled_);
   quad_->Draw();
 }
@@ -322,9 +325,13 @@ void PbrScene::SetBlueColor(float b) {
 }
 
 void PbrScene::SetLightIntensity(float intense) {
-  point_light_.SetIntensity(intense);
+  point_light_.intensity = intense;
 }
 
 void PbrScene::SetBloomEnabled(bool bloom) {
   bloom_enabled_ = bloom;
+}
+
+void PbrScene::SetBloomStrength(float str) {
+  bloom_strength_ = str;
 }
