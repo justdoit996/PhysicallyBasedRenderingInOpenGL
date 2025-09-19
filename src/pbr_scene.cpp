@@ -184,7 +184,8 @@ void PbrScene::DrawPreFilteredEnvironmentMap() {
       prefilter_shader_.SetMat4("view", capture_views_[i]);
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                              GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                             prefilter_shader_.prefilter_map_texture(), i);
+                             prefilter_shader_.prefilter_map_texture(),
+                             mip_level);
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       cube_map_cube_->Draw();
