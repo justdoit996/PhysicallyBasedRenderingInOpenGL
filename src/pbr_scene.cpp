@@ -219,7 +219,10 @@ void PbrScene::Render() {
   glm::mat4 view = camera_->GetViewMatrix();
 
   // Draw the whole scene to a framebuffer
-  framebuffer_to_screen_shader_.BindFramebuffer();
+  if (screen_frame_buffer_) {
+    framebuffer_to_screen_shader_.BindFramebuffer();
+  }
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   sphere_shader_.Use();
   sphere_shader_.SetMat4("model", model);
@@ -269,34 +272,36 @@ void PbrScene::Render() {
   environment_cube_map_shader_.BindAllTextures();
   cube_map_cube_->Draw();
 
-  // NOT OPTIONAL STEP: Clear the framebuffer!!
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  // Create bloom mip maps after scene has been drawn to framebuffer
-  if (bloom_enabled_) {
-    bloom_renderer_.RenderBloomTexture(
-        framebuffer_to_screen_shader_.color_buffer(1),
-        constants::bloom_filter_radius);
-  }
+  if (screen_frame_buffer_) {
+    // NOT OPTIONAL STEP: Clear the framebuffer!!
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Create bloom mip maps after scene has been drawn to framebuffer
+    if (bloom_enabled_) {
+      bloom_renderer_.RenderBloomTexture(
+          framebuffer_to_screen_shader_.color_buffer(1),
+          constants::bloom_filter_radius);
+    }
 
-  // NOT OPTIONAL STEP: Clear the framebuffer!!
-  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  //  Draw from framebuffer to screen
-  framebuffer_to_screen_shader_.Use();
-  // Bind the original color texture
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, framebuffer_to_screen_shader_.color_buffer(0));
-  glActiveTexture(GL_TEXTURE1);
-  if (bloom_enabled_) {
-    // Bind the blurred texture
-    glBindTexture(GL_TEXTURE_2D, bloom_renderer_.BloomTexture());
-  } else {
-    // Bind null to the texture
-    glBindTexture(GL_TEXTURE_2D, 0);
+    // NOT OPTIONAL STEP: Clear the framebuffer!!
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //  Draw from framebuffer to screen
+    framebuffer_to_screen_shader_.Use();
+    // Bind the original color texture
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, framebuffer_to_screen_shader_.color_buffer(0));
+    glActiveTexture(GL_TEXTURE1);
+    if (bloom_enabled_) {
+      // Bind the blurred texture
+      glBindTexture(GL_TEXTURE_2D, bloom_renderer_.BloomTexture());
+    } else {
+      // Bind null to the texture
+      glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
+    framebuffer_to_screen_shader_.SetBool("bloomEnabled", bloom_enabled_);
+    quad_->Draw();
   }
-  framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
-  framebuffer_to_screen_shader_.SetBool("bloomEnabled", bloom_enabled_);
-  quad_->Draw();
 }
 
 void PbrScene::SetPointLightEnabled(bool enable) {
