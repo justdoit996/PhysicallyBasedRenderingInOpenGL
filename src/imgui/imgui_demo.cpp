@@ -555,7 +555,7 @@ static void ShowDemoWindowWidgets(void* scene) {
       ((PbrScene*)scene)->SetPointLightEnabled(false);
     }
   }
-  static bool bloom_enabled = true;
+  static bool bloom_enabled = pbr_utils::ui_defaults::bloom::enabled;
   if (ImGui::Checkbox("Enable Bloom", &bloom_enabled)) {
     if (bloom_enabled) {
       ((PbrScene*)scene)->SetBloomEnabled(true);

@@ -65,8 +65,11 @@ void PbrScene::Init() {
   bloom_renderer_.Init();
 
   // Light sources
-  point_light_ = PointLight(/*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
-                            /*color*/ glm::vec3(1.0f, 1.0f, 1.0f));
+  point_light_ = PointLight(
+      /*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
+      /*color*/ glm::vec3(pbr_utils::ui_defaults::light_sphere::redf,
+                          pbr_utils::ui_defaults::light_sphere::greenf,
+                          pbr_utils::ui_defaults::light_sphere::bluef));
   point_light_.SetIntensity(200.f);
 
   // Bind projection uniform for camera shader (only need once)

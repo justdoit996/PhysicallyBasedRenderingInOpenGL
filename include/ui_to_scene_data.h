@@ -59,9 +59,14 @@ const float bluef = 1.f * blue / rgb_max;
 
 const float intensity = 200.f;
 const float max_intensity = 1000.f;
-};  // namespace light_sphere
+}  // namespace light_sphere
 
-};  // namespace ui_defaults
+namespace bloom {
+const bool enabled = true;
+
+}
+
+}  // namespace ui_defaults
 
 }  // namespace pbr_utils
 

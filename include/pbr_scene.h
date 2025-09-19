@@ -80,12 +80,12 @@ class PbrScene {
 
   // Bloom
   BloomRenderer bloom_renderer_;
-  bool bloom_enabled_ = true;
+  bool bloom_enabled_ = pbr_utils::ui_defaults::bloom::enabled;
   float bloom_strength_;
 
   // Point Light Sphere
   PointLight point_light_;
-  bool point_light_enabled_ = true;
+  bool point_light_enabled_ = pbr_utils::ui_defaults::light_sphere::enabled;
 
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection_ =
