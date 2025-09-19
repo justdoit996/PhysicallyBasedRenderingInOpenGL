@@ -17,6 +17,7 @@ vec3 bloom() {
 
 void main() {
     vec3 result = vec3(0.0);
+
     if (bloomEnabled) {
         result = bloom();
     } else {
@@ -24,7 +25,8 @@ void main() {
     }
 
     // HDR tone mapping
-    result = vec3(1.0) - exp(-result * exposure);
+    //result = vec3(1.0) - exp(-result * exposure);
+    result = result / (result + vec3(1.0));
 
     // Gamma correct
     const float gamma = 2.2;
