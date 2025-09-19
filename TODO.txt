@@ -1,19 +1,6 @@
-<<<<<<< Updated upstream
-Sep 15
-- toggle for bloom on/off
-- add slider for bloomStrength in shader
-- replace light "intensity" slider for HDR exposure
-=======
 Sep 18
-- Bug: No spec on materials
-	- bisect commits
-	- NO REPRO: d032929
-	- REPRO: 64c533c
-
-- Add PBR bloom for the light sphere: https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom
-	- Create a BloomRenderer class that reads from the framebuffer and makes the necessary modifications
-	- framebuffer shader class + shader files done
->>>>>>> Stashed changes
+- add slider for bloomStrength in shader
+- add exposure slider?
 
 - Create a custom material with sliders for albedo, metallic, roughness, ao
 	- Start with a "base" sphere material
