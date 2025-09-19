@@ -104,9 +104,9 @@ void GameWindow::ProcessKeyboardInput() {
   float current_time = glfwGetTime();
   delta_time_ = current_time - last_time_;
   last_time_ = current_time;
-  //if (glfwGetKey(this->windowHandle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-  //  glfwSetWindowShouldClose(this->windowHandle, true);
-  //}
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(this->windowHandle, true);
+  }
   if (glfwGetKey(this->windowHandle, GLFW_KEY_W) == GLFW_PRESS) {
     camera_->ProcessKeyboard(FORWARD, delta_time_);
   }
@@ -125,7 +125,7 @@ void GameWindow::ProcessKeyboardInput() {
   if (glfwGetKey(this->windowHandle, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
     camera_->ProcessKeyboard(DOWN, delta_time_);
   }
-  if (glfwGetKey(this->windowHandle, GLFW_KEY_ESCAPE) == GLFW_PRESS &&
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_F) == GLFW_PRESS &&
       !pause_key_pressed_) {
     pause_key_pressed_ = true;
     mouse_camera_enabled_ = !mouse_camera_enabled_;
@@ -133,7 +133,7 @@ void GameWindow::ProcessKeyboardInput() {
         this->windowHandle, GLFW_CURSOR,
         mouse_camera_enabled_ ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
   }
-  if (glfwGetKey(this->windowHandle, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
+  if (glfwGetKey(this->windowHandle, GLFW_KEY_F) == GLFW_RELEASE) {
     pause_key_pressed_ = false;
   }
 }

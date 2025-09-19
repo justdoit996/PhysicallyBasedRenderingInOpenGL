@@ -281,7 +281,8 @@ void ImGui::ShowUserGuide() {
   ImGui::BulletText("Foward/backward/strafe: W/A/S/D");
   ImGui::BulletText("Up: Space");
   ImGui::BulletText("Down: Shift");
-  ImGui::BulletText("Press ESC key to bind/unbind mouse from camera");
+  ImGui::BulletText("Press F key to bind/unbind mouse from camera");
+  ImGui::BulletText("Press ESC key to exit program");
 }
 
 //-----------------------------------------------------------------------------
