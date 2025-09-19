@@ -246,7 +246,7 @@ void PbrScene::Render() {
   // Add direct light properties in sphere shader
   sphere_shader_.SetBool("pointLightEnabled", point_light_enabled_);
   sphere_shader_.SetVec3("pointLight.Position", newPos);
-  sphere_shader_.SetVec3("pointLight.Color", point_light_.GetColor());
+  sphere_shader_.SetVec3("pointLight.Color", point_light_.GetTotalColor());
   sphere_shader_.SetMat3("normalMatrix",
                          glm::transpose(glm::inverse(glm::mat3(model))));
   sphere_->Draw();

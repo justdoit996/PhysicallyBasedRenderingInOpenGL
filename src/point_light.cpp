@@ -10,6 +10,6 @@ glm::vec3 PointLight::GetColor() const {
   return color;
 }
 
-glm::vec3 PointLight::GetColorLuminance() const {
+glm::vec3 PointLight::GetTotalColor() const {
   return color * intensity;
 }
