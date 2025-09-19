@@ -476,7 +476,7 @@ void ImGui::ShowDemoWindow(void* scene, bool* p_open) {
   }
 
   // All demo contents
-  if (ImGui::CollapsingHeader("PBR", ImGuiTreeNodeFlags_DefaultOpen)) {
+  if (ImGui::CollapsingHeader("PBR Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
     ShowDemoWindowWidgets(scene);
   }
 
@@ -551,6 +551,14 @@ static void ShowDemoWindowWidgets(void* scene) {
       ((PbrScene*)scene)->SetPointLightEnabled(true);
     } else {
       ((PbrScene*)scene)->SetPointLightEnabled(false);
+    }
+  }
+  static bool bloom_enabled = true;
+  if (ImGui::Checkbox("Enable Bloom", &bloom_enabled)) {
+    if (bloom_enabled) {
+      ((PbrScene*)scene)->SetBloomEnabled(true);
+    } else {
+      ((PbrScene*)scene)->SetBloomEnabled(false);
     }
   }
   // RGB Sliders

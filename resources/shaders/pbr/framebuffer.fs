@@ -7,13 +7,9 @@ uniform sampler2D scene;
 uniform sampler2D bloomBlur;
 uniform float exposure;
 uniform float bloomStrength = 0.004f;
+uniform bool bloomEnabled;
 
-vec3 bloom_none() {
-    vec3 hdrColor = texture(scene, TexCoords).rgb;
-    return hdrColor;
-}
-
-vec3 bloom_new() {
+vec3 bloom() {
     vec3 hdrColor = texture(scene, TexCoords).rgb;
     vec3 bloomColor = texture(bloomBlur, TexCoords).rgb;
     return mix(hdrColor, bloomColor, bloomStrength); // linear interpolation
@@ -21,7 +17,11 @@ vec3 bloom_new() {
 
 void main() {
     vec3 result = vec3(0.0);
-    result = bloom_new();
+    if (bloomEnabled) {
+        result = bloom();
+    } else {
+        result = texture(scene, TexCoords).rgb;
+    }
 
     // HDR tone mapping
     result = vec3(1.0) - exp(-result * exposure);

@@ -39,6 +39,7 @@ class PbrScene {
   void SetGreenColor(unsigned int g);
   void SetBlueColor(unsigned int b);
   void SetLightIntensity(float intense);
+  void SetBloomEnabled(bool bloom);
 
  private:
   void Init();
@@ -76,7 +77,9 @@ class PbrScene {
   Shader light_sphere_shader_;
   FramebufferShader framebuffer_to_screen_shader_;
 
+  // Bloom
   BloomRenderer bloom_renderer_;
+  bool bloom_enabled_ = true;
 
   // Point Light Sphere
   PointLight point_light_;

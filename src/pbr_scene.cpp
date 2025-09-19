@@ -272,22 +272,30 @@ void PbrScene::Render() {
   // NOT OPTIONAL STEP: Clear the framebuffer!!
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  bloom_renderer_.RenderBloomTexture(
-      framebuffer_to_screen_shader_.color_buffer(1),
-      constants::bloom_filter_radius);
+  // Create bloom mip maps after scene has been drawn to framebuffer
+  if (bloom_enabled_) {
+    bloom_renderer_.RenderBloomTexture(
+        framebuffer_to_screen_shader_.color_buffer(1),
+        constants::bloom_filter_radius);
+  }
 
   // NOT OPTIONAL STEP: Clear the framebuffer!!
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-  //  Draw the scene from framebuffer to screen
+  //  Draw from framebuffer to screen
   framebuffer_to_screen_shader_.Use();
   // Bind the original color texture
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, framebuffer_to_screen_shader_.color_buffer(0));
-  // Bind the blurred texture
   glActiveTexture(GL_TEXTURE1);
-  glBindTexture(GL_TEXTURE_2D, bloom_renderer_.BloomTexture());
-  // Shader will mix the two textures
+  if (bloom_enabled_) {
+    // Bind the blurred texture
+    glBindTexture(GL_TEXTURE_2D, bloom_renderer_.BloomTexture());
+  } else {
+    // Bind null to the texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+  }
   framebuffer_to_screen_shader_.SetFloat("exposure", 1.f);
+  framebuffer_to_screen_shader_.SetBool("bloomEnabled", bloom_enabled_);
   quad_->Draw();
 }
 
@@ -309,4 +317,8 @@ void PbrScene::SetBlueColor(unsigned int b) {
 
 void PbrScene::SetLightIntensity(float intense) {
   point_light_.SetIntensity(intense);
+}
+
+void PbrScene::SetBloomEnabled(bool bloom) {
+  bloom_enabled_ = bloom;
 }
