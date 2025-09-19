@@ -9,7 +9,8 @@ bool BloomRenderer::Init() {
     return true;
   }
   // Framebuffer
-  bool status = bloom_framebuffer_.Init(/*max mip levels*/ 6);
+  bool status =
+      bloom_framebuffer_.Init(/*max mip levels*/ constants::max_mip_levels);
   if (!status) {
     std::cerr
         << "Failed to initialize bloom FBO - cannot create bloom renderer!\n";
