@@ -20,6 +20,7 @@
 #include "shapes/cube.h"
 #include "shapes/quad.h"
 #include "shapes/sphere.h"
+#include "ui_to_scene_data.h"
 #include "utils/constants.h"
 
 class PbrScene {
@@ -80,6 +81,7 @@ class PbrScene {
   // Bloom
   BloomRenderer bloom_renderer_;
   bool bloom_enabled_ = true;
+  float bloom_strength_;
 
   // Point Light Sphere
   PointLight point_light_;

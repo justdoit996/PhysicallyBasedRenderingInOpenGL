@@ -545,7 +545,8 @@ static void ShowDemoWindowWidgets(void* scene) {
   }
   // Light sphere settings
   // Checkbox Toggle
-  static bool revolving_light_enabled = true;
+  static bool revolving_light_enabled =
+      pbr_utils::ui_defaults::light_sphere::enabled;
   if (ImGui::Checkbox("Enable Light Sphere", &revolving_light_enabled)) {
     if (revolving_light_enabled) {
       ((PbrScene*)scene)->SetPointLightEnabled(true);
@@ -564,20 +565,21 @@ static void ShowDemoWindowWidgets(void* scene) {
 
   // RGB Sliders
   ImGui::Text("RGB of Light Sphere");
-  static int red = 255;
+  static int red = pbr_utils::ui_defaults::light_sphere::red;
   if (ImGui::SliderInt("Red Color", &red, 0, 255)) {
     ((PbrScene*)scene)->SetRedColor(red);
   }
-  static int green = 255;
+  static int green = pbr_utils::ui_defaults::light_sphere::green;
   if (ImGui::SliderInt("Green Color", &green, 0, 255)) {
     ((PbrScene*)scene)->SetGreenColor(green);
   }
-  static int blue = 255;
+  static int blue = pbr_utils::ui_defaults::light_sphere::blue;
   if (ImGui::SliderInt("Blue Color", &blue, 0, 255)) {
     ((PbrScene*)scene)->SetBlueColor(blue);
   }
-  static float intensity = 200.f;
-  if (ImGui::SliderFloat("Light Intensity", &intensity, 0, 1000.f)) {
+  static float intensity = pbr_utils::ui_defaults::light_sphere::intensity;
+  if (ImGui::SliderFloat("Light Intensity", &intensity, 0,
+                         pbr_utils::ui_defaults::light_sphere::max_intensity)) {
     ((PbrScene*)scene)->SetLightIntensity(intensity);
   }
 

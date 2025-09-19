@@ -43,6 +43,20 @@ extern std::string environment_names[max_environments];
 
 std::string ConvertEnvironmentToString(const Environment& env);
 std::string ConvertEnvironmentToFilePath(const Environment& env_path);
+
+namespace ui_defaults {
+
+namespace light_sphere {
+const bool enabled = true;
+const int red = 255;
+const int green = 255;
+const int blue = 255;
+const float intensity = 200.f;
+const float max_intensity = 1000.f;
+};  // namespace light_sphere
+
+};  // namespace ui_defaults
+
 }  // namespace pbr_utils
 
 #endif
