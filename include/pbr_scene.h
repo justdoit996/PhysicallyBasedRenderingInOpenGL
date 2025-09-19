@@ -40,7 +40,6 @@ class PbrScene {
   void SetBlueColor(unsigned int b);
   void SetLightIntensity(float intense);
   void SetBloomEnabled(bool bloom);
-  void SetScreenFrameBuffer(bool enable) { screen_frame_buffer_ = enable; }
 
  private:
   void Init();
@@ -85,9 +84,6 @@ class PbrScene {
   // Point Light Sphere
   PointLight point_light_;
   bool point_light_enabled_ = true;
-
-  // Framebuffer toggle
-  bool screen_frame_buffer_ = false;
 
   // Captures a vertical 90 deg FoV necessary for converting equirectangular
   glm::mat4 capture_projection_ =

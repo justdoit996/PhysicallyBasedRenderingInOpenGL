@@ -562,14 +562,6 @@ static void ShowDemoWindowWidgets(void* scene) {
     }
   }
 
-  static bool frame_buffering = false;
-  if (ImGui::Checkbox("Enable screen framebuffer", &frame_buffering)) {
-    if (frame_buffering) {
-      ((PbrScene*)scene)->SetScreenFrameBuffer(true);
-    } else {
-      ((PbrScene*)scene)->SetScreenFrameBuffer(false);
-    }
-  }
   // RGB Sliders
   ImGui::Text("RGB of Light Sphere");
   static int red = 255;
