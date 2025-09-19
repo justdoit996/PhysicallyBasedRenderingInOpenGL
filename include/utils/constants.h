@@ -11,14 +11,18 @@ const int HEIGHT = 1500;
 
 const float ASPECT_RATIO = 1.0f * WIDTH / HEIGHT;
 
+namespace camera {
 // z-distance (depth) from frustums
 const float NEAR = 0.1f;
 const float FAR = 100.0f;
 
-const int N_COLOR_CUBES = 10;
-const int N_LIGHT_CUBES = 4;
-
-const float EXPOSURE = 5.f;
+// Default camera values
+const float YAW = -90.0f;
+const float PITCH = 0.0f;
+const float SPEED = 2.5f;
+const float SENSITIVITY = 0.1f;
+const float ZOOM = 45.0f;
+}  // namespace camera
 
 // Vertices + normals of a single cube. Reused for light source and regular
 // color cubes.

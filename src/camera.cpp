@@ -3,9 +3,9 @@
 // constructor with vectors
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : front_(glm::vec3(0.0f, 0.0f, -1.0f)),
-      movement_speed_(SPEED),
-      mouse_sensitivity_(SENSITIVITY),
-      zoom_(ZOOM) {
+      movement_speed_(constants::camera::SPEED),
+      mouse_sensitivity_(constants::camera::SENSITIVITY),
+      zoom_(constants::camera::ZOOM) {
   position_ = position;
   world_up_ = up;
   yaw_ = yaw;
@@ -23,9 +23,9 @@ Camera::Camera(float posX,
                float yaw,
                float pitch)
     : front_(glm::vec3(0.0f, 0.0f, -1.0f)),
-      movement_speed_(SPEED),
-      mouse_sensitivity_(SENSITIVITY),
-      zoom_(ZOOM) {
+      movement_speed_(constants::camera::SPEED),
+      mouse_sensitivity_(constants::camera::SENSITIVITY),
+      zoom_(constants::camera::ZOOM) {
   position_ = glm::vec3(posX, posY, posZ);
   world_up_ = glm::vec3(upX, upY, upZ);
   yaw_ = yaw;
