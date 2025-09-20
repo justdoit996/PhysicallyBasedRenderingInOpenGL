@@ -1,5 +1,7 @@
 #include "ui_to_scene_data.h"
 
+#include "utils/constants.h"
+
 namespace pbr_utils {
 
 std::vector<std::string> getFileNamesInDirectory(
@@ -23,6 +25,6 @@ std::vector<std::string> material_names =
     getFileNamesInDirectory("resources/assets/textures/pbr/");
 
 std::vector<std::string> environment_names =
-    getFileNamesInDirectory("resources/assets/textures/hdr/");
+    getFileNamesInDirectory(constants::ui_defaults::environment_path_prefix);
 
 };  // namespace pbr_utils

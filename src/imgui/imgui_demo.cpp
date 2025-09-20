@@ -496,20 +496,21 @@ static void ShowDemoWindowWidgets(void* scene) {
   // pointer to the object, an id for the object, a flag intrusively stored in
   // the object itself, etc.)
   // Here we store our selection data as an index.
-  static int item_current_idx = 0;
   std::string material_dir_prefix = "resources/assets/textures/pbr/";
   // Label to preview before opening the combo
-  const std::string combo_label = pbr_utils::material_names[item_current_idx];
+  const std::string combo_label = pbr_utils::material_names
+      [constants::ui_defaults::material_item_current_idx];
   if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
     for (int i = 0; i < pbr_utils::material_names.size(); i++) {
-      const bool is_selected = (item_current_idx == i);
+      const bool is_selected =
+          (constants::ui_defaults::material_item_current_idx == i);
       if (ImGui::Selectable(pbr_utils::material_names[i].c_str(),
                             is_selected)) {
         // Only called when a different selection is made
         ((PbrScene*)scene)
             ->UploadPbrTextures(material_dir_prefix +
                                 pbr_utils::material_names[i]);
-        item_current_idx = i;
+        constants::ui_defaults::material_item_current_idx = i;
       }
 
       // Set the initial focus when opening the combo (scrolling + keyboard
@@ -522,7 +523,7 @@ static void ShowDemoWindowWidgets(void* scene) {
     ImGui::EndCombo();
   }
   // Label to preview before opening the combo
-  std::string env_dir_prefix = "resources/assets/textures/hdr/";
+  std::string env_dir_prefix = constants::ui_defaults::environment_path_prefix;
   const std::string environment_combo_label = pbr_utils::environment_names
       [constants::ui_defaults::environment_item_current_idx];
 

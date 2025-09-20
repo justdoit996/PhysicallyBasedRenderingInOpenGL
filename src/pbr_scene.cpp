@@ -32,8 +32,10 @@ void PbrScene::Init() {
                         "resources/shaders/pbr/framebuffer.fs");
 
   // Load or generate textures
-  sphere_shader_.LoadTextures("resources/assets/textures/pbr/" +
-                              pbr_utils::material_names[0]);
+  sphere_shader_.LoadTextures(
+      "resources/assets/textures/pbr/" +
+      pbr_utils::material_names
+          [constants::ui_defaults::material_item_current_idx]);
   framebuffer_to_screen_shader_.GenerateTextures();
 
   // Create sphere vertices and VAO

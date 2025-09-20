@@ -23,7 +23,7 @@ IblRenderer::IblRenderer() {
                             "resources/shaders/pbr/brdf.fs");
 
   equirectangular_to_cube_map_shader_.LoadTextures(
-      "resources/assets/textures/hdr/" +
+      constants::ui_defaults::environment_path_prefix +
       pbr_utils::environment_names
           [constants::ui_defaults::environment_item_current_idx]);
   environment_cube_map_shader_.GenerateTextures();
