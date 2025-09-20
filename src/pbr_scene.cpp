@@ -33,7 +33,7 @@ void PbrScene::Init() {
 
   // Load or generate textures
   sphere_shader_.LoadTextures(
-      "resources/assets/textures/pbr/" +
+      constants::ui_defaults::material_path_prefix +
       pbr_utils::material_names
           [constants::ui_defaults::material_item_current_idx]);
   framebuffer_to_screen_shader_.GenerateTextures();
@@ -55,7 +55,7 @@ void PbrScene::Init() {
       glm::vec3(constants::ui_defaults::light_sphere::redf,
                 constants::ui_defaults::light_sphere::greenf,
                 constants::ui_defaults::light_sphere::bluef),
-      /*intensity*/ 200.f);
+      /*intensity*/ constants::ui_defaults::light_sphere::intensity);
 
   // Bind projection uniform for camera shader (only need once)
   glm::mat4 camera_perspective_projection =

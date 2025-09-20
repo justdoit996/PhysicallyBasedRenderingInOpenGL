@@ -496,7 +496,8 @@ static void ShowDemoWindowWidgets(void* scene) {
   // pointer to the object, an id for the object, a flag intrusively stored in
   // the object itself, etc.)
   // Here we store our selection data as an index.
-  std::string material_dir_prefix = "resources/assets/textures/pbr/";
+  std::string material_dir_prefix =
+      constants::ui_defaults::material_path_prefix;
   // Label to preview before opening the combo
   const std::string combo_label = pbr_utils::material_names
       [constants::ui_defaults::material_item_current_idx];

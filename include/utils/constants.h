@@ -213,10 +213,11 @@ const float bloom_filter_radius = 0.005f;
 const unsigned int max_mip_levels = 6;
 
 namespace ui_defaults {
-// Also sets the starting index of the env
-static int environment_item_current_idx = 6;
-static int material_item_current_idx = 1;
+// Also sets the default starting index in the UI
+static int environment_item_current_idx = 1;
+static int material_item_current_idx = 3;
 const std::string environment_path_prefix = "resources/assets/textures/hdr/";
+const std::string material_path_prefix = "resources/assets/textures/pbr/";
 
 namespace light_sphere {
 const bool enabled = true;
@@ -229,8 +230,8 @@ const float redf = 1.f * red / rgb_max;
 const float greenf = 1.f * green / rgb_max;
 const float bluef = 1.f * blue / rgb_max;
 
-const float intensity = 100.f;
-const float max_intensity = 200.f;
+const float intensity = 10.f;
+const float max_intensity = 100.f;
 }  // namespace light_sphere
 
 namespace bloom {

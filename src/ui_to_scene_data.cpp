@@ -22,7 +22,7 @@ std::vector<std::string> getFileNamesInDirectory(
 }
 
 std::vector<std::string> material_names =
-    getFileNamesInDirectory("resources/assets/textures/pbr/");
+    getFileNamesInDirectory(constants::ui_defaults::material_path_prefix);
 
 std::vector<std::string> environment_names =
     getFileNamesInDirectory(constants::ui_defaults::environment_path_prefix);
