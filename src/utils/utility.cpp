@@ -6,6 +6,8 @@
 #define GLAD_GL_IMPLEMENTATION
 #include "glad.h"
 
+#include "utils/constants.h"
+
 bool ReadFile(std::string file,
               std::string& fileContents,
               bool addLineTerminator) {
@@ -67,6 +69,7 @@ unsigned int LoadTexture(const std::string& path) {
   } else {
     std::cout << "Texture failed to load at path: " << path << std::endl;
     stbi_image_free(data);
+    exit(1);
   }
   return textureID;
 }
@@ -92,6 +95,34 @@ unsigned int LoadHdrTexture(const std::string& path) {
     stbi_image_free(data);
   } else {
     std::cout << "Failed to load HDR image." << std::endl;
+    exit(1);
   }
   return hdrTexture;
 }
+
+namespace pbr_utils {
+
+std::vector<std::string> getFileNamesInDirectory(
+    const std::string& directoryPath) {
+  std::vector<std::string> fileNames;
+  try {
+    // Create a directory_iterator for the given path
+    for (const auto& entry :
+         std::filesystem::directory_iterator(directoryPath)) {
+      // Check if the entry is a regular file (not a directory)
+      // Add the file name to the vector
+      fileNames.push_back(entry.path().filename().string());
+    }
+  } catch (const std::filesystem::filesystem_error& e) {
+    std::cerr << "Filesystem error: " << e.what() << std::endl;
+  }
+  return fileNames;
+}
+
+std::vector<std::string> material_names =
+    getFileNamesInDirectory(constants::ui_defaults::material_path_prefix);
+
+std::vector<std::string> environment_names =
+    getFileNamesInDirectory(constants::ui_defaults::environment_path_prefix);
+
+};  // namespace pbr_utils

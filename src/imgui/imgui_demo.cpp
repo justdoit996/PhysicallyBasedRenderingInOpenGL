@@ -97,8 +97,8 @@ ShowExampleAppCustomRendering()
 #ifndef IMGUI_DISABLE
 #include "ibl_renderer.h"
 #include "pbr_scene.h"
-#include "ui_to_scene_data.h"
 #include "utils/constants.h"
+#include "utils/utility.h"
 
 // System includes
 #include <ctype.h>   // toupper

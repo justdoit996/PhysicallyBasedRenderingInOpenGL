@@ -15,7 +15,6 @@
 #include "shaders/sphere_shader.h"
 #include "shapes/quad.h"
 #include "shapes/sphere.h"
-#include "ui_to_scene_data.h"
 #include "utils/constants.h"
 
 class PbrScene {

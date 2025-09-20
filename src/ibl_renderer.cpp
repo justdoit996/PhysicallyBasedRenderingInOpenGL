@@ -1,6 +1,6 @@
 #include "ibl_renderer.h"
 
-#include "ui_to_scene_data.h"
+#include "utils/utility.h"
 #include "utils/constants.h"
 
 IblRenderer::IblRenderer() {

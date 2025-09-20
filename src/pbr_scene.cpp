@@ -1,8 +1,8 @@
 #include "pbr_scene.h"
 
 #include "bloom_renderer.h"
-#include "ui_to_scene_data.h"
 #include "utils/constants.h"
+#include "utils/utility.h"
 
 PbrScene::PbrScene(Camera* camera) : camera_(camera) {
   Init();
