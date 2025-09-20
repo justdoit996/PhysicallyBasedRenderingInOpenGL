@@ -1,10 +1,10 @@
 Sep 18
-- area light for light sphere
-- add slider for bloomStrength in shader
+- Create a custom material with sliders for albedo, metallic, roughness, ao
+	- Start with a "base" sphere material
 
 
 ### Long term
-- Create a custom material with sliders for albedo, metallic, roughness, ao
-	- Start with a "base" sphere material
-- fluids
+- Fluids?
+- Area lights?
+- Height mapping?
 

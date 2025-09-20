@@ -214,8 +214,8 @@ const unsigned int max_mip_levels = 6;
 
 namespace ui_defaults {
 // Also sets the default starting index in the UI
-static int environment_item_current_idx = 1;
-static int material_item_current_idx = 3;
+static int environment_item_current_idx = 7;
+static int material_item_current_idx = 5;
 const std::string environment_path_prefix = "resources/assets/textures/hdr/";
 const std::string material_path_prefix = "resources/assets/textures/pbr/";
 
