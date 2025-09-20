@@ -112,7 +112,7 @@ void PbrScene::Render() {
     model = glm::scale(model, glm::vec3(.5f));
     light_sphere_shader_.SetMat4("model", model);
     light_sphere_shader_.SetMat4("view", view);
-    light_sphere_shader_.SetVec3("light_color", point_light_.GetColor());
+    light_sphere_shader_.SetVec3("light_color", point_light_.GetTotalColor());
     sphere_->Draw();
   }
 

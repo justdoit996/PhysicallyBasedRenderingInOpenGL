@@ -26,7 +26,7 @@ class PbrScene {
   void Render();
   void UploadPbrTextures(const std::string& path);
   void UploadHdrMap(const std::string& path);
-  void PbrScene::InitAllIblTextureMaps();
+  void InitAllIblTextureMaps();
 
   void SetPointLightEnabled(bool enable);
   void SetRedColor(float r);

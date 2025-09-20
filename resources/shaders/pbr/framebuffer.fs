@@ -27,7 +27,8 @@ void main() {
 
   // HDR tone mapping
   result = vec3(1.0) - exp(-result * exposure);
-  result = result / (result + vec3(1.0));
+  // Reinhard tone mapping (looks worse imo)
+  //result = result / (result + vec3(1.0));
 
   // Gamma correct
   const float gamma = 2.2;

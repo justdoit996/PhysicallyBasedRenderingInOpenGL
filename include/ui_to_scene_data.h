@@ -57,8 +57,8 @@ const float redf = 1.f * red / rgb_max;
 const float greenf = 1.f * green / rgb_max;
 const float bluef = 1.f * blue / rgb_max;
 
-const float intensity = 200.f;
-const float max_intensity = 1000.f;
+const float intensity = 100.f;
+const float max_intensity = 200.f;
 }  // namespace light_sphere
 
 namespace bloom {
