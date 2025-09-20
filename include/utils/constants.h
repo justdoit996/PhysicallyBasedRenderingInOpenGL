@@ -213,6 +213,8 @@ const float bloom_filter_radius = 0.005f;
 const unsigned int max_mip_levels = 6;
 
 namespace ui_defaults {
+// Also sets the starting index of the env
+extern int environment_item_current_idx;
 
 namespace light_sphere {
 const bool enabled = true;

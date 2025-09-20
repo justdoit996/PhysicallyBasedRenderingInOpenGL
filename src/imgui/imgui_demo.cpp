@@ -98,6 +98,7 @@ ShowExampleAppCustomRendering()
 #include "ibl_renderer.h"
 #include "pbr_scene.h"
 #include "ui_to_scene_data.h"
+#include "utils/constants.h"
 
 // System includes
 #include <ctype.h>   // toupper
@@ -520,23 +521,23 @@ static void ShowDemoWindowWidgets(void* scene) {
     ImGui::SameLine();
     ImGui::EndCombo();
   }
-  static int environment_item_current_idx = 0;
   // Label to preview before opening the combo
   std::string env_dir_prefix = "resources/assets/textures/hdr/";
-  const std::string environment_combo_label =
-      pbr_utils::environment_names[environment_item_current_idx];
+  const std::string environment_combo_label = pbr_utils::environment_names
+      [constants::ui_defaults::environment_item_current_idx];
 
   if (ImGui::BeginCombo("Environments", environment_combo_label.c_str(),
                         flags)) {
     for (int i = 0; i < pbr_utils::environment_names.size(); i++) {
-      const bool is_selected = (environment_item_current_idx == i);
+      const bool is_selected =
+          (constants::ui_defaults::environment_item_current_idx == i);
       if (ImGui::Selectable(pbr_utils::environment_names[i].c_str(),
                             is_selected)) {
         // Only called when a different selection is made
         ((PbrScene*)scene)
             ->UploadHdrMap(env_dir_prefix + pbr_utils::environment_names[i]);
         ((PbrScene*)scene)->InitAllIblTextureMaps();
-        environment_item_current_idx = i;
+        constants::ui_defaults::environment_item_current_idx = i;
       }
 
       // Set the initial focus when opening the combo (scrolling + keyboard
