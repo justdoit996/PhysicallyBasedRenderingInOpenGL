@@ -35,8 +35,9 @@ enum Environment {
   SUNNY_SNOW = 5,
   NEWPORT_LOFT = 6,
   EARTHLIKE_PLANET = 7,
+  CAMP_FIRE = 8,
 };
-const int max_environments = 8;
+const int max_environments = 9;
 
 extern Environment environments[max_environments];
 extern std::string environment_names[max_environments];

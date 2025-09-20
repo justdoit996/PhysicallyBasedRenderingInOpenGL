@@ -63,6 +63,7 @@ Environment environments[] = {
     Environment::SUNNY_SNOW,
     Environment::NEWPORT_LOFT,
     Environment::EARTHLIKE_PLANET,
+    Environment::CAMP_FIRE,
 };
 std::string environment_names[] = {
     ConvertEnvironmentToString(Environment::BLUE_NEBULA),
@@ -73,6 +74,7 @@ std::string environment_names[] = {
     ConvertEnvironmentToString(Environment::SUNNY_SNOW),
     ConvertEnvironmentToString(Environment::NEWPORT_LOFT),
     ConvertEnvironmentToString(Environment::EARTHLIKE_PLANET),
+    ConvertEnvironmentToString(Environment::CAMP_FIRE),
 };
 
 std::string ConvertEnvironmentToString(const Environment& env) {
@@ -93,6 +95,8 @@ std::string ConvertEnvironmentToString(const Environment& env) {
       return "blue_nebula";
     case Environment::EARTHLIKE_PLANET:
       return "earthlike_planet";
+    case Environment::CAMP_FIRE:
+      return "camp_fire";
     default:
       return "ERORR: ENVIRONMENT NOT FOUND";
   }
