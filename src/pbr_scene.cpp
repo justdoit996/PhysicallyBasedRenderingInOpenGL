@@ -50,9 +50,9 @@ void PbrScene::Init() {
   point_light_ = PointLight(
       /*position*/ glm::vec3(0.0f, 0.0f, 0.0f),
       /*color*/
-      glm::vec3(pbr_utils::ui_defaults::light_sphere::redf,
-                pbr_utils::ui_defaults::light_sphere::greenf,
-                pbr_utils::ui_defaults::light_sphere::bluef),
+      glm::vec3(constants::ui_defaults::light_sphere::redf,
+                constants::ui_defaults::light_sphere::greenf,
+                constants::ui_defaults::light_sphere::bluef),
       /*intensity*/ 200.f);
 
   // Bind projection uniform for camera shader (only need once)

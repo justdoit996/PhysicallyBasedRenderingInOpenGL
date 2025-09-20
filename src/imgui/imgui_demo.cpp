@@ -550,7 +550,7 @@ static void ShowDemoWindowWidgets(void* scene) {
   // Light sphere settings
   // Checkbox Toggle
   static bool revolving_light_enabled =
-      pbr_utils::ui_defaults::light_sphere::enabled;
+      constants::ui_defaults::light_sphere::enabled;
   if (ImGui::Checkbox("Enable Light Sphere", &revolving_light_enabled)) {
     if (revolving_light_enabled) {
       ((PbrScene*)scene)->SetPointLightEnabled(true);
@@ -562,23 +562,23 @@ static void ShowDemoWindowWidgets(void* scene) {
   // RGB Slider
   // ImGui::Text("RGB of Light Sphere");
   static float light_sphere_color[3] = {
-      pbr_utils::ui_defaults::light_sphere::redf,
-      pbr_utils::ui_defaults::light_sphere::greenf,
-      pbr_utils::ui_defaults::light_sphere::bluef};
+      constants::ui_defaults::light_sphere::redf,
+      constants::ui_defaults::light_sphere::greenf,
+      constants::ui_defaults::light_sphere::bluef};
   // Color was changed by the user
   if (ImGui::ColorEdit3("Light Sphere Color", light_sphere_color)) {
     ((PbrScene*)scene)->SetRedColor(light_sphere_color[0]);
     ((PbrScene*)scene)->SetGreenColor(light_sphere_color[1]);
     ((PbrScene*)scene)->SetBlueColor(light_sphere_color[2]);
   }
-  static float intensity = pbr_utils::ui_defaults::light_sphere::intensity;
+  static float intensity = constants::ui_defaults::light_sphere::intensity;
   if (ImGui::SliderFloat("Light Intensity", &intensity, 0,
-                         pbr_utils::ui_defaults::light_sphere::max_intensity)) {
+                         constants::ui_defaults::light_sphere::max_intensity)) {
     ((PbrScene*)scene)->SetLightIntensity(intensity);
   }
 
   // Bloom settings
-  static bool bloom_enabled = pbr_utils::ui_defaults::bloom::enabled;
+  static bool bloom_enabled = constants::ui_defaults::bloom::enabled;
   if (ImGui::Checkbox("Enable Bloom", &bloom_enabled)) {
     if (bloom_enabled) {
       ((PbrScene*)scene)->SetBloomEnabled(true);
@@ -586,9 +586,9 @@ static void ShowDemoWindowWidgets(void* scene) {
       ((PbrScene*)scene)->SetBloomEnabled(false);
     }
   }
-  static float bloom_strength = pbr_utils::ui_defaults::bloom::strength;
+  static float bloom_strength = constants::ui_defaults::bloom::strength;
   if (ImGui::SliderFloat("Bloom Strength", &bloom_strength, 0,
-                         pbr_utils::ui_defaults::bloom::max_strength)) {
+                         constants::ui_defaults::bloom::max_strength)) {
     ((PbrScene*)scene)->SetBloomStrength(bloom_strength);
   }
 

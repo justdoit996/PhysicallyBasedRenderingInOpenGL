@@ -56,12 +56,12 @@ class PbrScene {
 
   // Bloom
   BloomRenderer bloom_renderer_;
-  bool bloom_enabled_ = pbr_utils::ui_defaults::bloom::enabled;
-  float bloom_strength_ = pbr_utils::ui_defaults::bloom::strength;
+  bool bloom_enabled_ = constants::ui_defaults::bloom::enabled;
+  float bloom_strength_ = constants::ui_defaults::bloom::strength;
 
   // Point Light Sphere
   PointLight point_light_;
-  bool point_light_enabled_ = pbr_utils::ui_defaults::light_sphere::enabled;
+  bool point_light_enabled_ = constants::ui_defaults::light_sphere::enabled;
 };
 
 #endif
