@@ -3,47 +3,17 @@
 
 #include <string>
 
+#include <filesystem>
+#include <iostream>
+#include <vector>
+
 namespace pbr_utils {
 
-// Sphere materials
-enum Material {
-  RUSTED_IRON = 0,
-  GOLD = 1,
-  GRASS = 2,
-  PLASTIC = 3,
-  BRICK = 4,
-  OAK_WOOD_BARE = 5,
-  RECTANGLE_POLISHED_TILE = 6,
-  POWDER_COATED_METAL = 7,
-  TITANIUM_SCUFFED = 8
-};
-const int max_materials = 9;
+std::vector<std::string> getFileNamesInDirectory(const std::string&);
 
-std::string ConvertMaterialToString(const Material& material);
-std::string ConvertMaterialToFilePath(const Material& material_path);
+extern std::vector<std::string> material_names;
 
-extern Material materials[max_materials];
-extern std::string material_names[max_materials];
-
-// HDR environments aka Skybox
-enum Environment {
-  BLUE_NEBULA = 0,
-  CITRUS_ORCHARD_PURESKY = 1,
-  QUANTANI_NIGHT_PURESKY = 2,
-  NIGHT_PORT = 3,
-  SUNNY_FIELD = 4,
-  SUNNY_SNOW = 5,
-  NEWPORT_LOFT = 6,
-  EARTHLIKE_PLANET = 7,
-  CAMP_FIRE = 8,
-};
-const int max_environments = 9;
-
-extern Environment environments[max_environments];
-extern std::string environment_names[max_environments];
-
-std::string ConvertEnvironmentToString(const Environment& env);
-std::string ConvertEnvironmentToFilePath(const Environment& env_path);
+extern std::vector<std::string> environment_names;
 
 namespace ui_defaults {
 

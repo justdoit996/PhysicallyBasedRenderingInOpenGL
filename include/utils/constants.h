@@ -208,6 +208,7 @@ const int irradiance_map_dimension = 64;
 const int prefilter_map_dimension = 64;
 const int brdf_integration_map_dimension = 1024;
 
+// Bloom
 const float bloom_filter_radius = 0.005f;
 const unsigned int max_mip_levels = 6;
 

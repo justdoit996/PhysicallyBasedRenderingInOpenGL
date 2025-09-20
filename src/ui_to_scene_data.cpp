@@ -2,108 +2,27 @@
 
 namespace pbr_utils {
 
-Material materials[] = {Material::RUSTED_IRON,
-                        Material::GOLD,
-                        Material::GRASS,
-                        Material::PLASTIC,
-                        Material::BRICK,
-                        Material::OAK_WOOD_BARE,
-                        Material::RECTANGLE_POLISHED_TILE,
-                        Material::POWDER_COATED_METAL,
-                        Material::TITANIUM_SCUFFED};
-
-std::string material_names[] = {
-    ConvertMaterialToString(materials[0]),
-    ConvertMaterialToString(materials[1]),
-    ConvertMaterialToString(materials[2]),
-    ConvertMaterialToString(materials[3]),
-    ConvertMaterialToString(materials[4]),
-    ConvertMaterialToString(materials[5]),
-    ConvertMaterialToString(materials[6]),
-    ConvertMaterialToString(materials[7]),
-    ConvertMaterialToString(materials[8]),
-};
-
-std::string ConvertMaterialToString(const Material& material) {
-  switch (material) {
-    case Material::RUSTED_IRON:
-      return "rusted_iron";
-    case Material::GOLD:
-      return "gold";
-    case Material::GRASS:
-      return "grass";
-    case Material::PLASTIC:
-      return "plastic";
-    case Material::BRICK:
-      return "brick";
-    case Material::OAK_WOOD_BARE:
-      return "oak-wood-bare";
-    case Material::RECTANGLE_POLISHED_TILE:
-      return "rectangle-polished-tile";
-    case Material::POWDER_COATED_METAL:
-      return "powder-coated-metal";
-    case Material::TITANIUM_SCUFFED:
-      return "titanium-scuffed";
-    default:
-      return "ERROR: MATERIAL NOT FOUND";
+std::vector<std::string> getFileNamesInDirectory(
+    const std::string& directoryPath) {
+  std::vector<std::string> fileNames;
+  try {
+    // Create a directory_iterator for the given path
+    for (const auto& entry :
+         std::filesystem::directory_iterator(directoryPath)) {
+      // Check if the entry is a regular file (not a directory)
+      // Add the file name to the vector
+      fileNames.push_back(entry.path().filename().string());
+    }
+  } catch (const std::filesystem::filesystem_error& e) {
+    std::cerr << "Filesystem error: " << e.what() << std::endl;
   }
+  return fileNames;
 }
 
-std::string ConvertMaterialToFilePath(const Material& material) {
-  std::string path_prefix = "resources/assets/textures/pbr/";
-  return path_prefix + material_names[static_cast<int>(material)];
-}
+std::vector<std::string> material_names =
+    getFileNamesInDirectory("resources/assets/textures/pbr/");
 
-Environment environments[] = {
-    Environment::BLUE_NEBULA,
-    Environment::CITRUS_ORCHARD_PURESKY,
-    Environment::QUANTANI_NIGHT_PURESKY,
-    Environment::NIGHT_PORT,
-    Environment::SUNNY_FIELD,
-    Environment::SUNNY_SNOW,
-    Environment::NEWPORT_LOFT,
-    Environment::EARTHLIKE_PLANET,
-    Environment::CAMP_FIRE,
-};
-std::string environment_names[] = {
-    ConvertEnvironmentToString(Environment::BLUE_NEBULA),
-    ConvertEnvironmentToString(Environment::CITRUS_ORCHARD_PURESKY),
-    ConvertEnvironmentToString(Environment::QUANTANI_NIGHT_PURESKY),
-    ConvertEnvironmentToString(Environment::NIGHT_PORT),
-    ConvertEnvironmentToString(Environment::SUNNY_FIELD),
-    ConvertEnvironmentToString(Environment::SUNNY_SNOW),
-    ConvertEnvironmentToString(Environment::NEWPORT_LOFT),
-    ConvertEnvironmentToString(Environment::EARTHLIKE_PLANET),
-    ConvertEnvironmentToString(Environment::CAMP_FIRE),
-};
+std::vector<std::string> environment_names =
+    getFileNamesInDirectory("resources/assets/textures/hdr/");
 
-std::string ConvertEnvironmentToString(const Environment& env) {
-  switch (env) {
-    case Environment::NEWPORT_LOFT:
-      return "newport_loft";
-    case Environment::CITRUS_ORCHARD_PURESKY:
-      return "citrus_orchard_puresky";
-    case Environment::QUANTANI_NIGHT_PURESKY:
-      return "qwantani_night_puresky";
-    case Environment::NIGHT_PORT:
-      return "night_port";
-    case Environment::SUNNY_FIELD:
-      return "sunny_field";
-    case Environment::SUNNY_SNOW:
-      return "sunny_snow";
-    case Environment::BLUE_NEBULA:
-      return "blue_nebula";
-    case Environment::EARTHLIKE_PLANET:
-      return "earthlike_planet";
-    case Environment::CAMP_FIRE:
-      return "camp_fire";
-    default:
-      return "ERORR: ENVIRONMENT NOT FOUND";
-  }
-}
-
-std::string ConvertEnvironmentToFilePath(const Environment& env) {
-  std::string path_prefix = "resources/assets/textures/hdr/";
-  return path_prefix + environment_names[static_cast<int>(env)] + ".hdr";
-}
 };  // namespace pbr_utils

@@ -496,17 +496,18 @@ static void ShowDemoWindowWidgets(void* scene) {
   // the object itself, etc.)
   // Here we store our selection data as an index.
   static int item_current_idx = 0;
+  std::string material_dir_prefix = "resources/assets/textures/pbr/";
   // Label to preview before opening the combo
   const std::string combo_label = pbr_utils::material_names[item_current_idx];
   if (ImGui::BeginCombo("Sphere Materials", combo_label.c_str(), flags)) {
-    for (int i = 0; i < IM_ARRAYSIZE(pbr_utils::material_names); i++) {
+    for (int i = 0; i < pbr_utils::material_names.size(); i++) {
       const bool is_selected = (item_current_idx == i);
       if (ImGui::Selectable(pbr_utils::material_names[i].c_str(),
                             is_selected)) {
         // Only called when a different selection is made
         ((PbrScene*)scene)
-            ->UploadPbrTextures(
-                pbr_utils::ConvertMaterialToFilePath(pbr_utils::materials[i]));
+            ->UploadPbrTextures(material_dir_prefix +
+                                pbr_utils::material_names[i]);
         item_current_idx = i;
       }
 
@@ -521,18 +522,19 @@ static void ShowDemoWindowWidgets(void* scene) {
   }
   static int environment_item_current_idx = 0;
   // Label to preview before opening the combo
+  std::string env_dir_prefix = "resources/assets/textures/hdr/";
   const std::string environment_combo_label =
       pbr_utils::environment_names[environment_item_current_idx];
+
   if (ImGui::BeginCombo("Environments", environment_combo_label.c_str(),
                         flags)) {
-    for (int i = 0; i < IM_ARRAYSIZE(pbr_utils::environment_names); i++) {
+    for (int i = 0; i < pbr_utils::environment_names.size(); i++) {
       const bool is_selected = (environment_item_current_idx == i);
       if (ImGui::Selectable(pbr_utils::environment_names[i].c_str(),
                             is_selected)) {
         // Only called when a different selection is made
         ((PbrScene*)scene)
-            ->UploadHdrMap(pbr_utils::ConvertEnvironmentToFilePath(
-                pbr_utils::environments[i]));
+            ->UploadHdrMap(env_dir_prefix + pbr_utils::environment_names[i]);
         ((PbrScene*)scene)->InitAllIblTextureMaps();
         environment_item_current_idx = i;
       }
